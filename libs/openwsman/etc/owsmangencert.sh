@@ -2,9 +2,9 @@
 
 #!/bin/sh -e
 
-CERTFILE=/etc/openwsman/servercert.pem
-KEYFILE=/etc/openwsman/serverkey.pem
-CNFFILE=/etc/openwsman/ssleay.cnf
+CERTFILE=${prefix}/etc/openwsman/servercert.pem
+KEYFILE=${prefix}/etc/openwsman/serverkey.pem
+CNFFILE=${prefix}/etc/openwsman/ssleay.cnf
 
 if [ "$1" != "--force" -a -f $KEYFILE ]; then
   echo "$KEYFILE exists!  Use \"$0 --force.\""
