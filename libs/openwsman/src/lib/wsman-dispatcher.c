@@ -914,7 +914,7 @@ SoapDispatchH wsman_dispatcher(WsContextH cntx, void *data, WsXmlDocH doc)
 #ifdef ENABLE_EVENTING_SUPPORT
 	WsXmlNodeH nodedoc = NULL;
 #endif
-	int i, resUriMatch = 0;
+	int i; /*, resUriMatch = 0; */
 	char *ns = NULL;
 
 	WsDispatchInterfaceInfo *r = NULL;
@@ -976,7 +976,7 @@ SoapDispatchH wsman_dispatcher(WsContextH cntx, void *data, WsXmlDocH doc)
 			if ((ns = wsman_dispatcher_match_ns(ifc,
 						       XML_NS_WSMAN_ID))) {
 				r = ifc;
-				resUriMatch = 1;
+				/* resUriMatch = 1; */
 				break;
 			}
 			debug("ns did not match");
@@ -989,12 +989,12 @@ SoapDispatchH wsman_dispatcher(WsContextH cntx, void *data, WsXmlDocH doc)
 		else if (ifc->wsmanResourceUri == NULL &&
 			 (ns = wsman_dispatcher_match_ns(ifc, uri))) {
 			r = ifc;
-			resUriMatch = 1;
+			/* resUriMatch = 1; */
 			break;
 		} else if (ifc->wsmanResourceUri &&
 			   !strcmp(uri, ifc->wsmanResourceUri)) {
 			r = ifc;
-			resUriMatch = 1;
+			/* resUriMatch = 1; */
 			break;
 		}
 		node = list_next((list_t *) dispInfo->interfaces, node);

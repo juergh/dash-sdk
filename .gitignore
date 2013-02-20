@@ -12,5 +12,9 @@ mof2oal/src/config.h
 mof2oal/src/libtool
 mof2oal/src/stamp-h1
 *~
-.deps
+.deps/
+.libs/
 *.pc
+*.o
+*.lo
+*.la

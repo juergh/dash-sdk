@@ -9,7 +9,7 @@ INCLUDES += -I$(top_srcdir)/cim_client_lib/include
 INCLUDES += -DDSDK_Export= -Wall
 
 
-LIBS = $(top_srcdir)/dash_client_lib/libdashapi.la -lcurses 
+LIBS = $(top_srcdir)/dash_client_lib/libdashapi.la $(top_srcdir)/cim_client_lib/wsman/libwsmanapi.la -lcurses
 
 
 

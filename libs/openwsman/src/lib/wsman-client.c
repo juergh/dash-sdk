@@ -173,10 +173,10 @@ wsmc_build_envelope(WsSerializerContextH serctx,
 				options->flags & FLAG_MUND_MAX_ESIZE);
 	}
 	if (options->fragment) {
-		int mu = 0;
+		/*int mu = 0;
 		if ((options->flags & FLAG_MUND_FRAGMENT) ==
 				FLAG_MUND_FRAGMENT)
-			mu = 1;
+			mu = 1;*/
 		ws_serialize_str(serctx, header, options->fragment,
 				XML_NS_WS_MAN, WSM_FRAGMENT_TRANSFER,
 				1);

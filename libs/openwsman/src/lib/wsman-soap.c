@@ -163,11 +163,11 @@ static void wsman_expiretime2xmldatetime(unsigned long expire, char *str)
 {
 	time_t t = expire;
 	struct tm tm;
-	int gmtoffset_hour;
-	int gmtoffset_minute;
+	/*int gmtoffset_hour;
+	  int gmtoffset_minute;*/
 	localtime_r(&t, &tm);
-	gmtoffset_hour = 0;
-	gmtoffset_minute = 0;
+	/*gmtoffset_hour = 0;
+	  gmtoffset_minute = 0;*/
 	snprintf(str, 30, "%u-%u%u-%u%uT%u%u:%u%u:%u%u+%u%u:%u%u",
 			tm.tm_year + 1900, (tm.tm_mon + 1)/10, (tm.tm_mon + 1)%10,
 			tm.tm_mday/10, tm.tm_mday%10, tm.tm_hour/10, tm.tm_hour%10,
@@ -1831,7 +1831,7 @@ wse_unsubscribe_stub(SoapOpH op, void *appData, void *opaqueData)
 	WsSubscribeInfo *subsInfo = NULL;
 	WsmanStatus     status;
 	WsXmlNodeH      inNode;
-	WsXmlNodeH      body;
+	/*WsXmlNodeH      body;*/
 	WsXmlNodeH      header;
 	SoapH           soap = soap_get_op_soap(op);
 	WsContextH soapCntx = ws_get_soap_context(soap);
@@ -1844,7 +1844,7 @@ wse_unsubscribe_stub(SoapOpH op, void *appData, void *opaqueData)
 
 	epcntx = ws_create_ep_context(soap, _doc);
 	wsman_status_init(&status);
-	body = ws_xml_get_soap_body(_doc);
+	/*body = ws_xml_get_soap_body(_doc);*/
 	header = ws_xml_get_soap_header(_doc);
 	inNode = ws_xml_get_child(header, 0, XML_NS_EVENTING, WSEVENT_IDENTIFIER);
 	if(inNode == NULL) {
