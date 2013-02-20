@@ -1,0 +1,38 @@
+//Copyright (c) 2007 DMTF. All Rights Reserved.
+   [Experimental, Version ( "2.17.0" ), 
+    UMLPackagePath ( "CIM::System::Virtualization" ), 
+    Description ( 
+       "CIM_MigrationSettingData defines the parameters to control a "
+       "virtual system migration implementation, as managed by a "
+       "CIM_VirtualSystemMigrationService. It is expected that a "
+       "migration implementation will subclass this class to add "
+       "implementation-specific migration options." )]
+class CIM_VirtualSystemMigrationSettingData : CIM_SettingData {
+
+      [Description ( 
+          "MigrationType describes a type of migration operation to "
+          "be performed.\n"
+          "A value of 2 - Virtual System is to be migrated in a "
+          "\'live\' manner such that the running of the Virtual "
+          "System is minimally impacted during the move.\n"
+          "A value of 3 - Virtual System will be temporarily paused "
+          "prior to migration and then resume running after it is moved.\n"
+          "A value of 4 - The Virtual System will be quiesced to a "
+          "stopped state prior to migration and then restarted "
+          "after it is moved." ), 
+       ValueMap { "0", "1", "2", "3", "4" }, 
+       Values { "Unknown", "Other", "Live", "Resume", "Restart" }]
+   uint16 MigrationType;
+
+      [Description ( 
+          "Priority specifies a relative migration importance which "
+          "the virtual system migration implementation may use to "
+          "order or otherwise give preference among multiple "
+          "pending migration requests. The lower the value, the "
+          "higher the priority. A value of 0 indicates:\n"
+          "- in migration requests the default priority\n"
+          "- otherwise that priorities are not supported" )]
+   uint16 Priority;
+
+
+};

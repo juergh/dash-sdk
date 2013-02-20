@@ -1,0 +1,3 @@
+//[ UidRef ]
+class DRI_ComputerSystem : CIM_ComputerSystem {
+};

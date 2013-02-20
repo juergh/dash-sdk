@@ -1,0 +1,24 @@
+   [Association, Experimental, Version ( "2.18.0" ),
+       UMLPackagePath ( "CIM::Core::OpaqueManagementData" ), 
+    Description (
+       "CIM_IdentityUsesOpaqueManagementData is an association that "
+       "indicates users of OpaqueManagementData." )]
+class CIM_IdentityUsesOpaqueManagementData : CIM_Dependency {
+
+      [Override ( "Antecedent" ), Description (
+          "Antecedent is OpaqueManagementData that is used by "
+          "Dependent.")]
+   CIM_OpaqueManagementData REF Antecedent;
+
+      [Override ( "Dependent" ), Description (
+          "Dependent is an Identity that uses Antecedent.")]
+   CIM_Identity REF Dependent;
+
+      [Description (
+          "IsOwner indicates what access Dependent has to Antecedent. "
+          "The creator of an instance of OpaqueManagementData is its "
+          "owner." ),
+       ValueMap { "2", "3", "4" },
+       Values { "Owner", "Read", "Write" }]
+   uint16 Access[];
+}; 

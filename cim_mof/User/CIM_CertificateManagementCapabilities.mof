@@ -1,0 +1,84 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Experimental, Version ( "2.18.1" ), 
+    UMLPackagePath ( "CIM::User::SecurityServices" ), 
+    Description ( 
+       "CIM_CertificateManagementCapabilities describes the "
+       "capabilities of the associated "
+       "CIM_CertificateManagementService instance(s)." )]
+class CIM_CertificateManagementCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description ( 
+          "Each enumeration corresponds to support for the "
+          "like-named method of the associated "
+          "CIM_CertificateManagementService instance(s)." ), 
+       ValueMap { "2", "3", "101", "102", "103", "104", "105", 
+          "106", "..", "0x8000.." }, 
+       Values { "ImportPublicPrivateKeyPair", "CreateKeystore", 
+          "CreatCertificateSigningRequest", 
+          "CreateSelfSignedCertificate", 
+          "ImportEncodedCertificates", "ImportCertificates", 
+          "ExportEncodedCertificate", "ApplyCRL", "DMTF Reserved", 
+          "Vendor Specific" }]
+   uint16 SupportedMethods[];
+
+      [Description ( 
+          "AssymetricKeyGeneration property represents the "
+          "capability of the instrumentation to generate assymetric "
+          "public/private key pair. If AssymetricKeyGeneration is "
+          "TRUE then the supported methods of "
+          "CIM_CertificateManagementService with Subject parameter "
+          "that require assymetric key to be generated or passed in "
+          "shall support non-null values for the Subject parameter, "
+          "PublicKeyAlgorithm parameter and PublicKeySize "
+          "parameter. Otherwise, if the value is FALSE, the "
+          "supported methods of CIM_CertificateManagementService "
+          "with Subject as a parameter that require assymetric key "
+          "to be generated or passed in shall support non-null "
+          "values for PublicPrivateKeyPair parameter." )]
+   boolean AssymetricKeyGeneration;
+
+      [Description ( 
+          "If the AssymetricKeyGeneration is TRUE, this property "
+          "specifies the possible key algorithms that are supported "
+          "by the methods that generate public/private key pairs in "
+          "the associated CIM_CertificateManagementService "
+          "instance(s). If the CreatCertificateSigningRequest "
+          "method is supported, the method shall support the values "
+          "of this property for the PublicKeyAlgorithm paramater. "
+          "If the CreateSelfSignedCertificate method is supported, "
+          "the method shall support the values of this property for "
+          "the PublicKeyAlgorithm paramater." ), 
+       ValueMap { "2", "3", "..", "32768..65535" }, 
+       Values { "RSA", "DSA", "DMTF Rserved", "Vendor Reserved" }]
+   uint16 KeyAlgorithmSupported[];
+
+      [Description ( 
+          "The InputFormatsSupported represents the supported input "
+          "formats for the certificate(s) and Certificate "
+          "Revocation List by the methods in the associated "
+          "CIM_CertificateManagementService instance(s). If the "
+          "ImportEncodedCertificate method is supported, the method "
+          "shall support the values of this property for the Format "
+          "paramater. If the ApplyCRL method is supported, the "
+          "method shall support the values of this property for the "
+          "Format paramater." ), 
+       ValueMap { "2", "3", "4", "5", "..", "32768..65535" }, 
+       Values { "DER", "PEM", "PKCS7", "PKCS12", "DMTF Rserved", 
+          "Vendor Reserved" }]
+   uint16 InputFormatsSupported[];
+
+      [Description ( 
+          "The OutputFormatsSupported represents the supported "
+          "output formats for the certificate(s) and Certificate "
+          "Revocation List by the methods in the associated "
+          "CIM_CertificateManagementService instance(s). If the "
+          "ExportEncodedCertificate method is supported, the method "
+          "shall support the values of this property for the Format "
+          "paramater." ), 
+       ValueMap { "2", "3", "4", "5", "..", "32768..65535" }, 
+       Values { "DER", "PEM", "PKCS7", "PKCS12", "DMTF Rserved", 
+          "Vendor Reserved" }]
+   uint16 OutputFormatsSupported[];
+
+
+};

@@ -1,0 +1,25 @@
+// Copyright (c) 2007 DMTF.  All rights reserved.
+// <change cr="SVPCCR00032" type ="new">Add class.</change> 
+// ===================================================================
+// CIM_ResourceAllocationFromPool
+// ===================================================================
+   [Association, Experimental, Version ( "2.15.0" ), 
+    UMLPackagePath ( "CIM::System::Resource" ), 
+    Description ( 
+       "ResourceAllocationFromPool associates an instance of "
+       "CIM_ResourceAllocationSettingData representing a resource "
+       "allocation with the CIM_ResourcePool from which it is "
+       "allocated." )]
+class CIM_ResourceAllocationFromPool : CIM_Dependency {
+
+      [Override ( "Antecedent" ), 
+       Max ( 1 ), 
+       Description ( "The resource pool." )]
+   CIM_ResourcePool REF Antecedent;
+
+      [Override ( "Dependent" ), 
+       Description ( "The resource allocation." )]
+   CIM_ResourceAllocationSettingData REF Dependent;
+
+
+};

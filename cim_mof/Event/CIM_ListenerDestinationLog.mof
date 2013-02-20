@@ -1,0 +1,16 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_ListenerDestinationLog 
+// ==================================================================
+   [Experimental, Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::Event" ), 
+    Description ( 
+       "CIM_ListenerDestinationLog describes that Indications are "
+       "delivered to one or more associated CIM_Logs. The specific "
+       "logs are defined using the association, CIM_LogOfIndication." )]
+class CIM_ListenerDestinationLog : CIM_ListenerDestination {
+
+
+};

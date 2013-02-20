@@ -1,0 +1,41 @@
+// Copyright (c) 2005 - 2007 DMTF.  All rights reserved.
+// <change cr="WIP_CQLCR00000" type="change">CQL add Features 
+// to QueryCapability</change>
+// <change cr="DMTFCR01533" type="change">Add CQL Capabilities in Interop 
+// Schema</change>
+// <change cr="InteropCR00233" type="change">Add CQL Feature 14: Arithetic
+// Feature</change>
+// <change cr="WIPCR00252" type="change">Add CQL Feature 15: Full Unicode 
+// Support</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_QueryCapabilities
+// ==================================================================
+   [Experimental, Version ( "2.16.0" ), 
+    UMLPackagePath ( "CIM::Interop" ), 
+    Description ( 
+       "This class defines the capabilities of a CIM_ObjectManager "
+       "and/or CIM_Provider as associated via ElementCapabilities." )]
+class CIM_QueryCapabilities : CIM_Capabilities {
+
+      [Description ( 
+          "Enumeration of CQL features supported by an Object "
+          "Manager or Provider associated via ElementCapabilities. "
+          "For more information refer to the CIM Query Language "
+          "Specification, DSP0202." ), 
+       ValueMap { "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+          "11", "12", "13", "14", "15", "16", "17", "18", "..", 
+          "0x8000.." }, 
+       Values { "Basic Query", "Simple Join", "Complex Join", 
+          "Subquery", "Result Set Operations", 
+          "Extended Select List", "Embedded Properties", 
+          "Aggregations", "Regular Expression Like", "Array Range", 
+          "Satisfies Array", "Foreign Namespace Support", 
+          "Arithmetic Expression", "Full Unicode Support", 
+          "Conversion Utilities", "Property Scoping", 
+          "Association Traversal", "DMTF Reserved", "Vendor Reserved" }]
+   uint16 CQLFeatures[];
+
+
+};

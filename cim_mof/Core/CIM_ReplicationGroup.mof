@@ -1,0 +1,30 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Experimental, Version ( "2.19.0" ), 
+    UMLPackagePath ( "CIM::Device::StorageServices" ), 
+    Description ( 
+       "This class represents a collection of storage objects, such as "
+       "a group of StorageVolumes." )]
+class CIM_ReplicationGroup : CIM_SystemSpecificCollection {
+
+      [Write, Description ( 
+          "If false, the group, not the elements associated with "
+          "the group, may be deleted at the completion of a copy "
+          "operation." )]
+   boolean Persistent = true;
+
+      [Write, Description ( 
+          "If true and empty groups are allowed, the group will be "
+          "deleted when the last element is removed from the group. "
+          "If empty groups are not allowed, the group will be "
+          "deleted automatically when the group becomes empty." )]
+   boolean DeleteOnEmptyElement = false;
+
+      [Write, Description ( 
+          "If true, the group will be deleted when the group is no "
+          "longer associated with another group. This can happen if "
+          "all synchronization associations to the individual "
+          "elements of the group are dissolved." )]
+   boolean DeleteOnUnassociated = false;
+
+
+};

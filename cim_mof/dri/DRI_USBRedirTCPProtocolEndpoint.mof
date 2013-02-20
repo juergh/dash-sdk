@@ -1,0 +1,4 @@
+class DRI_USBRedirTCPProtocolEndpoint : CIM_TCPProtocolEndpoint {
+    [ Override("PortNumber"), Write]
+    uint32 PortNumber;
+};

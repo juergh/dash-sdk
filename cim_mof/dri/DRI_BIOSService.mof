@@ -1,0 +1,2 @@
+class DRI_BIOSService : CIM_BIOSService {
+};

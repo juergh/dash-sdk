@@ -1,0 +1,2 @@
+class DRI_ProcessorSystemDevice : CIM_SystemDevice {
+};

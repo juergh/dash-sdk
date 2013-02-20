@@ -1,0 +1,20 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_BatchService 
+// ==================================================================
+   [Experimental, Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::System::Processing" ), 
+    Description ( 
+       "The Service that provides support for processing BatchJob "
+       "requests. The basic assumption of this model is that a "
+       "BatchService accepts a BatchJob for processing, via its "
+       "BatchSAP. The Job is then placed on a BatchQueue (indicated by "
+       "the QueueForBatchService association). A System takes Jobs "
+       "from Queues (indicated by the ExecutionTarget association) and "
+       "processes them." )]
+class CIM_BatchService : CIM_Service {
+
+
+};

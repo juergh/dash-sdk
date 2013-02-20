@@ -1,0 +1,2 @@
+class DRI_BIOSConcreteCollection : CIM_ConcreteCollection {
+};

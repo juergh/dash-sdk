@@ -1,0 +1,1 @@
+class DRI_SystemComponent : CIM_SystemComponent {};

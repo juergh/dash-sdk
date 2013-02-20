@@ -1,0 +1,14 @@
+AC_PATH_PROG(CURL_CONFIG, curl-config, no)
+if test "$CURL_CONFIG" = "no" ; then
+ PP_MISSING_PACKAGE(curl-devel)
+fi
+CURL_CFLAGS=`curl-config --cflags`
+CURL_LIBS=`curl-config --libs`
+AC_SUBST(CURL_CFLAGS)
+AC_SUBST(CURL_LIBS)
+
+AC_PP_CHECK_PROG(SWIG, swig, true, PP_MISSING_PACKAGE(swig))
+AC_PP_CHECK_PKGCONFIG(OPENSSL, [openssl >= 0.9], true, PP_MISSING_PACKAGE(openssl-devel))
+AC_PP_CHECK_HEADERS(python2.5/Python.h, true, PP_MISSING_PACKAGE(python-devel))
+AC_PP_CHECK_PKGCONFIG(LIBXML2, libxml-2.0, true, PP_MISSING_PACKAGE(libxml2-devel))
+AC_PP_CHECK_PYTHON_MODULE(PY_PEXPECT, pexpect, true, PP_MISSING_PACKAGE(pexpect))

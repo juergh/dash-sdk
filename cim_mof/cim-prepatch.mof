@@ -1,0 +1,3 @@
+#pragma locale ("en_US")
+#pragma include ("Network/CIM_MediaRedirectionService.mof")
+#pragma include ("Core/CIM_IdentityUsesOpaqueManagementData.mof")

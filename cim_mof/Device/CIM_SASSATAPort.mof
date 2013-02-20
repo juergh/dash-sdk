@@ -1,0 +1,19 @@
+// <change cr="CIMCoreCR00850" type = "create"> Add class.</change>
+   [Experimental, Version ( "2.13.0" ), 
+    Description ( 
+       "Represents a port that can support both Serial ATA and Serial "
+       "Attached SCSI. This port can support both protocols (ATA and "
+       "SCSI) at the same time. This is not the same as a SAS only "
+       "port. SASPort is subclassed from NetworkPort showing it "
+       "supports switches and a network topology." )]
+class CIM_SASSATAPort : CIM_LogicalPort {
+
+      [Override ( "PortType" ), 
+       Description ( "The type of port." ), 
+       ValueMap { "0", "1", "95", "..", "32768..65535" }, 
+       Values { "Unknown", "Other", "SASSATA", "DMTF Reserved", 
+          "Vendor Reserved" }]
+   uint16 PortType;
+
+
+};

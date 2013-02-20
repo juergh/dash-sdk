@@ -1,0 +1,3 @@
+class DRI_USBDevice : CIM_USBDevice {
+    boolean Deletable;
+};

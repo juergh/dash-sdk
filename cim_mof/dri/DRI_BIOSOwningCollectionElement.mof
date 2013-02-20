@@ -1,0 +1,2 @@
+class DRI_BIOSOwningCollectionElement : CIM_OwningCollectionElement {
+};

@@ -1,0 +1,2 @@
+class DRI_ConfigurationCapacity : CIM_ConfigurationCapacity {
+};

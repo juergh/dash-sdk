@@ -1,0 +1,25 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_AssociatedJobMethodResult 
+// ==================================================================
+   [Association, Experimental, Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::System::Processing" ), 
+    Description ( 
+       "AssociatedJobMethodResult represents an association between a "
+       "ConcreteJob and the MethodResult expressing the parameters for "
+       "the Job when the job was created by side-effect of the "
+       "execution of an extrinsic method." )]
+class CIM_AssociatedJobMethodResult {
+
+      [Key, Max ( 1 ), 
+       Description ( "The associated ConcreteJob." )]
+   CIM_ConcreteJob REF Job;
+
+      [Key, Max ( 1 ), 
+       Description ( "The associated MethodResult." )]
+   CIM_MethodResult REF JobParameters;
+
+
+};

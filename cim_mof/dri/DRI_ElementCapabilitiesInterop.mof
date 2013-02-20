@@ -1,0 +1,2 @@
+class DRI_ElementCapabilitiesInterop : CIM_ElementCapabilities {
+};

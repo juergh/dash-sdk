@@ -1,0 +1,216 @@
+/**
+ @page apiref Application Programming Interface
+ @section hapisection High Level API
+The high level API is defined for common operations on a DASH target like 
+ discovery, power on/off, basic inventory etc. The high level API is an 
+ abstraction layer and minimizes the exposure of the console to the details
+ of the low-level DASH protocol stack. The High level API is provided both 
+ as C and C++ interfaces.
+ - @subpage cplusplusapi
+ - @subpage capi
+ 
+ @section lapisection Low Level API
+ The Low level api is defined to match the CMPI interface. In addition to this 
+ functions are added to provide support for discovery, dash ping and eventing.
+ The low level API is a pure C interface.
+ - @subpage lapiref
+ 
+ @section Example
+ Here are the examples/samples showing how to use High Leve(C++ & C) and Low Level API
+ - @ref hapiexample
+ - @ref hapicexample
+ - @ref lapiexample
+**/
+
+/**
+ @page cplusplusapi C++ APIs
+ The following is the list of APIs in C++
+
+ @section Discovery Discovery Classes
+ @li @ref dsdk::CDiscoverer "Discoverer"
+
+ @section Connection Connection Classes
+ @li @ref dsdk::CCIMMAP "CCIMMAP"
+ @li @ref dsdk::CSubject "Subject"
+
+ @section Component Component Classes
+ @li @ref dsdk::CComputerSystem "ComputerSystem"
+ @li @ref dsdk::CProcessor "Processor"
+ @li @ref dsdk::CProcessorCore "ProcessorCore"
+ @li @ref dsdk::CPhysicalMemory "PhysicalMemory"
+ @li @ref dsdk::CPhysicalAsset "PhysicalAsset"
+ @li @ref dsdk::CFan "Fan" 
+ @li @ref dsdk::CSensor "Sensor"
+ @li @ref dsdk::CSoftware "Software"
+ @li @ref dsdk::CBootConfig "BootConfig"
+ @li @ref dsdk::CUser "User"
+ @li @ref dsdk::CPowerSupply  "PowerSupply" 
+ @li @ref dsdk::CFanRedundancySet "FanRedundancySet"
+ @li @ref dsdk::CPowerSupplyRedundancySet "PowerSupplyRedundancySet"
+ @li @ref dsdk::CBIOSAttribute "bios"
+ @li @ref dsdk::COpaqueManagementData "OpaqueManagementData"
+ @li @ref dsdk::CUSBRedirection "USBRedirection"
+ @li @ref dsdk::COperatingSystem "OperatingSystem"
+ @li @ref dsdk::CBattery "Battery"
+ @li @ref dsdk::CUser "User"
+ @li @ref dsdk::CNetworkPort "NetworkPort"
+ @li @ref dsdk::CDHCPClient "DHCPClient"
+ @li @ref dsdk::CDNSClient "DNSClient"
+ @li @ref dsdk::CIPInterface "IPInterface"
+ @li @ref dsdk::CTextRedirection "TextRedirection"
+ 
+ 
+
+ @section Exception Exceptions thrown by the high level API
+ 
+ @page hapiexample HAPI Example
+ - @ref test.cpp			"Connection Example"
+ - @ref testcs.cpp			"ComputerSystem Example"
+ - @ref testprocessor.cpp	"Processor Example"
+ - @ref testfan.cpp			"Fan Example"
+ - @ref testsensor.cpp		"Sensor Example"
+ - @ref testsoftware.cpp	"Software Example"
+ - @ref testpowersupply.cpp	"PowerSupply Example"
+**/
+
+
+
+
+
+/**
+ @page capi C APIs
+ This defines the C Interface for the High Level Interface. This is a wrapper over @ref cplusplusapi "High level C++ API". 
+ This has same set of API's in C++ API, so user can do same operation of C++ API in C.
+
+ @section Connection Connection Classes
+ @li @subpage cimmapcapi "CIMMAP"
+ @li @subpage subjectcapi "Subject"
+ 
+ @section Component "Component Classes"
+ @li @subpage computersystemcapi
+ @li @subpage processorcapi
+ @li @subpage processorcorecapi
+ @li @subpage physicalmemorycapi
+ @li @subpage physicalassetcapi
+ @li @subpage fancapi
+ @li @subpage sensorcapi
+ @li @subpage softwarecapi
+ @li @subpage bootconfigcapi
+ @li @subpage usercapi
+ @li @subpage powersupplycapi 
+ @li @subpage fanredundancysetcapi
+ @li @subpage powersupplyredundancysetcapi
+
+ @page cimmapcapi CIMMAP
+ @li @ref DSDKCIMMAPFT	"CIMMAP" \n
+ @li @ref hapic.c "Example" 
+ 
+ @page subjectcapi Subject
+ @li @ref DSDKSubject	"Subject" \n
+ @li @ref hapic.c "Example"
+
+ @page computersystemcapi	ComputerSystem
+ @li @ref DSDKComputerSystemIteratorFT	"ComputerSystemIterator"
+ @li @ref DSDKComputerSystemFT			"ComputerSystem" \n
+ @li @ref hapic.c "Example"
+
+ @page processorcapi		Processor
+ @li @ref DSDKProcessorIteratorFT	"ProcessorIterator"
+ @li @ref DSDKProcessorFT			"Processor" 
+
+ @page processorcorecapi	ProcessorCore
+ @li @ref DSDKProcessorCoreIteratorFT	"ProcessorCoreIterator"
+ @li @ref DSDKProcessorCoreFT			"ProcessorCore" 
+
+ @page physicalmemorycapi	PhysicalMemory
+ @li @ref DSDKPhysicalMemoryIteratorFT	"PhysicalMemoryIterator"
+ @li @ref DSDKPhysicalMemoryFT			"PhysicalMemory" 
+
+ @page physicalassetcapi	PhysicalAsset
+ @li @ref DSDKPhysicalAssetIteratorFT	"PhysicalAssetIterator"
+ @li @ref DSDKPhysicalAssetFT			"PhysicalAsset" 
+
+ @page fancapi				Fan
+ @li @ref DSDKFanIteratorFT	"FanIterator"
+ @li @ref DSDKFanFT			"Fan" 
+
+ @page sensorcapi			Sensor
+ @li @ref DSDKSensorIteratorFT	"SensorIterator"
+ @li @ref DSDKSensorFT			"Sensor" 
+
+ @page softwarecapi			Software
+ @li @ref DSDKSoftwareIteratorFT	"SoftwareIterator"
+ @li @ref DSDKSoftwareFT			"Software" 
+
+ @page bootconfigcapi		BootConfig
+ @li @ref DSDKBootConfigIteratorFT	"BootConfigIterator"
+ @li @ref DSDKBootConfigFT			"BootConfig" 
+ 
+ @page usercapi				User
+ @li @ref DSDKUserIteratorFT	"UserIterator"
+ @li @ref DSDKUserFT			"User" 
+
+ @page powersupplycapi		PowerSupply
+ @li @ref DSDKPowerSupplyIteratorFT	"PowerSupplyIterator"
+ @li @ref DSDKPowerSupplyFT			"PowerSupply" 
+
+ @page fanredundancysetcapi	FanRedundancySet
+ @li @ref DSDKFanRedundancySetIteratorFT	"FanRedundancySetIterator"
+ @li @ref DSDKFanRedundancySetFT			"FanRedundancySet" 
+
+ @page powersupplyredundancysetcapi PowerSupplyRedundancySet
+ @li @ref DSDKPowerSupplyRedundancySetIteratorFT	"PowerSupplyRedundancySetIterator"
+ @li @ref DSDKPowerSupplyRedundancySetFT			"PowerSupplyRedundancySet" 
+ 
+ @li @ref hapic.c "Example"
+ 
+ @page hapicexample HAPI C Example
+ - @ref hapic.c "Connection Example"
+ - @ref hapic.c "ComputerSystem Example"
+**/
+
+
+
+
+/**
+ @page lapiref Low Level API 
+
+ The following is the list of low level API functions
+ 
+  - @ref enumInstanceNames "EnumerateInstanceNames"
+  - @ref enumInstances	"EnumerateInstances"
+  - @ref getInstance	"GetInstance"
+  - @ref setInstance	"SetInstance"
+  - @ref createInstance "CreateInstance"
+  - @ref deleteInstance "DeleteInstance" 
+  - @ref execQuery		"ExecQuery"
+  - @ref associators	"Associators"
+  - @ref associatorNames "AssociatorNames"
+  - @ref references		"References"
+  - @ref referenceNames "ReferenceNames"
+  - @ref invokeMethod	"InvokeMethod"
+  - @ref setProperty	"SetProperty"
+  - @ref getProperty	"GetProperty"
+  
+  
+  @section connectionapi Connection API's
+  - @ref cmciConnect	"CMCIConnect"
+  - @ref cmciConnect2	"CMCIConnect2"
+  - @ref cmciRelease	"CMCIRelease"
+  
+  @section eventapi Event API's
+  - @ref subscribeEvent		"SubscribeEvent"
+  - @ref unsubscribeEvent	"UnSubscribeEvent"
+  - @ref renewSubscription	"RenewSubscription"
+
+ @section lapiexample Example usage.
+ 
+  - @ref test.c	"CMCIConnect Example"
+  - @ref testenuminstancenames.c "EnumerateInstanceNames Example"
+  - @ref testenuminstance.c	 "EnumerateInstances Example"
+  - @ref testgetinstance.c	"GetInstance Example"
+
+**/
+
+
+

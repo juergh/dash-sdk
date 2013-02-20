@@ -1,0 +1,278 @@
+/**
+ @page design Design Overview
+ - @subpage hapidesign
+ - @subpage lapidesign
+ - @subpage clidesign
+**/
+
+/**
+ @page hapidesign High Level SDK Design
+ The following figure illustrates the structure of the high level API SDK.
+
+ @dot
+ digraph kt_design {
+    node hapic[shape="record" label="High Level API C" URL="\ref hapic"]
+    node hapi[shape="record" label="{High Level API C++|{{Discovery|CDiscoverer}|{Connection|{CCIMMAP|CSubject}}|{Components|{CComputerSystem|...|CSoftware}}|Enumeration Functions}}" URL="\ref hapi"]
+    node oal[shape="record" label="{Object Access Layer|{CIM_ComputerSystem.h | CIM_Processor.h | ... | CIM_PhysicalElement.h}}" URL="\ref oal"]
+    node typeconversion[shape="record" label="{Type Conversion Functions|{to|toArray|toCCIMValue|toCCIMValueArray}}" URL="\ref cim"]
+    node cim[shape="record" label="{CIM Abstraction Layer|{CCIMInstance|CCIMArgument|...|CCIMObjectPath}}" URL="\ref cim"]
+    node client[shape="record" label="{Client Connection|{IClient|CSFCCClient}}" URL="\ref cim"]
+    node lapi[shape="record" label="{Low Level API|{CMPI|Ping|Eventing}}" URL="\ref lapi"]
+    node mof2cpp[shape = "record" label="{MOF Compiler|mof2cpp}" URL="\ref mof2cpp"]
+    node moffiles[shape = "record" label="{MOF Files|{CIM_ComputerSystem.mof | CIM_Processor.mof | ... | CIM_PhysicalElement.mof}}" URL="\ref moffiles"]
+    node skelfiles[shape = "record" label="{Code Skeleton Files}" URL="\ref skelfiles"]
+    hapic->hapi [label="C abstraction" arrowhead="none" style="dashed"]
+    hapi->oal
+    mof2cpp->oal [label="generates"]
+    moffiles->mof2cpp [label="uses" arrowhead="open" style="dashed"]
+    skelfiles->mof2cpp [label="uses" arrowhead="open" style="dashed"]
+    oal->typeconversion
+    oal->client
+    oal->cim
+    client->cim [arrowhead="none" style="dashed"]
+    typeconversion->cim [arrowhead="none" style="dashed"]
+    typeconversion->lapi
+    cim->lapi
+    client->lapi
+ }
+ @enddot
+
+ @section lapi Low Level API
+ The low level API is defined to match the CMPI interface and hence can be 
+ interchangeable with the CIM-XML provided by the SBLIM. In addition to CMPI 
+ interface the low level API provides additional function to perform DASH ping 
+ and event subscription.
+
+ @section cim CIM Abstraction Layer
+ The CIM Abstraction layer provides an Object Oriented Abstraction over the CMPI
+ objects. The objects exposed by this layer perform the resource cleanup on 
+ their deletion keeping the upper layers easier to implement. 
+ 
+ The resources contained within this objects are reference counted and hence 
+ these objects can be passed by value without much overhead. This helps 
+ implementing the higher layers easier and prevents unnecessary memory leaks.
+ 
+ The following is list of classes exposed by this layer
+
+ - @ref dsdk::CCIMArgument    
+ - @ref dsdk::CCIMArray       
+ - @ref dsdk::CCIMConstClass  
+ - @ref dsdk::CCIMData        
+ - @ref dsdk::CCIMValue       
+ - @ref dsdk::CCIMDateTime    
+ - @ref dsdk::CCIMEnumeration 
+ - @ref dsdk::CCIMInstance    
+ - @ref dsdk::CCIMObjectPath  
+ - @ref dsdk::CCIMString      
+
+ In addition layer also throws the following exceptions
+
+ - @ref dsdk::ECIMError                 
+ - @ref  dsdk::ECIMMethodNotImplemented 
+
+ @section typeconversion Type Conversion Functions
+ This is a set of template functions that converts from CCIMValue to the native 
+ types and vice versa. These functions perform the type checking and throw an 
+ exception if the type conversion is not valid. NOTE: Only CIM-XML supports 
+ type information, WSMAN values do not contain the type information and are 
+ always stored as strings. For WSMAN this layer only checks if the 
+ string values can be converted to native types or not.
+
+ The following is the list of type conversion functions
+ - @ref dsdk::to
+ - @ref dsdk::toArray
+ - @ref dsdk::toCCIMValue
+ - @ref dsdk::toCCIMArray
+
+ @section client Client Connection
+ This layer provides an abstract interface to access the client. Eventhough 
+ currently the functions in this layer matches the underlying CMPI interface 
+ this interface could be used to abstract any transport mechanism or to 
+ provide test cases without a real target. 
+
+ @section oal Object Access Layer
+ This layer is generated from the corresponding mof files using the mof2cpp 
+ compiiler. The properties of the objects in this layer are cacheable i.e. 
+ you can mark the properties that you would like to access as cached and they 
+ will be fetched together transparently when any one property is fetched. 
+ After this any access to a property is always got from the cached value until
+ the cache is invalidate, a property set or method invoked. 
+
+ The properties setter/getter, methods of the objects in this layer accept 
+ only native types that match the types specified in the MOF files. This 
+ makes any higher level access type safe. Also the objects in this layer 
+ provides the enums for any value types defined in the MOF file that can 
+ be used safely by the higher layers instead of using a hardcoded value. The
+ higher layers can also obtain the string values corresponding to the enum
+ values by makeing appropriate function calls.
+
+ This is the best layer for any software to use if it requires more features 
+ than the DASH functionalities offered by the high level API. 
+
+ @section mof2cpp MOF to CPP Code Generator
+ This is a compiler written specifically suited to this architecture. This 
+ compiler parses the MOF file provided to it and converts to C++ code. The 
+ code skeleton file directory is provided as input to this compiler to 
+ generate the code. This makes it easier for someone to customize the code
+ being generated to ones needs without modifying the compiler.
+
+
+ @section hapi High Level API (C++)
+ The high level API is provides it easy to write applications that manage 
+ DASH clients without worrying too much about DASH itself or the underlying
+ WSMAN. The objects in the high level API are designed to be simple and easy 
+ to use. 
+
+ The following is a list of objects provided by this layer
+ 
+ - @ref dsdk::CDiscoverer
+ - @ref dsdk::CCIMMAP
+ - @ref dsdk::CSubject
+ - @ref dsdk::CComputerSystem
+ - @ref dsdk::CProcessor
+ - @ref dsdk::CPhysicalMemory
+ - @ref dsdk::CPhysicalAsset
+ - @ref dsdk::CSoftware
+ - @ref dsdk::CSensor
+ - @ref dsdk::CNumericSensor
+ - @ref dsdk::CFan
+ - @ref dsdk::CFanRedundancySet
+ - @ref dsdk::CPowerSupply
+ - @ref dsdk::CPowerSupplyRedundancySet
+ - @ref dsdk::CBIOSAttribute
+ - @ref dsdk::COpaqueManagementData
+ - @ref dsdk::CUSBRedirection
+ - @ref dsdk::COperatingSystem
+ - @ref dsdk::CBattery
+ - @ref dsdk::CUser
+ - @ref dsdk::CNetworkPort
+ - @ref dsdk::CDHCPClient
+ - @ref dsdk::CDNSClient
+ - @ref dsdk::CIPInterface
+ - @ref dsdk::CTextRedirection
+
+ @sa @ref cplusplusapi
+
+ @section hapic High Level API (C)
+ This is an abstraction of the C++ high level API in C language. The objects 
+ in this interface consists of an opaque pointer (this corresponds to the C++
+ objects) and a corresponding function table (this corresponds to the
+ objects access functions). The functions in the function table just 
+ delegate the calls to the appropriate C++ functions.
+
+**/
+
+/**
+ @page lapidesign Low Level API Design
+
+ The low level API is defined to match the CMPI interface and hence can be 
+ interchangeable with the CIM-XML provided by the SBLIM. In addition to CMPI 
+ interface the low level API provides additional function to perform DASH ping 
+ and event subscription and event listener.
+
+ It uses the @b openwsman client as the backend to connect to the server\n
+ It uses the @b sfcc library to provice the API interface similar to CMPI interface.
+
+ The following list of API's are supported by this layer.
+ 
+  - @ref enumInstanceNames
+  - @ref enumInstances
+  - @ref getInstance
+  - @ref setInstance
+  - @ref createInstance
+  - @ref deleteInstance
+  - @ref execQuery
+  - @ref associators
+  - @ref associatorNames
+  - @ref references
+  - @ref referenceNames
+  - @ref invokeMethod
+  - @ref setProperty
+  - @ref getProperty
+  
+  @section connectionapi Connection API's
+  - @ref cmciConnect
+  - @ref cmciConnect2
+  - @ref cmciRelease
+  
+  @section eventapi Event API's
+  - @ref subscribeEvent
+  - @ref unsubscribeEvent
+  - @ref renewSubscription
+**/
+
+/**
+ @page clidesign Command Level Interface Design
+ The Command Level Interface is designed on top of the C++ High Level DASH API.\n
+ The CLI is provided with sub commands and targets. Each target has its own sub-commands 
+ that are specific to that particular target.
+  
+  Each target is implemented using a class that is similar to this abstract class Executer Interface. 
+  - @ref dashcli::IExec.
+  
+  Below are list of class(targets) implemented. 
+   - @ref dashcli::CRootExec
+   - @ref dashcli::CComputerSystemExec
+   - @ref dashcli::CProcessorExec
+   - @ref dashcli::CNumericSensorExec
+   - @ref dashcli::CFanExec
+   - @ref dashcli::CPowerSupplyExec
+   - @ref dashcli::CPhysicalAssetExec
+   - @ref dashcli::CPhysicalMemoryExec
+   - @ref dashcli::CSoftwareExec
+   - @ref dashcli::CBootConfigExec
+   - @ref dashcli::CPowerSupplyRedundancySetExec
+   - @ref dashcli::CBIOSAttributeExec
+   - @ref dashcli::COpaqueManagementDataExec
+   - @ref dashcli::CUSBRedirectionExec
+   - @ref dashcli::COperatingSystemExec
+   - @ref dashcli::CBatteryExec
+   - @ref dashcli::CUserExec
+   - @ref dashcli::CNetworkPortExec
+   - @ref dashcli::CDHCPClientExec
+   - @ref dashcli::CDNSClientExec
+   - @ref dashcli::CIPInterfaceExec
+   - @ref dashcli::CTextRedirectionExec
+
+	Each class has executer function that handels the command for that target. The executer is passed 
+	with the arguments
+	 - @ref dsdk::IClient - Client handel
+	 - @ref dashcli::CCmdOption - Command line options.
+	 - Commands - As vector of strings with first argument of command indexed at 0.
+	 - target index - Index of current target from the root target.
+	
+	@section createtarget Creating new target.
+	
+	1. Create a class that is similar to dashcli::IExec class or refer to refere to 
+	   any other existing class. Ex dashcli::CComputerSystemExec\n
+	2. Implement @c execute function\n
+	3. Implement @c executeThis function\n
+	4. Implement a function to get the instance(s) of this target
+	   
+	@section addtarget  Adding new target
+	
+	1. To add the new target to root  add an entry as below to dashcli::CRootExec::execute function.
+	  
+	  CHECK_EXEC_CMD ("targetname",   getTargetInstance, 
+                    CTargetAPIClass,  CTargetCLIClass);
+       - targetname - name of the target
+       - getTargetInstance - A function to get the instance(s) of this target.
+       - CTargetAPIClass  - API Class name that is used by this target
+       - CTargetCLIClass  - CLI Class of the target that is created above.
+
+	2. To add the new target to with in other target add the above mentioned entry in that 
+	   target class execute function.
+
+	@section addcommand Add new command to a target.
+	
+	1. Target specific command are handled in excuteThis function of the target class. 
+	   To handle a command check for the command from the @c commands arugment and if the comparison 
+	   matchs,  handle that command.\n
+	   Ex: 
+	   if (commands [0] == "show") \n
+	   { \n
+	   handle show - you code here  \n
+	   }\n
+	   
+**/
+

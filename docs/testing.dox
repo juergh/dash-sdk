@@ -1,0 +1,39 @@
+/**
+ @page testcases Test Cases
+ DASH SDK is tested manually and automated using unit testing frame work. CUNIT and CPPUNIT.
+ - @subpage hapitest
+ - @subpage lapitest
+ - @subpage unittest
+ - @subpage clitest
+**/
+
+/**
+ @page hapitest High Level API
+ 
+ High level API's are tested using CPPUnit framework and tested manually.
+ 
+**/
+
+/**
+ @page lapitest Low Level API
+ 
+ Low level API's are tested using CUnit framework and tested manually.
+ 
+**/
+
+
+/**
+ @page unittest Unit Testing
+
+ The unit testing is done using CPP Unit Testing framework. The following is the 
+ list of unit testing performed.
+
+ - @ref lapitest
+ - @ref hapitest
+**/
+
+/**
+ @page clitest CLI Testing
+ CLI is tested manually and verified manually.
+ 
+**/

@@ -1,0 +1,2 @@
+class DRI_CDROMDrive : CIM_CDROMDrive {
+};

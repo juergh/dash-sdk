@@ -1,0 +1,509 @@
+// ==================================================================
+// ConfigService
+// ==================================================================
+   [Experimental, Version ( "1.0.0" ), 
+    Description ( 
+       "A subclass of service which provides methods to set or get "
+       " the MAP's configuration keys." )]
+class DRI_ConfigService : CIM_Service {
+   [Description ( 
+          "This method allows to set a config key as string." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 Set(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      string Value);
+   [Description ( 
+          "This method allows to get a config key as string." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 Get(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      string Value);
+   [Description ( 
+          "This method allows to set a config key as signed short." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetShort(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      sint16 Value);
+   [Description ( 
+          "This method allows to get a config key as signed short." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetShort(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      sint16 Value);
+   [Description ( 
+          "This method allows to set a config key as unsigned short." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetUnsignedShort(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      uint16 Value);
+   [Description ( 
+          "This method allows to get a config key as unsigned short." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetUnsignedShort(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      uint16 Value);
+   [Description ( 
+          "This method allows to set a config key as signed int." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetInt(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      sint32 Value);
+   [Description ( 
+          "This method allows to get a config key as signed int." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetInt(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      sint32 Value);
+   [Description ( 
+          "This method allows to set a config key as unsigned int." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetUnsignedInt(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      uint32 Value);
+   [Description ( 
+          "This method allows to get a config key as unsigned int." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetUnsignedInt(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      uint32 Value);
+   [Description ( 
+          "This method allows to set a config key as signed long." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetLong(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      sint32 Value);
+   [Description ( 
+          "This method allows to get a config key as signed long." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetLong(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      sint32 Value);
+   [Description ( 
+          "This method allows to set a config key as unsigned long." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetUnsignedLong(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      uint32 Value);
+   [Description ( 
+          "This method allows to get a config key as unsigned long." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetUnsignedLong(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      uint32 Value);
+   [Description ( 
+          "This method allows to set a config key as float." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetFloat(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      real64 Value);
+   [Description ( 
+          "This method allows to get a config key as float." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetFloat(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      real64 Value);
+   [Description ( 
+          "This method allows to set a config key as boolean." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetBool(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      boolean Value);
+   [Description ( 
+          "This method allows to get a config key as boolean." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetBool(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      boolean Value);
+   [Description ( 
+          "This method allows to set a config key as binary." ), 
+       ValueMap { "0", "1", "2", "3", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Invalid Value", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetBinary(
+         [IN, Description ( 
+             "The layer to set the config option at." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to set." )]
+      string Key, 
+         [IN, Description ( 
+             "The value of the config option to set." )]
+      uint8 Value[]);
+   [Description ( 
+          "This method allows to get a config key as binary." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 GetBinary(
+         [IN, Description ( 
+             "The layer to get the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to get." )]
+      string Key, 
+         [IN (false), OUT, Description ( 
+             "The value of the config option." )]
+      uint8 Value[]);
+   [Description ( 
+          "This method allows to remove a config key from the config system. "
+          "This will remove all sub-keys." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 Erase(
+         [IN, Description ( 
+             "The layer to remove the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to remove." )]
+      string Key);
+   [Description ( 
+          "This method queries whether a given key exists in the config system." ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error (key exists)", "Invalid Layer", "Invalid Key", 
+          "Reserved", "Unknown Error", "Reserved" }]
+   uint32 Exist(
+         [IN, Description ( 
+             "The layer to remove the config option from." ),
+          ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10..255" }, 
+          Values { "Not a layer", "Default (code) layer", 
+             "System layer", "User layer", "User stack, user, system, code",
+             "System stack, system, code", "Session layer", "Odb default layer",
+             "Odb user layer", "Odb stack", "Reserved" }]
+      uint8 Layer, 
+         [IN, Description ( 
+             "The key of the config option to remove." )]
+      string Key);
+   [Description ( 
+          "This method allows to download a file from the MAP" ), 
+       ValueMap { "0", "..", "4", "5", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved", "Invalid File", 
+          "File I/O Error", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 DownloadFile(
+         [IN, Description ( 
+             "The name of the file to download" )]
+      string Filename,
+         [IN (false), OUT, Description ( 
+             "The content of the file" )]
+      uint8 Content[]);
+   [Description ( 
+          "This method allows to download a file from the MAP. " 
+          "The content will be reported as base64 encoded string." ), 
+       ValueMap { "0", "..", "4", "5", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved", "Invalid File", 
+          "File I/O Error", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 DownloadFileBase64(
+         [IN, Description ( 
+             "The name of the file to download" )]
+      string Filename,
+         [IN (false), OUT, Description ( 
+             "The content of the file" )]
+      string Content);
+   [Description ( 
+          "This method allows to upload a file to the MAP" ), 
+       ValueMap { "0", "..", "3", "4", "5", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved", "Invalid Content",
+          "Invalid File", "File I/O Error", "Reserved", "Unknown Error",
+          "Reserved" }]
+   uint32 UploadFile(
+         [IN, Description ( 
+             "The name of the file to download" )]
+      string Filename,
+         [IN, Description ( 
+             "The content of the file" )]
+      uint8 Content[],
+         [IN, Description ( 
+             "If set to true, the MAP will reboot after the upload" )]
+      boolean Reboot);
+   [Description ( 
+          "This method allows to upload a file from the MAP. " 
+          "The content is a base64 encoded string." ), 
+       ValueMap { "0", "..", "3", "4", "5", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved", "Invalid Content",
+          "Invalid File", "File I/O Error", "Reserved", "Unknown Error",
+          "Reserved" }]
+   uint32 UploadFileBase64(
+         [IN, Description ( 
+             "The name of the file to download" )]
+      string Filename,
+         [IN, Description ( 
+             "The content of the file" )]
+      string Content,
+         [IN, Description ( 
+             "If set to true, the MAP will reboot after the upload" )]
+      boolean Reboot);
+   [Description ( 
+          "This method allows to reset the MAP to it's default "
+          "configuration." ), 
+       ValueMap { "0", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Unknown Error",
+          "Reserved" }]
+   uint32 ResetToDefaults();
+};

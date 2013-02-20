@@ -1,0 +1,2 @@
+class DRI_NetworkPort : CIM_NetworkPort {
+};

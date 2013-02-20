@@ -1,0 +1,10 @@
+	/**
+	 * Gets %PROPERTY_NAME%
+	 */
+	%PROPERTY_TYPE% get%PROPERTY_NAME% (void) 
+	{
+		COALObject::checkUpdateCache ("%PROPERTY_NAME%");
+		CCIMValue cv = this->_ins.getProperty ("%PROPERTY_NAME%").getValue ();
+		%PROPERTY_TYPE% %PROPERTY_NAME% = to<%PROPERTY_TYPE%DSDKAdapter> (cv);
+		return %PROPERTY_NAME%;
+	}

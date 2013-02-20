@@ -1,0 +1,37 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_EFIDiskPartition 
+// ==================================================================
+   [Experimental, Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::Device::StorageExtents" ), 
+    Description ( 
+       "EFI is a newer partitioning style that supports volumes larger "
+       "than the 2 terabyte max of other partition styles. EFI in "
+       "general is associated with PC X86 architectures, but EFI "
+       "partitions are OS and platform independent. EFI uses 16 byte "
+       "GUIDs (Globally Unique IDs) for certain properties. The "
+       "DeviceId property inherited from LogicalDevice should be a "
+       "GUID for EFIDIskPartitions; this string property should be "
+       "formatted as a 32 character string with two text bytes "
+       "representing each binary byte. EFI specifications call for a "
+       "Protective MBR table (PMBR) in block 0 followed by an EFI GPT "
+       "(GUID Partition Table). The MBR must describe a single active "
+       "partition - the EFI Partition that occupies the rest of the "
+       "disk. The user only sees the EFI style partitions in this "
+       "second MBR partition. This could be modelled as two tiers, but "
+       "since the specification requires this precise behavior with no "
+       "management at the MBR level, only the EFI style partitions are "
+       "exposed through the CIM model." )]
+class CIM_EFIDiskPartition : CIM_GenericDiskPartition {
+
+      [Description ( 
+          "The PartitionType as defined in the EFI specs and "
+          "platform specific documentation - GUID format. This "
+          "string property MUST be formatted with two text bytes "
+          "representing each binary byte." )]
+   string PartitionType;
+
+
+};

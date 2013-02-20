@@ -1,0 +1,2 @@
+class DRI_RealizesExtent : CIM_RealizesExtent {
+};

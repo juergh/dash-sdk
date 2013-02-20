@@ -1,0 +1,12 @@
+class DRI_OperatingSystem : CIM_OperatingSystem {
+    [ Override("EnabledState"), Write]
+    uint16 EnabledState;
+    [ Override("OSType"), Write]
+    uint16 OSType;
+    [ Override("ElementName"), Write]
+    string ElementName;
+    [ Override("AvailableRequestedStates"), Write]
+    uint16 AvailableRequestedStates[];
+    [ Override("OtherTypeDescription"), Write]
+    string OtherTypeDescription;
+};

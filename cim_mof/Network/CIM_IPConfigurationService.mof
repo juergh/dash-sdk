@@ -1,0 +1,147 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Version ( "2.19.0" ), 
+    UMLPackagePath ( "CIM::Network::IP" ), 
+    Description ( 
+       "CIM_IPConfigurationService provides management of the IP "
+       "configuration associated with a LANEndpoint or "
+       "IPProtocolEndpoint." )]
+class CIM_IPConfigurationService : CIM_Service {
+
+
+      [Experimental, Description ( 
+          "Add a CIM_StaticIPAssignmentSettingData configuration to "
+          "the specified IPAssignmentSettingData instance. This "
+          "will also create an instance of CIM_ConcreteDependency "
+          "which associates the specified "
+          "CIM_IPAssignmentSettingData instance with the newly "
+          "created CIM_StaticIPAssignmentSettingData instance. The "
+          "newly created instance of StaticIPAssignmentSettingData "
+          "contains the IP configuration of an additional "
+          "CIM_IPProtocolEndpoint which will be created. When the "
+          "CIM_IPProtocolEndpoint is created depends on the value "
+          "of the IsCurrent property of the CIM_ElementSettingData "
+          "association which associates the "
+          "CIM_IPAssignmentSettingData instance with the the "
+          "CIM_LANEndpoint instance. If the IsCurrent property has "
+          "a value of \"true\", the CIM_IPProtocolEndpoint will be "
+          "created immediately. The instance of "
+          "CIM_StaticIPAssignmentSettingData identified by the "
+          "StaticSetting parameter will be associated with the "
+          "newly created instance of CIM_IPProtocolEndpoint via an "
+          "instance of CIM_ElementSettingData. If the the value of "
+          "the IsCurrent property is \"false\", the "
+          "CIM_IPProtocolEndpoint will be created the next time the "
+          "IPAssignmentSettingData is applied to the LANEndpoint. "
+          "Note: this method may be deprecated in the future in "
+          "lieu of intrinsics once the limitations in CIM "
+          "operations are addressed." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5..32767", "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Unknown/Unspecified Error", "Failed", 
+          "Invalid Parameter", "DMTF Reserved", "Vendor Reserved" }]
+   uint32 AddStaticIPv4Interface(
+         [Required, IN, Description ( 
+             "The IPAssignmentSettingData to which a static IP "
+             "interface will be added." )]
+      CIM_IPAssignmentSettingData REF Configuration, 
+         [IN ( false ), OUT, Description ( 
+             "The created StaticIPAssignmentSettingData." )]
+      CIM_StaticIPAssignmentSettingData REF StaticSetting, 
+         [Required, IN, Description ( 
+             "The IPv4 address requested." )]
+      string Address, 
+         [Required, IN, Description ( 
+             "The requested subnet mask." )]
+      string SubnetMask, 
+         [IN, Description ( 
+             "The requested default gateway. If \"null\", the "
+             "GatewayIPv4Address property of the created "
+             "CIM_StaticIPAssignmentSettingData instance will "
+             "have a value of 0.0.0.0." )]
+      string Gateway);
+
+      [Experimental, Description ( 
+          "Apply the configuration represented by the "
+          "IPAssignmentSettingData to the specified LANEndpoint. "
+          "This will result in the value of the IsCurrent property "
+          "of the CIM_ElementSettingData which associates the "
+          "specified CIM_IPAssignmentSettingData and specified "
+          "CIM_LANEndpoint have a value of \"true\". The IsCurrent "
+          "property of any other instances of "
+          "CIM_ElementSettingData which reference the specified "
+          "CIM_LANEndpoint and an instance of "
+          "CIM_IPAssignmentSettingData will have a value of "
+          "\"false\". Each instance of "
+          "CIM_StaticIPAssignmentSettingData which is aggregated "
+          "into the target CIM_IPAssignmentSettingData instance "
+          "will result in the creation of an instance of "
+          "CIM_IPProtocolEndpoint associated with the target "
+          "CIM_LANEndpoint instance via an instance of the "
+          "CIM_BindsTo association. The created "
+          "CIM_IPProtocolEndpoint instance will have the values "
+          "specified in the CIM_StaticIPAssignmentSettingData "
+          "instance." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "4096", "..", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Unknown/Unspecified Error", "Failed", 
+          "Invalid Parameter", "Busy", 
+          "Method Parameters Checked - Job Started", 
+          "DMTF Reserved", "Vendor Reserved" }]
+   uint32 ApplySettingToLANEndpoint(
+         [Required, IN, Description ( 
+             "The IPAssignmentSettingData to apply." )]
+      CIM_IPAssignmentSettingData REF Configuration, 
+         [Required, IN, Description ( 
+             "The LANEndpoint to which the configuration will be applied."
+              )]
+      CIM_LANEndpoint REF Endpoint, 
+         [IN ( false ), OUT, Description ( 
+             "Reference to the job spawned if the operation "
+             "continues after the method returns. (may be null "
+             "if task completed)." )]
+      CIM_ConcreteJob REF Job);
+
+      [Description ( 
+          "Apply the configuration represented by the "
+          "CIM_IPAssignmentSettingData to the specified "
+          "IPProtocolEndpoint. This will result in the value of the "
+          "IsCurrent property of the CIM_ElementSettingData which "
+          "associates the specified CIM_IPAssignmentSettingData and "
+          "specified CIM_IPProtocolEndpoint having a value of "
+          "\"true\". The IsCurrent property of any other instances "
+          "of CIM_ElementSettingData which reference the specified "
+          "CIM_IPProtocolEndpoint and an instance of "
+          "CIM_IPAssignmentSettingData will have a value of "
+          "\"false\". Each instance of CIM_IPAssignmentSettingData "
+          "which is aggregated into the target "
+          "CIM_IPAssignmentSettingData instance will be applied to "
+          "the CIM_ProtocolEndpoint to which it is associated via "
+          "an instance of CIM_ElementSettingData where the "
+          "CIM_ProtocolEndpoint is associated with the target "
+          "CIM_IPProtocolEndpoint via an instance of "
+          "CIM_EndpointIdentity." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "4096", "..", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Unknown/Unspecified Error", "Failed", 
+          "Invalid Parameter", "Busy", 
+          "Method Parameters Checked - Job Started", 
+          "DMTF Reserved", "Vendor Reserved" }]
+   uint32 ApplySettingToIPProtocolEndpoint(
+         [Required, IN, Description ( 
+             "The IPAssignmentSettingData to apply." )]
+      CIM_IPAssignmentSettingData REF Configuration, 
+         [Required, IN, Description ( 
+             "The IPProtocolEndpoint to which the configuration "
+             "will be applied." )]
+      CIM_IPProtocolEndpoint REF Endpoint, 
+         [IN ( false ), OUT, Description ( 
+             "Reference to the job spawned if the operation "
+             "continues after the method returns. This parameter "
+             "MUST NOT be null if a value of 4096 is returned. "
+             "This parameter MUST be null if any other value is "
+             "returned by the method." )]
+      CIM_ConcreteJob REF Job);
+
+};

@@ -1,0 +1,2 @@
+class DRI_PackageInChassis : CIM_PackageInChassis {
+};

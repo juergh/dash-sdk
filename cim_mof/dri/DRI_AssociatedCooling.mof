@@ -1,0 +1,2 @@
+class DRI_AssociatedCooling : CIM_AssociatedCooling {
+};

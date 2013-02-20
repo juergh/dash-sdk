@@ -1,0 +1,36 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR01503" type = "deprecate"> Deprecate
+// AccountIdentity, SecurityServiceForSystem, ManagesAccountOnSystem,
+// and ServiceUsesSecurityService </change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_ManagesAccountOnSystem
+// ==================================================================
+   [Association, Deprecated { "CIM_ServiceAvailableToElement" }, 
+    Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::User::Account" ), 
+    Description ( 
+       "The CIM_ManagesAccountOnSystem provides the association "
+       "between a System and the AccountManagementService that manages "
+       "accounts for that system. This association does not add any "
+       "constraints or semantics to ServiceAvailableToElement. As a "
+       "result, it is deprecated." )]
+class CIM_ManagesAccountOnSystem : CIM_SecurityServiceForSystem {
+
+      [Deprecated { "CIM_ServiceAvailableToElement.ServiceProvided" }, 
+       Override ( "Antecedent" ), 
+       Description ( 
+          "An AccountManagementService that manages accounts for the system."
+           )]
+   CIM_AccountManagementService REF Antecedent;
+
+      [Deprecated { "CIM_ServiceAvailableToElement.UserOfService" }, 
+       Override ( "Dependent" ), 
+       Description ( 
+          "The system that is dependent on the AccountManagementService."
+           )]
+   CIM_System REF Dependent;
+
+
+};

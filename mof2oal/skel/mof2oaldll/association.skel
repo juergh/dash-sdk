@@ -1,0 +1,90 @@
+#include <dsdk/oal/%CLASSNAME%.h>
+%ASSOCIATION_INCLUDES%
+// #include <apiimp.h>
+
+using namespace std;
+using namespace dsdk;
+
+namespace wrapperCpp {
+
+	/**
+	 * @class %CLASSNAME%
+	 * @brief %CLASSDESC%
+	 */
+
+	extern "C" SDKWRAPPER_Export int %CLASSNAME%_get(dsdk::IClient* client, oaldllarg* t);
+
+	int %CLASSNAME%_get(IClient* client, oaldllarg* t) {
+			if (client == NULL || t == NULL) 
+				return PP_ERR;
+
+			try {
+				vector<string> props = %CLASSNAME%%TEMPLATES%::getKeyProps();
+				vector<void*> classes;
+				vector< %CLASSNAME%%TEMPLATES% > v = %CLASSNAME%%TEMPLATES%::getInstances(client, 0, props);
+				
+				for(int j =0 ; j < (int)v.size (); j++) {
+				    %CLASSNAME%%TEMPLATES%* r = new %CLASSNAME%%TEMPLATES%(v[j]);
+				    r->initialize(client);
+				    classes.push_back((void*)r);
+				}
+				return vec2ser(classes, t);
+			} catch (dsdk::EDSDKError& e) {
+				unsigned int f = e.getErrorCode();
+#ifdef _DEBUG
+				assert(f != PP_OK && f != PP_ERR);
+#endif
+				return f;
+			}
+	}
+
+	extern "C" SDKWRAPPER_Export void %CLASSNAME%_delete(COALObject *_d);
+
+	void %CLASSNAME%_delete(COALObject *_d) {
+		if (_d == NULL) 
+			return;
+		%CLASSNAME%%TEMPLATES%* _c = dynamic_cast<%CLASSNAME%%TEMPLATES%*>(_d);
+		if (_c == NULL)
+			return;
+		delete _c;
+	}
+
+	extern "C" SDKWRAPPER_Export int %CLASSNAME%_getKeyProps(COALObject *_d, oaldllarg* t);
+
+	int %CLASSNAME%_getKeyProps (COALObject *_d, oaldllarg* t) {
+			if (_d == NULL || t == NULL) 
+				return PP_ERR;
+
+			%CLASSNAME%%TEMPLATES%* _c = dynamic_cast<%CLASSNAME%%TEMPLATES%*>(_d);
+			if (_c == NULL)
+				return PP_ERR;
+			
+			%CLASSNAME%%TEMPLATES% c = *_c;
+			try {
+				vector<string> key = c.getKeyProps();
+
+				if (vec2ser(key, t) != PP_OK)
+					return PP_ERR;
+				return PP_OK;
+			} catch (dsdk::EDSDKError& e) {
+				unsigned int f = e.getErrorCode();
+#ifdef _DEBUG
+				assert(f != PP_OK && f != PP_ERR);
+#endif
+				return f;
+			}
+	}
+
+	/*------------- Properties ---------------*/
+
+%PROPERTIES%
+
+	/*------------- Methods -------------------*/
+
+%METHODS%
+
+	/*------------- Enumerators -------------------*/
+	
+%ENUMERATORS%
+
+}

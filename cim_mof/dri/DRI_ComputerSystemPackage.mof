@@ -1,0 +1,4 @@
+[ Description("RIs implementation of CIM defined interface") ]
+class DRI_ComputerSystemPackage : CIM_ComputerSystemPackage {
+};
+

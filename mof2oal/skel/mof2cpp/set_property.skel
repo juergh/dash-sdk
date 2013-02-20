@@ -1,0 +1,8 @@
+	/**
+	 * Sets %PROPERTY_NAME%
+	 */
+	void set%PROPERTY_NAME% (%PROPERTY_TYPE% %PROPERTY_NAME%)
+	{
+		CCIMValue value = toCCIMValue<%PROPERTY_TYPE%DSDKAdapter> (%PROPERTY_NAME%);
+		this->_client->setProperty (this->_ins.getObjectPath (), "%PROPERTY_NAME%", value);
+	}

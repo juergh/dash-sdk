@@ -1,0 +1,2 @@
+class DRI_Card : CIM_Card {
+};

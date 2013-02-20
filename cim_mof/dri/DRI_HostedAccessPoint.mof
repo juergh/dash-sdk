@@ -1,0 +1,2 @@
+class DRI_HostedAccessPoint : CIM_HostedAccessPoint {
+};

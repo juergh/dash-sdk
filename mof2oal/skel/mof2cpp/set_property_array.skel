@@ -1,0 +1,10 @@
+	/**
+	 * Sets %PROPERTY_NAME%
+	 */
+	void set%PROPERTY_NAME% (const vector<%PROPERTY_TYPE%>& %PROPERTY_NAME%)
+	{
+		CCIMArray ca = toCCIMArray <%PROPERTY_TYPE%DSDKAdapter> (%PROPERTY_NAME%);
+		CCIMValue value = toCCIMValue<CCIMArray> (ca);
+
+		this->_client->setProperty (this->_ins.getObjectPath (), "%PROPERTY_NAME%", value);
+	}

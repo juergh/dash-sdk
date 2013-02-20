@@ -1,0 +1,71 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_InstMethodCall 
+// ==================================================================
+   [Indication, Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::Event" ), 
+    Description ( 
+       "CIM_InstMethodCall notifies when an instance\'s method is invoked."
+        )]
+class CIM_InstMethodCall : CIM_InstIndication {
+
+      [Required, Description ( "The name of the method invoked." )]
+   string MethodName;
+
+      [Description ( 
+          "The parameters of the method, formatted as an "
+          "EmbeddedObject (with a predefined class name of "
+          "\"__MethodParameters\"." ), 
+       EmbeddedObject]
+   string MethodParameters;
+
+      [Description ( 
+          "ReturnValue\'s data is dependent on the PreCall "
+          "property. When PreCall is TRUE, this property is NULL "
+          "describing that there is no method return value (since "
+          "the method has not yet executed). When PreCall is FALSE, "
+          "ReturnValue contains a string representation of the "
+          "method\'s return value." ), 
+       ModelCorrespondence { "CIM_InstMethodCall.PreCall", 
+          "CIM_InstMethodCall.ReturnValueType", 
+          "CIM_InstMethodCall.Error" }]
+   string ReturnValue;
+
+      [Experimental, Description ( 
+          "The type of the method return value." ), 
+       ValueMap { "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+          "11", "12", "13", "14", "15", "16", ".." }, 
+       Values { "boolean", "string", "char16", "uint8", "sint8", 
+          "uint16", "sint16", "uint32", "sint32", "uint64", 
+          "sint64", "datetime", "real32", "real64", "reference", 
+          "DMTF Reserved" }, 
+       ModelCorrespondence { "CIM_InstMethodCall.ReturnValue" }]
+   uint16 ReturnValueType;
+
+      [Experimental, Description ( 
+          "Error\'s data is dependent on the PreCall property. When "
+          "PreCall is TRUE, this property is NULL describing that "
+          "there is no method Error instances (since the method has "
+          "not yet executed). When PreCall is FALSE, Error contains "
+          "an array of zero or more entries containing CIM_ERROR "
+          "instances represented as an array of Embedded Instances." ), 
+       EmbeddedInstance ( "CIM_Error" ), 
+       ModelCorrespondence { "CIM_InstMethodCall.PreCall", 
+          "CIM_InstMethodCall.ReturnValue" }]
+   string Error[];
+
+      [Required, Description ( 
+          "Boolean indicating whether the Indication is sent before "
+          "the method begins executing (TRUE) or when the method "
+          "completes (FALSE). When TRUE, the inherited property "
+          "SourceInstance contains the value of the instance (the "
+          "properties defined by the Filter\'s Query clause), "
+          "before execution of the method. When PreCall is FALSE, "
+          "SourceInstance embeds the instance as it appears after "
+          "the completion of the method." )]
+   boolean PreCall;
+
+
+};

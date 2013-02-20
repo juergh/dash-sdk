@@ -1,0 +1,12 @@
+[Experimental, Version ( "2.18.0" ), 
+UMLPackagePath ( "CIM:Network:MediaRedirection" )]
+class CIM_MediaRedirectionService : CIM_RedirectionService { 
+      [Override ( "RedirectionServiceType" ), 
+       Description ( 
+          "RedirectionServiceType\'s enumeration is limited to the "
+          "\'Media\' and reserved RedirectionServiceType values for "
+          "this subclass of CIM_RedirectionService." ), 
+       ValueMap { "5", "6..32767", "32768..65535" }, 
+       Values { "Media", "DMTF Reserved", "Vendor Specified" }]
+   uint16 RedirectionServiceType[] = {4};
+};

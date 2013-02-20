@@ -1,0 +1,16 @@
+class DRI_Battery : CIM_Battery {
+    [ Override("AdditionalAvailability"), Write]
+    uint16 AdditionalAvailability[];
+    [ Override("BatteryStatus"), Write ]
+    uint16 BatteryStatus;
+    [ Override("Chemistry"), Write ]
+    uint16 Chemistry;
+    [ Override("EstimatedRunTime"), Write ]
+    uint32 EstimatedRunTime;
+    [ Override("HealthState"), Write ]
+    uint16 HealthState;
+    [ Override("RechargeCount"), Write ]
+    uint32 RechargeCount;
+    [ Override("TimeToFullCharge"), Write ]
+    uint32 TimeToFullCharge;
+};

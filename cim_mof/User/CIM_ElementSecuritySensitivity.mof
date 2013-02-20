@@ -1,0 +1,26 @@
+// Copyright (c) 2005-2006 DMTF.  All rights reserved.
+// <change cr="WIPCR00332.000" type="add">Add Security Labels
+// </change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_ElementSecuritySensitivity 
+// ==================================================================
+   [Association, Version ( "2.14.0" ), 
+    UMLPackagePath ( "CIM::User::SecurityLevel" ), 
+    Description ( 
+       "This association labels an element with a security sensitivity.\n"
+       "This association is not used to indicate clearance of a "
+       "security principal, see IdentitySecurityClearance." )]
+class CIM_ElementSecuritySensitivity {
+
+      [Key, Description ( 
+          "The security sensitivity level of the element." )]
+   CIM_SecuritySensitivity REF SecurityLevel;
+
+      [Key, Description ( 
+          "The element which is assigned a sensitivity level." )]
+   CIM_ManagedElement REF ManagedElement;
+
+
+};

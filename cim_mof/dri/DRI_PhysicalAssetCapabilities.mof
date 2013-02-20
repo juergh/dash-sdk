@@ -1,0 +1,24 @@
+// The CIM_PhysicalAssetCapabilities class only exists in experimental CIM releases. 
+// This code is taken from there and have been renamed to DRI_PhysicalAssetCapabilties.
+// ================================================================== 
+//  DRI_PhysicalAssetCapabilities 
+// ================================================================== 
+   [ Description ( 
+       "PhysicalAssetCapabilities describes the capabilities of "
+       "representing the FRU related information of the associated "
+       "instance of the CIM_PhysicalElement subclass." )]
+class DRI_PhysicalAssetCapabilities : CIM_PhysicalAssetCapabilities {
+
+      [Description ( 
+          "Boolean indicating whether the PartNumber, Serial "
+          "Number, Model, Manufacturer, and SKU properties of "
+          "PhysicalElement are non-null, non-blank values, and the "
+          "availability of the complete FRU information." ), 
+       ModelCorrespondence { "CIM_PhysicalElement.PartNumber", 
+          "CIM_PhysicalElement.SerialNumber", 
+          "CIM_PhysicalElement.Model", 
+          "CIM_PhysicalElement.Manufacturer", 
+          "CIM_PhysicalElement.SKU" }]
+   boolean FRUInfoSupported;
+
+};

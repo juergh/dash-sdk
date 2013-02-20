@@ -1,0 +1,3 @@
+[Final]
+class DRI_AccountAssignedIdentity : CIM_AssignedIdentity {
+};

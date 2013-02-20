@@ -1,0 +1,2 @@
+class DRI_IdentityMemberOfCollection : CIM_MemberOfCollection {
+};

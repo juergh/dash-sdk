@@ -1,0 +1,2 @@
+class DRI_ProtocolEndpoint : CIM_ProtocolEndpoint {
+};

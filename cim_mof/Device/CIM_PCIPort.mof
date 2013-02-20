@@ -1,0 +1,22 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00899" type="add">Updates for PCI.</change>
+// <change cr="DMTFCR01790" type="add">Corrected PortType range.</change>
+// ==================================================================
+//  CIM_PCIPort
+// ==================================================================
+   [Experimental, Version ( "2.16.0" ), 
+    UMLPackagePath ( "CIM::Device::Controller" ), 
+    Description ( 
+       "Represents PCI device ports used to describe the connection "
+       "between PCI devices." )]
+class CIM_PCIPort : CIM_LogicalPort {
+
+      [Override ( "PortType" ), 
+       Description ( "The type of port." ), 
+       ValueMap { "0", "1", "2", "150", "151", "152", "16000..65535" }, 
+       Values { "Unknown", "Other", "Not Applicable", "PCI", 
+          "PCI-X", "PCIe", "Vendor Reserved" }]
+   uint16 PortType;
+
+
+};

@@ -1,0 +1,3 @@
+class DRI_IndicationServiceCapabilities : CIM_IndicationServiceCapabilities {
+};
+

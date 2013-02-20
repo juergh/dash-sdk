@@ -1,0 +1,2 @@
+class DRI_ConcreteComponent : CIM_ConcreteComponent {
+};

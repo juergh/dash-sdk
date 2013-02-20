@@ -1,0 +1,25 @@
+// Copyright (c) 2005-2006 DMTF.  All rights reserved.
+// <change cr="WIPCR00332.000" type="new">Add CIM_IdentitySecurityClearance
+// </change>
+// ==================================================================
+//  CIM_IdentitySecurityClearance
+// ==================================================================
+   [Association, Experimental, Version ( "2.14.0" ), 
+    UMLPackagePath ( "CIM::User::SecurityLevel" ), 
+    Description ( 
+       "This association associates the security clearance of a "
+       "security principal, (represented by an Identity).\n"
+       "This association is not used to indicate the security "
+       "sensitivity of an element, see ElementSecuritySensitivity." )]
+class CIM_IdentitySecurityClearance {
+
+      [Key, Description ( 
+          "The security sensitivity level of the element." )]
+   CIM_SecuritySensitivity REF SecurityClearance;
+
+      [Key, Description ( 
+          "The Identity which is cleared to the associated level." )]
+   CIM_Identity REF Identity;
+
+
+};

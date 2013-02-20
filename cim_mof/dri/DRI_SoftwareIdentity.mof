@@ -1,0 +1,4 @@
+class DRI_SoftwareIdentity : CIM_SoftwareIdentity {
+    [ Override("VersionString"), Write]
+    string VersionString;
+};

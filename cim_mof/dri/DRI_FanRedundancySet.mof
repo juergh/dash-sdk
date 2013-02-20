@@ -1,0 +1,2 @@
+class DRI_FanRedundancySet : CIM_RedundancySet {
+};

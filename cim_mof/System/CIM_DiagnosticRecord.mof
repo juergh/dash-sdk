@@ -1,0 +1,78 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00747.001" type = "add">Update description for
+// ExpirationDate and remove Required.</change>
+// <change cr="CIMCoreCR00797.003" type = "mod"> Changed
+// ModelCorrespondence from DiagnosticSetting to
+// DiagnosticSettingData.</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// <change cr="CIMCoreCR00830" type="add">Subclass from LogEntry and
+// removed InstanceID and TimeStamp properties which were propagated 
+// into LogEntry.</change>
+// ==================================================================
+//  CIM_DiagnosticRecord
+// ==================================================================
+   [Version ( "2.11.0" ), 
+    UMLPackagePath ( "CIM::System::Diagnostics" ), 
+    Description ( 
+       "Data related to Diagnostics may be recorded in various "
+       "DiagnosticRecord objects. The type of information that is "
+       "recorded in a log is specified via the LogOptions property in "
+       "DiagnosticSettingData." )]
+class CIM_DiagnosticRecord : CIM_LogEntry {
+
+      [Required, Description ( 
+          "This property should reflect the value of the underlying "
+          "DiagnosticService.Name property." ), 
+       ModelCorrespondence { "CIM_DiagnosticService.Name" }]
+   string ServiceName;
+
+      [Required, Description ( 
+          "This property SHOULD reflect the value of the underlying "
+          "ManagedElement.ElementName property." ), 
+       ModelCorrespondence { "CIM_ManagedElement.ElementName" }]
+   string ManagedElementName;
+
+      [Description ( 
+          "The date and time that the record instance should be "
+          "deleted. The expiration datetime SHOULD be set when the "
+          "record is fully populated with record data. The value "
+          "SHOULD be calculated using the ResultPersistence "
+          "property of the DiagnosticSettingData class. Once the "
+          "Expiration Date has been reached, record instances "
+          "SHOULD be deleted as soon as possible. \n"
+          "If a ResultPersistence value is not provided, records "
+          "MAY be deleted at any time." ), 
+       ModelCorrespondence { 
+          "CIM_DiagnosticSettingData.ResultPersistence" }]
+   datetime ExpirationDate;
+
+      [Description ( 
+          "The RecordType property specifies the nature of the data "
+          "being entered into the ServiceRecord. The value in this "
+          "property should match one of the values indicated by the "
+          "DiagnosticSettingData.LogOptions property. A brief "
+          "summary of the various log options can be found in "
+          "CIM_DiagnosticSettingData.LogOptions." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", 
+          "10", "11", "12", "13", "14" }, 
+       Values { "Unknown", "Other", "Results", "Subtests", 
+          "Actions", "Warnings", "Status", "Device Errors", 
+          "Service Errors", "Setting Data", "Statistics", 
+          "Hardware Configuration", "Software Configuration", 
+          "References", "Debug" }, 
+       ModelCorrespondence { "CIM_DiagnosticSettingData.LogOptions", 
+          "CIM_DiagnosticRecord.OtherRecordTypeDescription" }]
+   uint16 RecordType;
+
+      [Description ( 
+          "When \"Other\" (value=1) is entered in the RecordType "
+          "property, OtherRecordTypeDescription can be used to "
+          "describe the message type." ), 
+       ModelCorrespondence { 
+          "CIM_DiagnosticSettingData.OtherLogOptionsDescriptions", 
+          "CIM_DiagnosticRecord.RecordType" }]
+   string OtherRecordTypeDescription;
+
+
+};

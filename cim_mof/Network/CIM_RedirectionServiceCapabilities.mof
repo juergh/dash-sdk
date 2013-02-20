@@ -1,0 +1,22 @@
+// Copyright (c) 2007 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00933" type="new">Added class.</change>
+// ===================================================================
+// RedirectionServiceCapabilities
+// ===================================================================
+   [Experimental, Version ( "2.16.0" ), 
+    UMLPackagePath ( "CIM::Network::ConsoleProtocols" ), 
+    Description ( 
+       "RedirectionServiceCapabilities describes the capabilities of "
+       "the associated RedirectionService." )]
+class CIM_RedirectionServiceCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description ( 
+          "SharingModeSupported indicates the possible values to "
+          "which the SharingMode of the associated "
+          "RedirectionService can be set." ), 
+       ValueMap { "0", "2", "3" }, 
+       Values { "Unknown", "Exclusive", "Shared" }]
+   uint16 SharingModeSupported[];
+
+
+};

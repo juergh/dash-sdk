@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=@prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE_NAME@
+Description: The software developers kit which helps you implemnting your own Windows or Linux DASH client.
+Version: @VERSION@
+Requires:
+Libs: -L${libdir} -ldashapi -ldashapic -lwsmanapi 
+Cflags: -I${includedir}/@PACKAGE_NAME@ 

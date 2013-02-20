@@ -1,0 +1,2 @@
+class DRI_PhysicalMemory : CIM_PhysicalMemory {
+};

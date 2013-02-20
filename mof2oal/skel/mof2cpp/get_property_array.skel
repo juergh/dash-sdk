@@ -1,0 +1,11 @@
+	/**
+	 * Gets an array of %PROPERTY_NAME%
+	 */
+	vector<%PROPERTY_TYPE%> get%PROPERTY_NAME% (void) 
+	{
+		COALObject::checkUpdateCache ("%PROPERTY_NAME%");
+		CCIMValue cv = this->_ins.getProperty ("%PROPERTY_NAME%").getValue ();
+		vector<%PROPERTY_TYPE%> %PROPERTY_NAME% = 
+								toArray<%PROPERTY_TYPE%DSDKAdapter> (cv);
+		return %PROPERTY_NAME%;
+	}

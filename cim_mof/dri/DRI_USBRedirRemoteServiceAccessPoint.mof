@@ -1,0 +1,4 @@
+class DRI_USBRedirRemoteServiceAccessPoint : CIM_RemoteServiceAccessPoint {
+    [ Override("AccessInfo"), Write]
+    string AccessInfo;
+};

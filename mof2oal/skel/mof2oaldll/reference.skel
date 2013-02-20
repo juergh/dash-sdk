@@ -1,0 +1,35 @@
+	/**
+	 * Gets %REFERENCE_NAME%
+	 * 
+	 * %REFERENCE_DESC%
+	 */
+
+	extern "C" SDKWRAPPER_Export int %CLASSNAME%_get%REFERENCE_NAME%(dsdk::IClient* client, COALObject* _d, oaldllarg* t);
+
+	int %CLASSNAME%_get%REFERENCE_NAME%(dsdk::IClient* client, COALObject* _d, oaldllarg* t) {
+			if (client == NULL || _d == NULL || t == NULL)
+				return PP_ERR;
+
+			%CLASSNAME%%TEMPLATES%* _c = dynamic_cast<%CLASSNAME%%TEMPLATES%*>(_d);
+			if (_c == NULL)
+				return PP_ERR;
+			
+			%CLASSNAME%%TEMPLATES% c = *_c;
+			try {
+				vector<void*> classes;
+				CCIMObjectPath objpath = c.get%REFERENCE_NAME%();
+				CCIMInstance* i = new CCIMInstance(objpath);
+				COALObject* o = create(i);
+				%REFERENCE_OBJ%* r =  dynamic_cast<%REFERENCE_OBJ%*> (o);
+				r->initialize(client);
+				classes.push_back((void*)r);
+
+				return vec2ser(classes, t);
+			} catch (dsdk::EDSDKError& e) {
+				unsigned int f = e.getErrorCode();
+	#ifdef _DEBUG
+				assert(f != PP_OK && f != PP_ERR);
+	#endif
+				return f;
+			}
+	}

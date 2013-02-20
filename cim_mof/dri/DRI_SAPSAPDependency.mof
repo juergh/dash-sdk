@@ -1,0 +1,2 @@
+class DRI_SAPSAPDependency : CIM_SAPSAPDependency {
+};

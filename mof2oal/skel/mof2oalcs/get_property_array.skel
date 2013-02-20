@@ -1,0 +1,32 @@
+	/**
+	 * Gets an array of %PROPERTY_NAME%
+	 */
+
+        public %NEW% %PROPERTY_CS_TYPE%[] get%PROPERTY_NAME%() {
+            try {
+                OalDllArg o = new OalDllArg();
+                Int32 ret;
+
+                ret = %CLASSNAME%_get%PROPERTY_NAME%(OalObj, ref o);
+                if (ret != PP.OK) {
+					Common.freeOalArg(ref o);
+					if (throwWrapperExceptions) {
+						throw new wrapperException(ret);
+					} else {
+						return new %PROPERTY_CS_TYPE%[0];
+					}
+                }
+				%PROPERTY_CS_TYPE%[] t = oalConvert.To%PROPERTY_CS_TYPE%Array(o);
+                /* free the memory that was allocated by dll */
+                Common.freeOalArg(ref o);
+                return t;
+            } catch (Exception e) {
+                Debug.WriteLine("ERROR: " + e.Message);
+                return new %PROPERTY_CS_TYPE%[0];
+            }
+        }
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_get%PROPERTY_NAME%(
+            IntPtr c, ref OalDllArg arg);

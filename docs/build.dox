@@ -1,0 +1,71 @@
+/**
+ @page buildins Build Instructions
+ 
+
+ @subpage winbuild
+
+ @subpage lnxbuild
+
+ @page winbuild Building under windows
+ @section winprerequest Prerequisite for building the SDK under windows
+ 
+	1. x86 PC with XP/Vista/2003
+
+	2. Download and Install VC++ 2008 express edition.
+	http://www.microsoft.com/express/download/#webInstall
+
+	3. Install the Microsoft Platform SDK and set the environment as stated in below link.
+	http://www.microsoft.com/express/2005/platformsdk/default.aspx
+
+ @section winbuildinstruction Build Instruction
+	1. Download the  DASH SDK from sourceforge.\n
+	http://sourceforge.net/projects/dash-management/
+
+	2. Open the /windows/dash/dash.sln solution file in VC++ IDE.\n
+	This solution has the following projects.
+
+		- dashcli (Application)
+		- mof2cpp (tool to generate C++ files from mof file)
+		- dashapi (library)
+		- wsman_client_lib (libarary)
+		- Openwsman (library)
+		- wseventsink (library)
+		- libxml2 (library)
+
+	
+	These projects can also build individually using the project specific solution file. 
+	iconv and zlib are included as binaries.
+
+	3. From the File Menu \n click <b>Build-> batch build and select all projects -> Build</b>.\n 
+	This builds all the projects(application and library) and copy the executable to <b>/windows/win32pkg</b> directory. 
+	This includes all application, library and dependent dll's. This includes both release and debug build.
+
+
+ @section windebug Debugging
+	Open the /windows/dash/dash.sln solution file in VC++ IDE. 
+	Select a project <b>Right Click -> Set as startup project</b> and press debugging keys <b>F10,F11, F5</b> to start debugging. 
+
+
+
+ @page lnxbuild Building under linux
+ 
+ @section lnxprerequest Prerequisite for building the SDK under Linux.
+	
+	1. x86 PC with any distribution of Linux installed. (Currently only Redhat is verified).
+
+	2. Install development package.(gcc,g++ and other development tools like autoconf etc).
+	
+ @section lnxbuildinstruction Build Instruction
+
+	1. Download the  DASH SDK .
+
+	2. From the command prompt go to the root directory of DASH SDK.
+
+	3. Type the following command 
+		- #./configure
+		- # make
+		- # make install
+	
+		This will install the library and dashcli. 
+	
+**/

@@ -1,0 +1,2 @@
+class DRI_LogicalDevice : CIM_LogicalDevice {
+};

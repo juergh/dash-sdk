@@ -1,0 +1,34 @@
+	/**
+	 * %FUNCTION_DESC%
+	 */
+
+        public Int32 %FUNCTION_NAME% (%CS_WRAPPER_FUNCTION_PARAMETERS%) {
+	    %CS_WRAPPER_PARAMETER_CONVERSION%
+	    Int32 ret = %CLASSNAME%_%FUNCTION_NAME%(%CS_WRAPPER_DLL_CALL_PARAMETERS%);
+	    %CS_WRAPPER_OUTPUT_PARAMETER_CONVERSION%
+
+            if (ret != PP.OK && throwWrapperExceptions)
+                throw new wrapperException(ret);
+	    return ret;
+	}
+
+        public Int32 %FUNCTION_NAME% (%CS_WRAPPER_FUNCTION_PARAMETERS_NO_RETVAL%) {
+	    %RETURN_TYPE% retval = (%RETURN_TYPE%)0;
+	    %CS_WRAPPER_PARAMETER_CONVERSION%
+	    Int32 ret = %CLASSNAME%_%FUNCTION_NAME%(%CS_WRAPPER_DLL_CALL_PARAMETERS%);
+	    %CS_WRAPPER_OUTPUT_PARAMETER_CONVERSION%
+
+            if (ret != PP.OK && throwWrapperExceptions)
+                throw new wrapperException(ret);
+	    return ret;
+	}
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_%FUNCTION_NAME%(
+		%CS_WRAPPER_DLL_CALL_FUNCTION_PARAMETERS%);
+
+
+
+%VALUEMAP%
+%VALUEMAP_STR%

@@ -1,0 +1,102 @@
+	/**
+ 	 * Enumerate object paths of %RESULT% that refer to %REFERED%
+ 	 */
+	static CCIMObjectPath::iterator enumerate%RESULT%Name (
+											IClient* client,
+											const T_%REFERED%& %REFERED%
+														  )
+	{
+		return client->associatorNames (%REFERED%.getObjectPath (),
+										"%CLASSNAME%",
+										T_%RESULT%::getClassName (),
+										"%REFERED%", "%RESULT%");
+	}
+
+	/**
+	 * Enumerate instances of %RESULT% that refer to %REFERED%.
+	 */
+	static typename T_%RESULT%::iterator enumerate%RESULT% (
+											IClient* client, 
+											const T_%REFERED%& %REFERED%,
+											const vector<string>& props)
+	{
+		try
+		{
+			return typename T_%RESULT%::iterator (client->associators (%REFERED%.getObjectPath (),
+										"%CLASSNAME%",
+										T_%RESULT%::getClassName (),
+										"%REFERED%","%RESULT%",0,props),
+										 client, props);
+		}
+		catch(ECIMError e)
+		{
+			if(e.getRetCode() == CMPI_RC_ERR_UNSUPPORTED_FEATURE)
+			{
+				return typename T_%RESULT%::iterator (enumerate%RESULT%Name (client, %REFERED%),
+																				client,props);
+			}
+			else
+			{
+				throw;//rethrow
+			}
+		}
+			
+	}
+
+	/**
+	 * Enumerate instances of %CLASSNAME% that refer to %REFERED%.
+	 */
+	static typename %CLASSNAME%::iterator enumerateInstancesBy%REFERED% (
+											IClient* client, 
+											const T_%REFERED%& %REFERED%,
+											const vector<string>& props)
+	{
+		return typename %CLASSNAME%::iterator (enumerateInstanceNameBy%REFERED% (client, %REFERED%),
+									 client, props);
+	}
+
+
+	/**
+ 	 * Enumerate object paths of instances that refer to %REFERED%
+ 	 */
+	static CCIMObjectPath::iterator enumerateInstanceNameBy%REFERED% (
+											IClient* client,
+											const T_%REFERED%& %REFERED%
+														  )
+	{
+		return client->referenceNames (%REFERED%.getObjectPath (),
+										"%CLASSNAME%",
+										"%REFERED%");
+
+	}
+
+
+	/**
+	 * Get all instances of %CLASSNAME% that refer to %REFERED%.
+	 */
+	static  vector<%CLASSNAME%> getInstancesBy%REFERED% (
+											IClient* client, 
+											const T_%REFERED%& %REFERED%,
+											const vector<string>& props)
+	{
+		
+		vector<%CLASSNAME%> vInst;
+		
+		CCIMInstance::iterator iter = client->references (%REFERED%.getObjectPath (),
+										"%CLASSNAME%",
+										"%REFERED%",
+										0, props);
+		
+		for (;iter != CCIMInstance::iterator::end (); ++iter)
+		{
+			CCIMInstance* inst = (*iter).clone ();
+			%CLASSNAME% oalInst (*inst);
+			delete inst;
+			oalInst.enableCache (props, false);
+			oalInst.initialize (client);
+			vInst.push_back (oalInst);
+		}
+		
+		return vInst;
+									 
+	}

@@ -1,0 +1,153 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+
+namespace wrapperCSharp {
+    public class %CLASSNAME%Iter : OALBaseIterClass {
+
+        public %CLASSNAME%Iter(Client c) {
+            client = c;
+        }
+
+        protected IntPtr[] enumerateOalIters() {
+            try {
+                OalDllArg o = new OalDllArg();
+				Int32 ret;
+				ret = %CLASSNAME%_get(client, ref o);
+                if (ret != PP.OK ) {
+					Common.freeOalArg(ref o);
+					if (throwWrapperExceptions) {
+						throw new wrapperException(ret);
+					} else {
+						return new IntPtr[0];
+					}
+				}
+                IntPtr[] i = oalConvert.ToIntPtrArray(o);
+                Common.freeOalArg(ref o);
+                return i;
+            } catch (Exception e) {
+                Debug.WriteLine("### ERROR: " + e.TargetSite + "\n########## " + e.Message);
+                return new IntPtr[0];
+            }
+        }
+
+        public %CLASSNAME%[] enumerateClasses() { 
+			List<%CLASSNAME%> ret = new List<%CLASSNAME%>();
+			IntPtr[] a = enumerateOalIters();
+
+			if (a != null && a.Length != 0) {
+				foreach (IntPtr p in a) {
+					ret.Add(new %CLASSNAME%(p));
+				}
+			}
+			return ret.ToArray();
+		}
+
+	[DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_get(
+            IntPtr client, [In] ref OalDllArg arg);
+            
+        public static int tryCast(OALBaseClass b, out %CLASSNAME% c) { 
+            int ret = PP.ERR;
+            c = null;
+            OalDllArg o = new OalDllArg();
+                        
+            if (%CLASSNAME%_tryCast(b, ref o) == PP.OK) {
+                IntPtr[] a = oalConvert.ToIntPtrArray(o);
+                if (a != null && a.Length == 1) {
+                    c = new %CLASSNAME%(b.getOalObj().Copy());
+                    ret = PP.OK;
+                }
+            }            
+	    return ret;
+	}
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_tryCast(
+            IntPtr b, [In] ref OalDllArg arg);
+            
+        public static %CLASSNAME%[] createArray(IntPtr[] IntPtrs) { 
+            List<%CLASSNAME%> ret = new List<%CLASSNAME%>();
+            if (IntPtrs != null) {
+		foreach (IntPtr ip in IntPtrs) {
+		    ret.Add(new %CLASSNAME%(ip));
+		}
+	    }
+            return ret.ToArray();
+    	}
+    }
+
+    public class %CLASSNAME% : %SUPERCLASSNAME% {
+
+        private static string cs = "%CLASSNAME%";
+		
+        protected override void deleteOalObj() {
+            OalObj.Delete(%CLASSNAME%_delete);
+        }
+
+        public %CLASSNAME%() {
+            OalObj = new OalObject();
+        }
+
+        public %CLASSNAME%(IntPtr p) {
+            OalObj = new OalObject(p);
+        }
+
+        public %CLASSNAME%(OalObject o) {
+            OalObj = o;
+        }
+        
+	public new static string getClassname() {
+            return cs;
+	}
+		
+        public override string[] getKeyProps() {
+            try {
+                OalDllArg o = new OalDllArg();
+                Int32 ret;
+
+                ret = %CLASSNAME%_getKeyProps(OalObj, ref o);
+                if (ret != PP.OK) {
+					Common.freeOalArg(ref o);
+					if (throwWrapperExceptions) {
+						throw new wrapperException(ret);
+					} else {
+						return new String[0];
+					}
+                }
+				string[] t = oalConvert.ToStringArray(o);
+                /* free the memory that was allocated by dll */
+                Common.freeOalArg(ref o);
+                return t;
+            } catch (Exception e) {
+                Debug.WriteLine("ERROR: " + e.Message);
+                return new String[0];
+            }
+        }
+
+		[DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern void %CLASSNAME%_delete(
+            IntPtr oalobj);
+
+		[DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_getKeyProps(
+            IntPtr oalobj, [In] ref OalDllArg arg);
+
+	/*------------- Methods -------------------*/
+
+%METHODS%
+
+	/*------------- Properties ---------------*/
+
+%PROPERTIES%
+
+%PROPERTY_GETTER%
+
+	}
+}

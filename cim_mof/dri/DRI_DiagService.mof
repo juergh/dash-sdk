@@ -1,0 +1,163 @@
+// ==================================================================
+// DiagService
+// ==================================================================
+   [Experimental, Version ( "1.0.0" ), 
+    Description ( 
+       "A subclass of service which provides methods to access the MAP's "
+       "audit and debug log." )]
+class DRI_DiagService : CIM_Service {
+   [Description ( 
+          "This method allows to clear a log buffer." ), 
+       ValueMap { "0", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved",
+          "Unknown Error", "Reserved" }]
+   uint32 Clear(
+         [IN, Description ( 
+             "The log buffer type to clear." ),
+          ValueMap { "0", "1", "2..255" }, 
+          Values { "Debug log buffer", "Audit log buffer", 
+             "Reserved" }]
+      uint8 LogBufType);
+
+   [Description ( 
+          "Get a range of newer entries from a log buffer. "
+          "If the requested range is out of bounds it snaps to the "
+	  "start of the log buffer. If the requested range is larger "
+	  "than the count of log entries then the range is limited "
+	  "to this count." ), 
+       ValueMap { "0", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved",
+          "Unknown Error", "Reserved" }]
+   uint32 GetNextEvents(
+         [IN, Description ( 
+             "The log buffer type to get the events for." ),
+          ValueMap { "0", "1", "2..255" }, 
+          Values { "Debug log buffer", "Audit log buffer", 
+             "Reserved" }]
+      uint8 LogBufType,
+         [IN, Description ( 
+             "The id of the first event to get. If 0 is specified, "
+             "the very first event in the queue is used." )]
+      uint32 StartId,
+         [IN, Description ( 
+             "Number of entries in the range" )]
+      uint32 Count,
+         [IN ( false ), OUT, Description ( 
+             "The id of the next event (first event which is not "
+             "returned). This can be used as an iterator." )]
+      uint32 NextId,
+         [IN ( false ), OUT, Description ( 
+             "Set to true if there are currently no more events to "
+             "deliver. However, this may change during the next few "
+             "moments." )]
+      boolean NoMoreEvents,
+         [IN ( false ), OUT, Description ( 
+             "The time stamps (UTC) of the returned events" )]
+      string EventTime[],
+         [IN ( false ), OUT, Description ( 
+             "The type strings of the returned events" )]
+      string EventType[],
+         [IN ( false ), OUT, Description ( 
+             "The log messages of the returned events" )]
+      string EventLogMsg[]);
+
+   [Description ( 
+          "Get a range of older entries from a log buffer. "
+          "If the requested range is out of bounds it snaps to the "
+	  "end of the log buffer. If the requested range is larger "
+	  "than the count of log entries then the range is limited "
+	  "to this count." ), 
+       ValueMap { "0", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved",
+          "Unknown Error", "Reserved" }]
+   uint32 GetPreviousEvents(
+         [IN, Description ( 
+             "The log buffer type to get the events for." ),
+          ValueMap { "0", "1", "2..255" }, 
+          Values { "Debug log buffer", "Audit log buffer", 
+             "Reserved" }]
+      uint8 LogBufType,
+         [IN, Description ( 
+             "The id of the first event to get. If UINT_MAX (0xFFFFFFFF) "
+             "is specified, the very last event in the queue is used." )]
+      uint32 StartId,
+         [IN, Description ( 
+             "Number of entries in the range" )]
+      uint32 Count,
+         [IN ( false ), OUT, Description ( 
+             "The id of the next event (first event which is not "
+             "returned). This can be used as an iterator." )]
+      uint32 NextId,
+         [IN ( false ), OUT, Description ( 
+             "Set to true if there are currently no more events to "
+             "deliver. However, this may change during the next few "
+             "moments." )]
+      boolean NoMoreEvents,
+         [IN ( false ), OUT, Description ( 
+             "The time stamps (UTC) of the returned events" )]
+      string EventTime[],
+         [IN ( false ), OUT, Description ( 
+             "The type strings of the returned events" )]
+      string EventType[],
+         [IN ( false ), OUT, Description ( 
+             "The log messages of the returned events" )]
+      string EventLogMsg[]);
+
+   [Description ( 
+          "Get the diagnostics log level of a given module" ), 
+       ValueMap { "0", "1", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Unknown Module", "Reserved",
+          "Unknown Error", "Reserved" }]
+   uint32 GetDiagLevel(
+         [IN, Description ( 
+             "The module" )]
+      string Module,
+         [IN ( false ), OUT, Description ( 
+             "The log level" ),
+          ValueMap { "0", "1", "2", "3", "4", "5..255" }, 
+          Values { "Error", "Warning", "Info", "Debug", "Trace",
+             "Reserved" }]
+      uint32 Level);
+   [Description ( 
+          "Get the diagnostics log levels of all modules" ), 
+       ValueMap { "0", "1", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Unknown Module", "Reserved",
+          "Unknown Error", "Reserved" }]
+   uint32 GetAllDiagLevels(
+         [IN ( false ), OUT, Description ( 
+             "The list of the modules") ]
+      string Modules[],
+         [IN ( false ), OUT, Description ( 
+             "The list of the log levels" ),
+          ValueMap { "0", "1", "2", "3", "4", "5..255" }, 
+          Values { "Error", "Warning", "Info", "Debug", "Trace",
+             "Reserved" }]
+      uint32 Levels[]);
+   [Description ( 
+          "Set the diagnostics log level of a given module" ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Unknown Module",
+          "Unknown Level", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetDiagLevel(
+         [IN, Description ( 
+             "The module" )]
+      string Module,
+         [IN, Description ( 
+             "The log level" ),
+          ValueMap { "0", "1", "2", "3", "4", "5..255" }, 
+          Values { "Error", "Warning", "Info", "Debug", "Trace",
+             "Reserved" }]
+      uint32 Level);
+   [Description ( 
+          "Set the diagnostics log level of a all module at once" ), 
+       ValueMap { "0", "1", "2", "..", "1024", "1025..65535" }, 
+       Values { "Completed with No Error", "Reserved",
+          "Unknown Level", "Reserved", "Unknown Error", "Reserved" }]
+   uint32 SetAllDiagLevels(
+         [IN, Description ( 
+             "The log level" ),
+          ValueMap { "0", "1", "2", "3", "4", "5..255" }, 
+          Values { "Error", "Warning", "Info", "Debug", "Trace",
+             "Reserved" }]
+      uint32 Level);
+};

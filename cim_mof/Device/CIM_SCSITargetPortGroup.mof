@@ -1,0 +1,81 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR01456.002" type ="add">Add enum.</
+// <change cr="DMTFCR01544.003" type ="add">Add properties
+// ExplicitFailover, Preferred, and Identifier.</
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_SCSITargetPortGroup
+// ==================================================================
+   [Experimental, Version ( "2.10.0" ), 
+    UMLPackagePath ( "CIM::Device::StorageDevices" ), 
+    Description ( 
+       "A class derived from SystemSpecificCollection that models SCSI "
+       "Target Port Groups. SCSITargetPortGroup is part of the model "
+       "for devices with asymmetric access to logical units - access "
+       "is optimized for a subset of target ports. SCSITargetPortGroup "
+       "is aggregated to SCSIProtocolEndpoints that expose a common "
+       "ValueMap { 2, 3, 4, 5, 6 }, Values { Active/Optimized, "
+       "Active/Non-optimized, StandBy, Unavailable, Transitioning }, "
+       "access state for a set of associated logical Units (modeled by "
+       "various subclasses of LogicalDevice). SCSITargetPortGroups "
+       "only apply to target devices with asymmetric multipath access "
+       "and not to devices with symmetric (or single path) access." )]
+class CIM_SCSITargetPortGroup : CIM_SystemSpecificCollection {
+
+      [Description ( 
+          "Access to all associated logical units through all "
+          "aggregated ports share this access state. Access to the "
+          "Logical Units through other ports is specified by the "
+          "access state of those port\'s target port group." ), 
+       ValueMap { "2", "3", "4", "5", "6" }, 
+       Values { "Active/Optimized", "Active/Non-optimized", 
+          "StandBy", "Unavailable", "Transitioning" }, 
+       MappingStrings { "SPC.INCITS-T10 |Asymmetric Access State", 
+          "MP_API.SNIA|MP_ACCESS_STATE_TYPE" }]
+   uint16 AccessState;
+
+      [Description ( 
+          "True indicates that the underlying implementation "
+          "provides an interface allowing the administrator to "
+          "reassign logical units to target port groups." ), 
+       MappingStrings { 
+          "MP_API.SNIA|MP_TARGET_PORT_PROPERTIES|supportsLuAssignment" }]
+   boolean SupportsLuAssignment;
+
+      [Description ( 
+          "True indicates that the underlying implementation "
+          "provides an interface allowing drivers to explicitly "
+          "request activation of a target port group - either "
+          "through the SCSI SET TARGET PORT GROUP or a proprietary "
+          "command." ), 
+       MappingStrings { 
+          "MP_API.SNIA|MP_TARGET_PORT_PROPERTIES|explicitFailover" }]
+   boolean ExplicitFailover;
+
+      [Description ( 
+          "True indicates that the target device indicates that "
+          "access to the associated logical units through the ports "
+          "in this target port group is preferred over access "
+          "through other ports. This may correspond to the PREF bit "
+          "in the SCSI TARGET PORT GROUP descriptor or an "
+          "equivalent vendor-specific interface." ), 
+       MappingStrings { 
+          "MP_API.SNIA|MP_TARGET_PORT_PROPERTIES|preferredLUPath", 
+          "SPC.INCITS-T10 | Target Port Group Descriptor | PREF" }]
+   boolean Preferred;
+
+      [Description ( 
+          "An integer identifier for the target port group. This "
+          "corresponds to the TARGET PORT GROUP field in the REPORT "
+          "TARGET PORT GROUPS response and the TARGET PORT GROUP "
+          "field in an INQUIRY VPD page 85 response, type 5h "
+          "identifier." ), 
+       MappingStrings { 
+          "MP_API.SNIA|MP_TARGET_PORT_PROPERTIES|tpgID", 
+          "SPC.INCITS-T10 | Target Port Group Descriptor | Target Port Group", 
+          "SPC.INCITS-T10 | Inquiry VPD page 0x85 | Target Port Group" }]
+   uint16 Identifier;
+
+
+};

@@ -1,0 +1,13 @@
+// Copyright (c) 2006 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_OrgEntityManagementService
+// ==================================================================
+   [Experimental, Version ( "2.14.0" ), 
+    UMLPackagePath ( "CIM::User::SecurityServices" ), 
+    Description ( 
+       "A service supporting the creation and management of "
+       "OrganizationalEntities." )]
+class CIM_OrgEntityManagementService : CIM_IdentityManagementService {
+
+
+};

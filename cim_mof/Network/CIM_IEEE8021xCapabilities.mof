@@ -1,0 +1,28 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Experimental, Version ( "2.18.1" ), 
+    UMLPackagePath ( "CIM::Network::ProtocolEndpoints" ), 
+    Description ( 
+       "CIM_IEEE8021xCapabilities describes the IEEE 802.1x security "
+       "capabilities of a layer 2 ProtocolEndpoint." )]
+class CIM_IEEE8021xCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description ( 
+          "The IEEE 802.1x Extensible Authentication Protocol types "
+          "supported by the associated ProtocolEndpoint. See "
+          "AuthenticationProtocol description in "
+          "CIM_IEEE8021xSettings for more information." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", 
+          "10.." }, 
+       Values { "EAP-TLS", "EAP-TTLS/MSCHAPv2", 
+          "PEAPv0/EAP-MSCHAPv2", "PEAPv1/EAP-GTC", 
+          "EAP-FAST/MSCHAPv2", "EAP-FAST/GTC", "EAP-MD5", "EAP-PSK", 
+          "EAP-SIM", "EAP-AKA", "DMTF Reserved" }]
+   uint16 SupportedAuthenticationProtocols[];
+
+      [Description ( 
+          "Indicates whether the associated ProtocolEndpoint "
+          "supports moving a session due to roaming." )]
+   boolean RoamingSupported;
+
+
+};

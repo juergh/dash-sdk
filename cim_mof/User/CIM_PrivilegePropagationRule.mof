@@ -1,0 +1,23 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR01342" type = "new"> Change and Show Access Rights
+// </change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_PrivilegePropagationRule
+// ==================================================================
+   [Experimental, Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::User::Privilege" ), 
+    Description ( 
+       "A class representing a company\'s and/or administrator\'s "
+       "rules with respect to propagating Privileges across Subjects "
+       "(i.e., delegation) or Targets. The Subjects/ Targets are "
+       "identified within the PolicyConditions and PolicyActions, "
+       "and/or using the association, PolicySetAppliesToElement. An "
+       "example of a Privilege PropagationRule is the propagation of "
+       "privileges granted to access a directory that then applies to "
+       "all the files within the directory." )]
+class CIM_PrivilegePropagationRule : CIM_PolicyRule {
+
+
+};

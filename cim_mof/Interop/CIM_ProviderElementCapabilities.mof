@@ -1,0 +1,25 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_ProviderElementCapabilities 
+// ==================================================================
+   [Association, Experimental, Version ( "2.8.1000" ), 
+    UMLPackagePath ( "CIM::Interop" ), 
+    Description ( 
+       "ProviderElementCapabilities is an association describing the "
+       "Capabilities that are supported by a Provider." )]
+class CIM_ProviderElementCapabilities : CIM_ElementCapabilities {
+
+      [Override ( "ManagedElement" ), 
+       Min ( 1 ), 
+       Max ( 1 ), 
+       Description ( "The CIM Provider." )]
+   CIM_Provider REF ManagedElement;
+
+      [Override ( "Capabilities" ), 
+       Description ( "The CIM Provider\'s Capabilities." )]
+   CIM_ProviderCapabilities REF Capabilities;
+
+
+};

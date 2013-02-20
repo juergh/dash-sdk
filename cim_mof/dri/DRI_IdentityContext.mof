@@ -1,0 +1,2 @@
+class DRI_IdentityContext : CIM_IdentityContext {
+};

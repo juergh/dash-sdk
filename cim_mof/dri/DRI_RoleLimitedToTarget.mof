@@ -1,0 +1,2 @@
+class DRI_RoleLimitedToTarget : CIM_RoleLimitedToTarget {
+};

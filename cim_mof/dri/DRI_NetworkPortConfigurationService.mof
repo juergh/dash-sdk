@@ -1,0 +1,2 @@
+class DRI_NetworkPortConfigurationService : CIM_NetworkPortConfigurationService {
+};

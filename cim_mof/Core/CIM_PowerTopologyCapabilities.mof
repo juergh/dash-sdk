@@ -1,0 +1,22 @@
+//Copyright c 2007 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00936 type="new">Added class.</change>
+// ==================================================================
+// CIM_PowerTopologyCapabilities
+// ==================================================================
+   [Experimental, Version ( "2.16.0" ), 
+    Description ( 
+       "CIM_PowerTopologyCapabilities describes the capabilities of "
+       "the associated CIM_PowerConfigurationService." )]
+class CIM_PowerTopologyCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description ( 
+          "Each enumeration corresponds to support for the "
+          "like-named method of the PowerTopologyService." ), 
+       ValueMap { "2", "3", "..", "0x8000.." }, 
+       Values { "ChangeAffectedElementsAssignedSequence", 
+          "ConfigureExternalPowerSources", "DMTF Reserved", 
+          "Vendor Specific" }]
+   uint16 SupportedMethods[];
+
+
+};

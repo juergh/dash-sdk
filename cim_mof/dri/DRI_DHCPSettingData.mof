@@ -1,0 +1,2 @@
+class DRI_DHCPSettingData : CIM_DHCPSettingData {
+};

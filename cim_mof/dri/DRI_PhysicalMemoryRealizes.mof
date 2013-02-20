@@ -1,0 +1,2 @@
+class DRI_PhysicalMemoryRealizes : CIM_Realizes {
+};

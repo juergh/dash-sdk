@@ -1,0 +1,2 @@
+class DRI_PrivilegeServiceAffectsElement : CIM_ServiceAffectsElement {
+};

@@ -1,0 +1,2 @@
+class DRI_BIOSEnumeration : CIM_BIOSEnumeration {
+};

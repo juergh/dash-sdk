@@ -1,0 +1,2 @@
+class DRI_LANEndpoint : CIM_LANEndpoint {
+};

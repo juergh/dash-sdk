@@ -1,0 +1,4 @@
+class DRI_TextRedirectionTCPProtocolEndpoint : CIM_TCPProtocolEndpoint {
+    [ Override("PortNumber"), Write]
+    uint32 PortNumber;
+};

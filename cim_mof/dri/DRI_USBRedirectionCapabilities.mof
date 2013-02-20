@@ -1,0 +1,2 @@
+class DRI_USBRedirectionCapabilities : CIM_USBRedirectionCapabilities {
+};

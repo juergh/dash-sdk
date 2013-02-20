@@ -1,0 +1,2 @@
+class DRI_PowerManagementCapabilities : CIM_PowerManagementCapabilities {
+};

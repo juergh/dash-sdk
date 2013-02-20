@@ -1,0 +1,47 @@
+microsoft:
+  scheme: http
+  host: wsman.msft.net
+  port: 80
+  path: /wsman
+  username: 
+  password: 
+  
+xp:
+  scheme: http
+  host: 10.10.100.66
+  port: 80
+  path: /wsman
+  username: wsman
+  password: secret
+  
+localhost:
+  scheme: http
+  host: localhost
+  port: 5985
+  path: /wsman
+  username: wsman
+  password: secret
+
+heron:
+  scheme: http
+  host: heron.suse.de
+  port: 5985
+  path: /wsman
+  username: wsman
+  password: secret
+
+pegasus:
+  scheme: http
+  host: localhost
+  port: 5985
+  path: /wsman
+  username: pegasus
+  password: secret
+
+virtualbox:
+  scheme: http
+  host: 10.10.100.66
+  port: 80
+  path: /wsman
+  username: wsman
+  password: secret

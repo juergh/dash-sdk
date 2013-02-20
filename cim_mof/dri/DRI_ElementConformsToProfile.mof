@@ -1,0 +1,2 @@
+class DRI_ElementConformsToProfile : CIM_ElementConformsToProfile {
+};

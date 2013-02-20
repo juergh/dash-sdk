@@ -1,0 +1,2 @@
+class DRI_ServiceAvailableToElement : CIM_ServiceAvailableToElement {
+};

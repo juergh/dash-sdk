@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "eventsink", "eventsink.vcproj", "{FBB037D5-5E3C-4847-9DFA-18E771F4E193}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug static|Win32 = Debug static|Win32
+		Debug|Win32 = Debug|Win32
+		Release static|Win32 = Release static|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Debug static|Win32.ActiveCfg = Debug static|Win32
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Debug static|Win32.Build.0 = Debug static|Win32
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Debug|Win32.Build.0 = Debug|Win32
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Release static|Win32.ActiveCfg = Release static|Win32
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Release static|Win32.Build.0 = Release static|Win32
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Release|Win32.ActiveCfg = Debug static|Win32
+		{FBB037D5-5E3C-4847-9DFA-18E771F4E193}.Release|Win32.Build.0 = Debug static|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

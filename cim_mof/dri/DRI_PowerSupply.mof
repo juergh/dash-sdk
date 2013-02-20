@@ -1,0 +1,6 @@
+class DRI_PowerSupply : CIM_PowerSupply {
+    [ Override("ElementName"), Write]
+    string ElementName;
+    [ Override("EnabledState"), Write]
+    uint16 EnabledState;
+};

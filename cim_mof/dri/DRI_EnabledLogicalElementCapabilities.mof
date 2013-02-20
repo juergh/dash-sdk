@@ -1,0 +1,3 @@
+[ Description("RIs implementation of CIM defined interface") ]
+class DRI_EnabledLogicalElementCapabilities : CIM_EnabledLogicalElementCapabilities {
+};

@@ -1,0 +1,25 @@
+// Raritan mofc special qualifiers
+
+// class emu provider supports delete instance operation
+Qualifier Deletable : boolean = false,
+    Scope(class);
+
+// class emu provider supports create instance operation
+Qualifier Creatable : boolean = false,
+    Scope(class);
+
+// class emu provider supports modify instance operation
+Qualifier Modifiable : boolean = false,
+    Scope(class);
+
+// emu provider is final class and cannot be extended
+Qualifier Final : boolean = false,
+    Scope(class);
+
+// make all properties writeable in create/modify calls
+Qualifier PropWriteable : boolean = false,
+    Scope(class);
+
+// class is UID referenced
+Qualifier UidRef : boolean = true,
+    Scope(class);

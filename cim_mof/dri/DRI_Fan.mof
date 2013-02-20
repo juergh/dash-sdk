@@ -1,0 +1,10 @@
+class DRI_Fan : CIM_Fan {
+    [ Override("DesiredSpeed"), Write]
+    uint64 DesiredSpeed;
+    [ Override("ElementName"), Write]
+    string ElementName;
+    [ Override("EnabledState"), Write]
+    uint16 EnabledState;
+    [ Override("RequestedState"), Write]
+    uint16 RequestedState;
+};

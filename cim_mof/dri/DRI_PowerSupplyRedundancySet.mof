@@ -1,0 +1,2 @@
+class DRI_PowerSupplyRedundancySet : CIM_RedundancySet {
+};

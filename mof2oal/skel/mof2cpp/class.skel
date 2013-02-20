@@ -1,0 +1,137 @@
+#ifndef __%CLASSNAME%__
+#define __%CLASSNAME%__
+#include <dsdk/oal/%SUPERCLASSNAME%.h>
+%INCLUDEREFS%
+#include <dsdk/dsdktypes.h>
+#include <cmci/cmcidt.h>
+#define _class_name "%CLASSNAME%"
+
+namespace dsdk
+{
+
+/**
+ * @class %CLASSNAME%
+ * @brief %CLASSDESC%
+ */
+class %CLASSNAME% : public %SUPERCLASSNAME%
+{
+public:
+	typedef COALIterator<%CLASSNAME%> iterator;
+
+public:
+	/**
+	 * Enumerates object paths of all the objects of this class.
+	 */
+	static CCIMObjectPath::iterator enumInstanceNames (
+							IClient* client,
+							CCIMObjectPath op = CCIMObjectPath::nullInstance ())
+	{
+		/* set the namespace and classname if not set by upper layer */
+		if (op.isNullInstance ())
+		{
+			op   = CCIMObjectPath (%NAMESPACE%, _class_name);
+		}
+		vector<string> keys = getKeyProps ();
+		return client->enumInstanceNames (op, keys);
+	}
+
+	/**
+	 * Enumerate all the instances of this class.
+	 */
+	static %CLASSNAME%::iterator enumInstances (
+							IClient* client,
+							CMPIFlags			  /* flags */,
+							const vector<string>& props,
+							CCIMObjectPath op = CCIMObjectPath::nullInstance ())
+	{
+		/* set the namespace and classname if not set by upper layer */
+		if (op.isNullInstance ())
+		{
+			op   = CCIMObjectPath (%NAMESPACE%, _class_name);
+		}
+	
+		vector<string> keys = getKeyProps ();
+		try
+		{
+			return %CLASSNAME%::iterator (client->enumInstances(op,0,props),
+									  client,
+									  props);
+		}
+		catch(ECIMError e)
+		{
+			if(e.getRetCode() == CMPI_RC_ERR_UNSUPPORTED_FEATURE)
+			{
+				return %CLASSNAME%::iterator (client->enumInstanceNames(op,keys),
+											client,
+											props);
+			}
+			else
+			{
+				throw;//rethrow
+			}
+		}
+	}
+
+public:
+	/*------------- Properties ---------------*/
+%PROPERTIES%
+
+	/*------------- Methods -------------------*/
+%METHODS%
+
+public:
+	/**
+	 * Default Constructor
+	 */
+	%CLASSNAME% (const CCIMInstance& ins) : %SUPERCLASSNAME% (ins) {}
+
+
+
+public:
+	/**
+	 * Returns the list of key properties.
+	 */
+	static inline vector<string> getKeyProps (void) 
+	{
+		vector<string> key = %SUPERCLASSNAME%::getKeyProps ();
+%ADDKEYS%
+		return key;
+	}
+
+public:
+	/**
+	 * Returns the object path of this object
+	 */
+	CCIMObjectPath getObjectPath (void) const { return _ins.getObjectPath (); }
+
+	/**
+	 * Returns the class name of this object
+	 */
+	static string getClassName (void) { return _class_name; }
+
+	/**
+	 * Converts an object of this type to a CMPIValue
+	 */
+	static CMPIValue toCMPIValue (%CLASSNAME% val)
+	{
+		return CCIMInstance::toCMPIValue (val._ins);
+	}
+
+    static const CMPIType cmpi_type = CMPI_instance;
+
+	typedef %CLASSNAME% AdapteeType;
+};
+
+#define %CLASSNAME%DSDKAdapter %CLASSNAME%
+template <>
+inline %CLASSNAME% to <%CLASSNAME%DSDKAdapter>(CCIMValue& val, bool auto_release)
+{
+	return %CLASSNAME% (to<CCIMInstanceDSDKAdapter> (val, auto_release));
+}
+}; /* namespace dsdk */
+
+#undef _class_ns
+#undef _class_name
+
+#endif	/* __%CLASSNAME%__ */
+

@@ -1,0 +1,2 @@
+class DRI_StorageExtent : CIM_StorageExtent {
+};

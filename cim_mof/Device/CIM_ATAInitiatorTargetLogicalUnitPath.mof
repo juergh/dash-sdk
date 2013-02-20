@@ -1,0 +1,19 @@
+// Copyright (c) 2007 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00892" type ="new">Add the base class, 
+// InitiatorTargetLogicalUnitPath, to the existing class 
+// SCSIInitiatorTargetLogicalUnitPath and add class 
+// ATAInitiatorTargetLogicalUnitPath with same base.</
+// ==================================================================
+//  CIM_ATAInitiatorTargetLogicalUnitPath
+// ==================================================================
+   [Association, Experimental, Version ( "2.15.0" ), 
+    UMLPackagePath ( "CIM::Device::StorageDevices" ), 
+    Description ( 
+       "An association that models a host driver path to a logical "
+       "unit. Each permutation of initiator and target "
+       "ProtocolEndpoints and logical units is considered a separate "
+       "path." )]
+class CIM_ATAInitiatorTargetLogicalUnitPath : CIM_InitiatorTargetLogicalUnitPath {
+
+
+};

@@ -1,0 +1,41 @@
+// Copyright (c) 2007 DMTF. All Rights Reserved.
+   [Experimental, Version ( "2.17.0" ), 
+    UMLPackagePath ( "CIM::User::PublicKey" ), 
+    Description ( 
+       "CIM_X509Infrastructure describes Internet X509 Public Key "
+       "Infrastructure (PKI) standard based properties used by "
+       "certificates and certificate revocation lists. For more "
+       "information on the Internet X509 PKI refer to the RFC 3280." )]
+class CIM_X509Infrastructure : CIM_SignedCredential {
+
+      [Description ( "Version of X.509." )]
+   string Version;
+
+      [Description ( 
+          "The To Be Signed (TBS) certificate is used as an input "
+          "data to the signature algorithm when the certificate is "
+          "signed or verified." ), 
+       OctetString]
+   uint8 TBSCertificate[];
+
+      [Description ( 
+          "Digital signature algorithm that verifies data integrity "
+          "by creating a 128-bit message digest or fingerprint. The "
+          "fingerprint is unique to the input data and contains the "
+          "binary hash of the encoded X509 object such as encoded "
+          "certificate or CRL." ), 
+       OctetString]
+   uint8 MD5Fingerprint[];
+
+      [Description ( 
+          "Secure hashing algorithm, a cryptographic message digest "
+          "algorithm used to verify data integrity by making "
+          "replication of the fingerprint. The fingerprint is "
+          "unique to the input data and contains the binary hash of "
+          "the encoded X509 object such as encoded certificate or "
+          "CRL." ), 
+       OctetString]
+   uint8 SHA1Fingerprint[];
+
+
+};

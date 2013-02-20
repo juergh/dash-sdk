@@ -1,0 +1,30 @@
+	/**
+	 * Sets %PROPERTY_NAME%
+	 */
+
+        public %NEW% Int32 set%PROPERTY_NAME%(%PROPERTY_CS_TYPE% a) {
+			Int32 ret = PP.OK;
+			%PROPERTY_OAL_TYPE% t = %PROPERTY_OAL_TYPE_NEW%;            
+            try {
+				t = %PROPERTY_CS_TO_OAL_TYPE_CONVERSION%;            
+                ret = %CLASSNAME%_set%PROPERTY_NAME%(OalObj, t);
+
+                if (ret != PP.OK) {
+					%PROPERTY_CS_TO_OAL_TYPE_FREE%
+					if (throwWrapperExceptions) {
+						throw new wrapperException(ret);
+					} else {
+						return ret;
+					}
+				}
+            } catch (Exception e) {
+                Debug.WriteLine("ERROR: " + e.Message);
+            }
+			%PROPERTY_CS_TO_OAL_TYPE_FREE%
+			return ret;	
+        }
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_set%PROPERTY_NAME%(
+            IntPtr c, %PROPERTY_OAL_TYPE% arg);

@@ -1,0 +1,2 @@
+class DRI_BIOSServiceAffectsElement : CIM_ServiceAffectsElement {
+};

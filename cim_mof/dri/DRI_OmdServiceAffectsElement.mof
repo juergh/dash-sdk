@@ -1,0 +1,2 @@
+class DRI_OmdServiceAffectsElement : CIM_ServiceAffectsElement {
+};

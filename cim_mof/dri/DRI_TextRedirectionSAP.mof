@@ -1,0 +1,2 @@
+class DRI_TextRedirectionSAP : CIM_TextRedirectionSAP {
+};

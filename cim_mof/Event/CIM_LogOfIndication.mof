@@ -1,0 +1,26 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+//<change cr="DMTFCR01457" type="change">Correct the subclassing of 
+//LogOfIndication</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_LogOfIndication 
+// ==================================================================
+   [Association, Experimental, Version ( "2.10.0" ), 
+    UMLPackagePath ( "CIM::Event" ), 
+    Description ( 
+       "CIM_LogOfIndication defines an individual log which can record "
+       "the Indications received from an IndicationSubscription." )]
+class CIM_LogOfIndication {
+
+      [Key, Description ( 
+          "TheListenerDestination that handles logging of "
+          "Indication subscriptions to the referenced CIM_Log." )]
+   CIM_ListenerDestinationLog REF ListenerDestination;
+
+      [Key, Min ( 1 ), 
+       Description ( "A CIM_Log where Indications are recorded." )]
+   CIM_Log REF Log;
+
+
+};

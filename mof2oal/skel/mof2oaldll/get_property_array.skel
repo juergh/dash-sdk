@@ -1,0 +1,29 @@
+	/**
+	 * Gets an array of %PROPERTY_NAME%
+	 */
+
+	extern "C" SDKWRAPPER_Export int %CLASSNAME%_get%PROPERTY_NAME%(COALObject* _d, oaldllarg* t);
+
+	int %CLASSNAME%_get%PROPERTY_NAME%(COALObject* _d, oaldllarg* t) {
+		if (_d == NULL || t == NULL) 
+			return PP_ERR;
+
+		%CLASSNAME%%TEMPLATES%* _c = dynamic_cast<%CLASSNAME%%TEMPLATES%*>(_d);
+		if (_c == NULL)
+			return PP_ERR;
+
+		%CLASSNAME%%TEMPLATES% c = *_c;
+		try {
+			vector<%PROPERTY_TYPE%> n = c.get%PROPERTY_NAME%();
+			if (vec2ser(n, t) != PP_OK)
+				return PP_ERR;
+
+			return PP_OK;
+		} catch (dsdk::EDSDKError& e) {
+			unsigned int f = e.getErrorCode();
+#ifdef _DEBUG
+			assert(f != PP_OK && f != PP_ERR);
+#endif
+			return f;
+		}
+	}

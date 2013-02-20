@@ -1,0 +1,4 @@
+#pragma include ("cim_schema_2.19.0.mof")
+#pragma include ("qualifiers_extra.mof")
+#pragma include ("cim-prepatch.mof")
+#pragma include ("dri.mof")

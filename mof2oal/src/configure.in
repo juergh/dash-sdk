@@ -1,0 +1,23 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.61)
+AC_INIT([mof2oal], [1.0.0], "")
+AM_INIT_AUTOMAKE
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_AIX
+AC_ISC_POSIX
+AC_MINIX
+AC_HEADER_STDC
+AM_PROG_LIBTOOL
+AC_PROG_INSTALL
+AC_PROG_YACC
+AM_PROG_LEX
+AC_CONFIG_SRCDIR([mof2oal.cpp])
+AC_CONFIG_HEADER([config.h])
+# Checks for header files.
+AC_CHECK_HEADERS([malloc.h stdlib.h string.h])
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

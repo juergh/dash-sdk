@@ -1,0 +1,2 @@
+class DRI_IPElementSettingData : CIM_ElementSettingData {
+};

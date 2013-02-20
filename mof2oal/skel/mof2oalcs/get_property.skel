@@ -1,0 +1,31 @@
+	/**
+	 * Gets %PROPERTY_NAME%
+	 */
+		public %NEW% %PROPERTY_CS_TYPE% get%PROPERTY_NAME%(%PROPERTY_CS_TYPE% StdValue) {
+            try {		
+				return get%PROPERTY_NAME%();
+            } catch (wrapperException) {
+                return StdValue;
+            }
+		}
+		
+        public %NEW% %PROPERTY_CS_TYPE% get%PROPERTY_NAME%() {
+			%PROPERTY_OAL_TYPE% v = %PROPERTY_OAL_TYPE_NEW%;
+            Int32 ret;
+
+            ret = %CLASSNAME%_get%PROPERTY_NAME%(OalObj, ref v);
+            if (ret != PP.OK) {
+				%PROPERTY_OAL_TO_CS_TYPE_FREE%
+				throw new wrapperException(ret);
+            }
+			%PROPERTY_CS_TYPE% t = %PROPERTY_OAL_TO_CS_TYPE_CONVERSION%;
+
+            /* free the memory that was allocated by dll */
+            %PROPERTY_OAL_TO_CS_TYPE_FREE%
+            return t;
+        }
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_get%PROPERTY_NAME%(
+            IntPtr c, ref %PROPERTY_OAL_TYPE% arg);

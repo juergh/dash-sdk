@@ -1,0 +1,35 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Version ( "2.19.0" ), 
+    UMLPackagePath ( "CIM::Interop" ), 
+    Description ( 
+       "A RegisteredProfile describes a set of CIM Schema classes with "
+       "required properties and/or methods, necessary to manage a "
+       "real-world entity or to support a usage scenario, in an "
+       "interoperable fashion. RegisteredProfiles can be defined by "
+       "the DMTF or other standards organizations. Note that this "
+       "class should not be confused with CIM_Profile, which collects "
+       "SettingData instances, to be applied as a \'configuration "
+       "profile\' for an element. \n"
+       "A RegisteredProfile is a named \'standard\' for CIM-based "
+       "management of a particular System, subsystem, Service or other "
+       "entity, for a specified set of uses. It is a complete, "
+       "standalone definition, as opposed to the subclass "
+       "RegisteredSubProfile, which requires a scoping profile for "
+       "context. \n"
+       "The uses for a RegisteredProfile or SubProfile MUST be "
+       "specified in the document that defines the profile. Examples "
+       "of Profiles are to manage various aspects of an Operating "
+       "System, Storage Array, or Database. The name of the profile is "
+       "defined and scoped by its authoring organization." )]
+class CIM_RegisteredProfile : CIM_RegisteredSpecification {
+
+      [Override ( "SpecificationType" ), 
+       Description ( 
+          "If this property has a value other than null, the value shall be 2"
+           ), 
+       ValueMap { "2" }, 
+       Values { "Profile" }]
+   uint16 SpecificationType;
+
+
+};

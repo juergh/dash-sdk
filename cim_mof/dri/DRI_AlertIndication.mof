@@ -1,0 +1,2 @@
+class DRI_AlertIndication : CIM_AlertIndication {
+};

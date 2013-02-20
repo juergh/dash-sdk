@@ -1,0 +1,26 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SMWGCR00068" type ="change">Promote
+// the Dependent association to ManagedSystemElement.</
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_AssociatedCooling 
+// ==================================================================
+   [Association, Version ( "2.12.0" ), 
+    UMLPackagePath ( "CIM::Device::CoolingAndPower" ), 
+    Description ( 
+       "The CIM_AssociatedCooling relationship indicates what "
+       "ManagedSystemElement(s) the fan or cooling device is "
+       "providingcooling for." )]
+class CIM_AssociatedCooling : CIM_Dependency {
+
+      [Override ( "Antecedent" ), 
+       Description ( "The CoolingDevice." )]
+   CIM_CoolingDevice REF Antecedent;
+
+      [Experimental, Override ( "Dependent" ), 
+       Description ( "The ManagedSystemElement being cooled." )]
+   CIM_ManagedSystemElement REF Dependent;
+
+
+};

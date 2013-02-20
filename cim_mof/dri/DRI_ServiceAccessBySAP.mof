@@ -1,0 +1,2 @@
+class DRI_ServiceAccessBySAP : CIM_ServiceAccessBySAP {
+};

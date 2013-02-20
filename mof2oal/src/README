@@ -1,0 +1,11 @@
+
+   mof2oal
+----------------
+
+Usage: mof2oal [-oaldll || -oalcs] -s code_skeleton_dir -m mof_dir -o output_dir [-d]
+
+ -oaldll -> create dll header files used at wrapperCpp
+ -oalcs  -> create CSharp source files for wrapperCSharp
+  none of both -> create cpp header files
+
+ -d -> enable debug

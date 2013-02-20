@@ -1,0 +1,157 @@
+.TH dashcli  "21 November 2008" "" ""
+.RS
+dashcli v1.1
+.SS
+.SH NAME
+Command Line Interface to Manage DASH Targets
+.SS
+.SH SYNOPSIS
+dashcli [options] commands
+.SS
+.SH OPTIONS
+.TP
+.B
+-h
+host_address
+.TP
+.B
+-p
+port(s), For discovery more than one ports can be specified seperated by commas
+.TP
+.B
+-u
+username
+.TP
+.B
+-P
+password
+.TP
+.B
+-a
+authtype
+.TP
+.B
+-t
+targetpath
+.TP
+.B
+-s
+start ip
+.TP
+.B
+-e
+end ip
+.TP
+.B
+-T
+timeout in seconds
+.TP
+.B
+-v
+verbose
+.SS
+.SH COMMANDS
+.TP
+.B
+help
+Display help
+.TP
+.B
+enumerate
+Enumerate targets
+.TP
+.B
+show
+Show information
+.TP
+.B
+discover
+Perform discovery
+.TP
+.B
+subscribe
+Subscribe to an event
+.TP
+.B
+unsubscribe
+Unsubscribe an event
+.TP
+.B
+renew
+Renew an event
+.TP
+.B
+listenevents
+Listen for events
+.TP
+.B
+raw
+Issue raw commands
+.TP
+.B
+shell
+Launch interactive DASH shell
+.SS
+For commands specific to targets
+dashcli help target
+.SS
+Where allowed targets are
+.TP
+computersystem
+.TP
+processor
+.TP
+memory
+.TP
+asset
+.TP
+powersupply
+.TP
+fan
+.TP
+software
+.TP
+bootconfig
+.TP
+bios
+.TP
+battery
+.TP
+user
+.TP
+role
+.TP
+networkport
+.TP
+dhcpclient
+.TP
+ipinterface
+.TP
+dnsclient
+.TP
+opaguemanagementdata
+.TP
+textredirection
+.TP
+usbredirection
+.TP
+indicationfilter
+.TP
+alertdestination
+.TP
+indicationsubscription
+.TP
+ethernetport
+.SS
+Example usage:
+Discovery example:
+dashcli \fB-s\fP 192.168.0.10 \fB-e\fP 192.168.0.15 \fB-p\fP 623,664,8889 discover
+.SS
+Enumerate target example:
+dashcli \fB-h\fP 192.168.0.10 \fB-p\fP 623 \fB-u\fP admin \fB-P\fP admin enumerate computersystem
+dashcli \fB-h\fP 192.168.0.10 \fB-p\fP 623 \fB-u\fP admin \fB-P\fP admin enumerate processor
+dashcli \fB-h\fP 192.168.0.10 \fB-p\fP 623 \fB-u\fP admin \fB-P\fP admin enumerate bootconfig
+.SS
+Executing commands on a target example:
+dashcli \fB-h\fP 192.168.0.10 \fB-p\fP 623 \fB-u\fP admin \fB-P\fP admin \fB-t\fP processor enumerate memory
+dashcli \fB-h\fP 192.168.0.10 \fB-p\fP 623 \fB-u\fP admin \fB-P\fP admin \fB-t\fP bootconfig changebootorder 1 0

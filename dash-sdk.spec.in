@@ -1,0 +1,40 @@
+Name:           dash-sdk
+Version:       @PACKAGE_VERSION@
+Release:        1
+License:        BSD
+Url:           http://sourceforge.net/projects/dash-management/
+Source:         %{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Group:          Applications/Management
+#BuildRequires:  
+Requires:       libxml curl 
+Summary:        The software developers kit which helps you implemnting your own Windows or Linux DASH client.
+
+
+%description
+The software developers kit which helps you implemnting your own Windows or Linux DASH client. 
+
+
+
+%prep
+%setup
+
+%build
+%configure 
+make
+
+%install
+make DESTDIR=%{buildroot} install
+%clean
+rm -rf "$RPM_BUILD_ROOT"
+
+%files
+%defattr(-,root,root)
+%{_bindir}/*
+%{_includedir}/*
+%{_libdir}/*
+#%{_libdir}/openwsman/*
+#%{_sbindir}/openwsmand
+/etc/openwsman/owsmangencert.sh
+#%{_libdir}/pkgconfig/dash-sdk.pc
+/usr/share/man/man1/dashcli.1.gz

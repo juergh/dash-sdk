@@ -1,0 +1,2 @@
+class DRI_AccountManagementService : CIM_AccountManagementService {
+};

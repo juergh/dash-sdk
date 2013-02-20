@@ -1,0 +1,2 @@
+class DRI_ConcreteDependency : CIM_ConcreteDependency {
+};

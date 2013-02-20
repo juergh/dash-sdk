@@ -1,0 +1,23 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Experimental, Version ( "2.18.0" ), 
+    Description ( 
+       "CIM_PowerUtilizationManagementCapabilities describes the "
+       "capabilities of the associated "
+       "CIM_PowerUtilizationManagementService." )]
+class CIM_PowerUtilizationManagementCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description ( 
+          "PowerUtilizationModesSupported indicates the power "
+          "utilization modes supported by associated instances of "
+          "CIM_PowerUtilizationManagementService. See "
+          "CIM_PowerUtilizationManagementService.PowerSavingMode "
+          "for a description of each enumeration value." ), 
+       ValueMap { "3", "4", "..", "32768..65535" }, 
+       Values { "Dynamic", "Static", "DMTF Reserved", 
+          "Vendor Reserved" }, 
+       ModelCorrespondence { 
+          "CIM_PowerUtilizationManagementService.PowerUtilizationMode" }]
+   uint16 PowerUtilizationModesSupported[];
+
+
+};

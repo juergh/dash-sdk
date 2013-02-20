@@ -1,0 +1,338 @@
+***********************************************************
+Version 1.2: Bug Fix Release
+***********************************************************
+
+* [Bug] dashcli - connection failed error when nothing attempted
+
+* [Bug] Cosmetic Issue: Dashcli displays the "TextRedirection Instance 0"  instead of "USBRedirection Instance 0"
+
+* [Feature] CLI should allow discovery of target based on hostname
+
+* [Feature] Discovery should be allowed on sigle IP/HostName
+
+* [Feature] DASH SDK responds with the certain information when no command or partial command is explicitly specified
+
+* [BUG] Fix for the Text Redirection Crash issue while performing the disconnect.
+
+* [BUG] Fix for the USB Redirection Crash issue while performing the disconnect.
+
+* [Bug] Fix for the Account manage crash while adding a new user.
+
+* [BUG] - CIM_Processor.mof has been upgraded to 2.2.1 Schema MOF from DMTF
+
+* [Feature] Dash SDK Upgraded with OPENWSMAN 2.2.3 for the Linux Platform..
+
+* [Feature] Dash SDK Upgraded with Open WS Man 2.2.3 for the Windows Platform.
+
+* [BUG] DASH SDK Performance Improvement
+
+* [BUG] Create Account issue reported, SDK crashes while creating an account.
+
+* [DEV] Change to move out the initial version of DASH SDK
+		a) Changes changes for the compilation issue of DASH SDK on Linux ( Fedora/Suse )
+		b) Fix for the Indication Subscription not working on the Linux Platform.
+		c) Fix for USB Redirection not working on Linux Environment.
+
+* [BUG]  Roles Manage command in DASH SDK crashes with the code is built on Windows 2003 Server (32).
+
+	
+
+
+
+
+
+
+*****************************************
+Version 1.1.8: Bug Fix Release
+*****************************************
+* [Bug] Success/Failure information for power supported states.
+
+* [Bug] Property value needs to be having some information either value or N/A but should not be blank
+
+* [Feature] Updated the Eventing with latest version of listener code
+
+	    Updated from old shttpd.c to newer mongoose.c for the Listener code
+
+* [Feature] Opaque Management Data Profile
+	    Added support for the Opaque management data
+		
+* [Feature] Integration of Mongoose Webserver		
+		Added intergrated webser for USB redirection to be used with target supporting HTTP as tranport
+
+		
+		
+* [Feature] capabilities API added/Mofied for follwong profiles
+		1. Simple Identity Management
+		2. Role Based Authorization
+		3. Boot Config
+		4. Battery
+		5. BIOSManagement
+		6. Power Management
+		7. Fan
+		8. TextRedirection
+		9. USBRedireciotn
+		
+* [Feature] capabilities use case added into CLI.
+
+* [Bug] Code cleanup
+		SDK code set is cleaned and removed all the extra stuff related to the lod openrmsp fw.
+		
+* [Bug] Linux build issues
+		Fixed all the Linux Make file build and Winods build issues after code cleanup.
+* [Bug] Sensor temperature value reading
+		Fixed the bug for sensor temperature value  degree conversion.
+* [Bug] dashcli - connection failed error when nothing attempted
+
+* [Bug] Cosmetic Issue: Dashcli displays the "TextRedirection Instance 0"  instead of "USBRedirection Instance 0"
+
+* [Feature] CLI should allow discovery of target based on hostname
+
+* [Feature] Discovery should be allowed on sigle IP/HostName
+
+* [Feature] DASH SDK responds with the certain information when no command or partial command is explicitly specified
+
+* [Feature] Dash SDK Upgraded with OPENWSMAN 2.2.3 for the Linux Platform..
+
+* [Bug] Fix for the Indication Subscription not working on the Linux Platform.
+
+* [Bug] Fix for the Text Redirection Crash issue while performing the disconnect.
+
+* [Bug] Fix for the USB Redirection Crash issue while performing the disconnect.
+
+* [Bug] Fix for the Account manage crash while adding a new user.
+
+* [Enhancement] CIM_Processor.mof has been upgraded to 2.2.1 Schema MOF from DMTF
+
+
+
+*****************************************
+Version 1.1.7.1: Bug Fix Release
+*****************************************
+* [Bug] Event Listener Crash
+         Event Listener used to crash when recieving Alerts from DASH targets.
+         
+* [Feature] Make DASHCLI intitutive for Role management.
+	
+	    Now the dashcli has been modified to assign/modifiy/delete in an intutive manner
+	    
+* [Feature] Make DASHCLI intitutive for Unsubscribe operation
+	
+	    Dashcli 'indication' has an option for unsubscribe    
+
+* [Feature] Add graceful shut down support
+
+	    Now dashcli 'power' option has offgraceful option
+	    
+* [Bug] Heartbeat optional feature was incorrectly implemented
+
+* [Bug] Installer build issue was fixed
+
+* [Bug] Removed all unwanted unit test framework from the DASH SDK
+
+* [Bug] Property Value for all the instance information needs to be in the single line when displayed in the DASH CLI
+
+* [Bug] vmedia folders are removed from the dash sdk as this project is not used actively in DASH SDK.
+
+* [Bug] DASH CLI Displays Element Name.
+
+        
+
+*****************************************
+Version 1.1.7: Bug Fix Release
+*****************************************
+
+*[Bug] Event listener cannot handle Chunked information
+	
+	Now the eventlistener will be able to parse the response containing chunked notification information.
+
+*[Bug] Subscribe operation need to accept required optional parameters.
+	
+	Now the subscribe operation is extended to accept locale, heartbeat, encode parameters.
+	
+*[Feature] Make DASHCLI intitutive for Account management.
+	
+	Now the dashcli has been modified to List/Delete/Create accounts in an intutive manner.
+
+*[Feature] Hearbeat notifications should be displayed as part of the listener.
+	
+	Now the eventlistener notifies as and when it receives a heartbeat notification.
+
+*[Feature] Support for profile capabilities 
+
+	SDK will display which profile is supported at that target.
+
+*[Bug] Removeroles for the Account Management not working
+      
+       Now Removeroles for the accounts will work.
+         
+*[Bug] Function for extracting MaxCurrentEnabledSAPs value is not implemented 
+
+       API has been added to the DASH SDK which will display how many text redirection sessions are supported.
+
+*[Bug] Text Redirection Connect moves the instance to enabled but offline mode. 
+
+       As soon as the user closes the Putty terminal, the text redirection service and session are disabled.
+
+*[Bug]  nfs, samba,image and drive options needs to be modified for USB Redirection.
+
+	DASH SDK will now take only the file path as the argument to the usbredirection API.
+
+*[Bug]  There should be some return value for the job state function.
+
+	This function will provide 0 for success and exception for failure.
+
+*[Bug]  Graceful Reset not implemented 
+
+	Now reset graceful is implemented.
+
+*[Bug] 	Return value of the Extrinsic method API function 
+
+	USBRedirection API will return the value of 0 for success and exceptions for failure.
+
+*[Bug]  dashcli doesnot have Power States Supported command 
+
+	DASH SDK display all the power states which are supported at the target systems.
+
+*[Bug]	extrinsic methods functions doesnot take array of instance information 
+
+        Now modify role takes array of instance information for more than one privilege.
+
+
+*****************************************
+Version 1.1.0.1: Bug Fix Release
+*****************************************
+
+* [Bug] USB Redirection operation didn't enable or disable CIM_USBRedirectionService
+  
+  	Now 'activate' command will enable USBRedirectionService and 'disable' will disable it.
+  	
+  	
+* [Bug] SDK couldn't handle 4096 value of extrinsic mehthod
+  
+  
+* [Bug] Graceful power method is now supported in SDK  
+  
+
+* [Bug] Text Redirection operation didn't enable or disable CIM_TextRedirectionService
+  
+ 	 Now 'activate' command will enable CIM_TextRedirectionService and 'disable' will disable it.
+
+
+* [Bug] Verify capabilities to ensure extrinsic method is supported at the target to avoid false error
+
+ 	Now SDK extrinsic method invoke will provide meaningful result i.e Info if method is not supported
+
+
+* [Bug] Create Account "System Name" property was hard coded.
+
+	Replaced the hardcode value for systemName
+
+
+* [Bug] SDK cannot handle situation when one property of the association class is NULL
+
+	Added a check when finding association class with workaround method, when one of the association class is nil
+
+
+* [Bug] Issue with closing order of winhttp
+
+	Changed the order of handle closed for winhttp
+
+
+* [Bug] cannot display boot order on one of the DASH production System   
+
+	Fixed enumerating boot devices.
+
+
+* [Bug]  Renew request was sending incorrect URI
+
+	Renew request of eventing has been updated to send the subscription URI instead of All Class URI.
+
+
+* [Bug] Incorrect display of boot order devices using CLI
+
+	Now dashcli will show value of BootStructuredString
+
+
+* [Bug] Power ON/Reset/OFF not working on one of the DASH Production System 
+	
+	Now SDK will pick resourceURI from Body instead of the header esp for Pull Response
+
+
+* [Bug] Cannot pass optional feature in Eventing 
+
+	Eventing API is redesigned to make sure now optional parameters can be passed in request. DASHCLI is modified for the same
+
+
+* [Feature] Make DASHCLI intitutive for Eventing 
+
+	Now dashcli will ask for inputs from user. 
+
+
+* [Bug]  WSAStartUp & WSACleanup was called more than once in the execution which was causing some instability issue
+	
+	Moved the  WSAStartup & WSACleanup from dash ping to Init & clean up of SDK, so this will be called only once. 
+
+
+* [Bug] Extrinsic Method areguments are not in order as per the schema 
+	
+	Changed openwsman to send the argument for externsic method in same order it is added.(Because of this hashing is disabled in openwsman.).
+
+
+* [Bug] Create Accound "Password" format is incorrect (not OctetString)
+	
+	1. Modified mof2oal to generate a optional custom field for externsic methods, this is because Template instances should be sent as xml object instead of string.
+	2. Modified openwsman to accept xml object instance and send it as xml object.
+
+
+* [Feature] Daschli to display FilterCollection Subscriptions
+
+	Updated to display filtercollectionsubscriptions also when enumerating indicationsubscription
+	
+
+* [Bug] Auto login for text redirection
+	
+	1. Now putty will autologin when SSH protocol is used. Due to limitations with telnet auto login is not possible using putty.
+	
+
+* [Bug] UUID should be displayed in DASHCLI
+	
+	After successful subscription DASHCLI will not display UUID field.
+	
+
+*[Bug] Function for extracting MaxCurrentEnabledSAPs value is not implemented 
+
+	Dashcli to display max number of sessions supported for each instance of text redirection service.
+
+
+*[Bug] Fix build issues
+
+
+*****************************************
+Version 1.1.0: Feature Complete Release
+*****************************************
+
+Following profiles are supported:
+
+* Registered Profile
+* Base Desktop
+* System Memory
+* Fan
+* CPU
+* Physical Asset
+* Boot Control
+* BIOS Management
+* Power Supply
+* Software Inventory
+* OS Status
+* Battery
+* Role Base Management
+* Simple Identity Management
+* Text Redirection
+* USB Redirection
+* Indication
+* DHCP Client
+* DNS Client
+* Ethernet Port
+* Text Redirection
+* USB Redirection 
+

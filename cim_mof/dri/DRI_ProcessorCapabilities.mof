@@ -1,0 +1,2 @@
+class DRI_ProcessorCapabilities : CIM_ProcessorCapabilities {
+};

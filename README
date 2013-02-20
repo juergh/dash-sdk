@@ -1,0 +1,390 @@
+-------------------------------------------------------------------------------
+
+DASH Client SDK
+----------------
+
+Contents.
+---------
+1. Introduction.
+2. Windows Build.
+   2.1. Prerequisites.
+   2.2. Build Instructions.
+   2.3. Debugging.
+3. Linux Build.
+   3.1. Prerequisites.
+   3.2. Build Instructions.
+4. Generate documents.
+   4.1. Prerequisites.
+   4.2. Generate documents.
+5. Getting Started.
+6. Known Issues.
+
+-------------------------------------------------------------------------------
+
+1. Introduction.
+-----------------
+
+
+The open source DASH SDK is released under AMD Modified BSD License. It provides software in source and binary form to allow management consoles and management applications to support the Distributed Management Task Force DASH interface.
+
+The SDK consists of two top-level components:
+
+a) Low-level APIs that expose all DASH-related CIM(Common Information Model) properties and methods.  This allows full access to all DASH capabilities.
+
+b) High-level APIs for common operations such as discovery, power-on/off, and basic inventory.  The high-level API is an abstraction layer and minimizes the exposure of the console to details of the low-level DASH protocol stack.
+
+This document describes how to build and getting started with DASH SDK for Windows and Linux Operating Systems.
+
+
+
+-------------------------------------------------------------------------------
+
+2. Windows Build.
+-----------------
+
+
+2.1. Prerequisites for building the SDK under windows.
+------------------------------------------------------
+
+a) Get Microsoft Visual C++ 2008 express edition.
+  - Download the installer from the link below:
+    http://www.microsoft.com/express/download/
+  - Follow the installer's instructions. 
+
+b) Get Perl
+  - Download and Install ActivePerl from the below link: 
+    http://www.activestate.com/Products/activeperl/index.mhtml
+  - Other versions of perl might work as well, but are not officially
+    supported.
+  - During the setup, ActivePerl asks whether it should be added to the PATH environment variable; activate this checkbox
+  - If you didn't check this, add the directory manually to the PATH
+    Environment:
+    Control Panel -> System -> Advanced -> Environment Variables.
+    Select "PATH" in the system variables box -> Edit.
+    Add the path of the "bin" directory of the perl installation to the end of the existing path
+
+c) Get Putty.
+  - Download putty from link below. (Only needed for text redirection).
+    http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html.
+  - Set the path to putty.exe in the system.
+    Control Panel -> System -> Advanced -> Environment Variables.
+    Select "PATH" in the system variables box -> Edit.
+    Add the path (directory where the putty.exe is located) to end of existing
+    path. 
+
+d) Get NSIS, the NullSoft Installer
+  - Download NSIS from the link below. (Only needed to build the installer)
+    http://nsis.sourceforge.net/Main_Page
+  - Install the NSIS package
+  - Add NSIS install directory to the PATH environment variable
+    Control Panel -> System -> Advanced -> Environment Variables.
+    Select "PATH" in the system variables box -> Edit.
+    Add the path (NSIS Install directory) to end of existing path. 
+    
+  - copy inetc dll to nsis plugin folder: http://nsis.sourceforge.net/Inetc_plug-in
+  - extract EnvVarUpdate plugin to nsis include folder:
+    http://nsis.sourceforge.net/Environmental_Variables:_append%2C_prepend%2C_and_remove_entries#Function_Code
+
+2.2. Build Instructions.
+------------------------
+
+a) Download the latest release of DASH SDK.
+
+b) Open the solution.
+  - Start the VC++ IDE and open the solution file:
+    File -> Open -> Project/Solution, select: windows/dash/dash.sln
+    This solution has the following projects:
+      dashcli (application)
+      dashapi (library)
+      dashapic (C library)
+	  eventsink (library)      
+	  installer (the Windows installer)
+	  libxml2 (library)
+	  mof2oal (tool for generating C++ files from mof file)
+	  openssl (library)      
+	  OpenWsmanLib (library)
+      ssl_client 
+      webserver
+	  wsman_client_lib (libarary)
+       
+    These projects can also be built individually using the project specific   solution file.
+
+c) First build.
+  - Click Build-> Batch Build, select all projects (Select All button) and press Build. That builds all projects (application and library) and copies the executable to "windows/win32pkg" directory. This includes all application, library and dependent dll's concerning release build as well as debug build.
+  - Please note that the installer requires that all other projects  are built in both "Debug" and "Release" configuration
+  - The installer is copied into the "installer" directory
+
+
+2.3. Debugging.
+---------------
+
+a) Open the solution.
+  - Open the windows/dash/dash.sln solution file in VC++ IDE (like described above).
+  - Build the solution if necessary (like described above).
+b) Start debugging.
+  - Select the desired project.
+    Do a right click on your desired project and select "Set as StartUp Project".
+  - Start debugging.
+    Use F5 to run the selected project in normal debug mode. With F10/F11 you may debug by stepping over/into the code gradually.
+
+
+
+-------------------------------------------------------------------------------
+
+3. Linux Build.
+---------------
+
+
+3.1. Prerequisites for building the SDK under Linux.
+----------------------------------------------------
+
+a) x86 PC with any distribution of Linux installed. (Currently Suse Enterprise Edition 11.1/Redhat/Fedora is verified).
+
+b) Install the development package (gcc, g++, perl and other development tools like autoconf, automake etc).
+	   
+c) Install libxml2, libcurl, openssl, python development packages.
+--------------------------------------------------------------
+Development Packages required for Suse Enterprise Edition 11.1
+--------------------------------------------------------------
+1.	Python-devel
+2.	libopen-ssl-devel
+3.	zlib-devel
+4.	readline-devel
+5.	ncurses-devel
+6.	tack
+7.	libxml2-devel
+
+d) Install ssh client and telnet client (Only needed for text redirection).
+
+
+3.2. Build Instructions.
+------------------------
+
+a) Download the latest release of DASH SDK.
+
+b) From the command prompt change to the root directory of DASH SDK.
+
+c) Install DASH SDK.
+  - Run the configure script to set the required environment settings:
+	# DASH SDK has to be installed in the install_root directory located inside the DASH SDK root folder. For that use --prefix with the configure script.
+
+	#./configure  --prefix=<Full path of the install_root folder located inside the DASH SDK>. Ex. if the DASH SDK root directory folder path is /home/testuser/DASHSDK then the configure command should look like : 
+./configure --prefix=/home/testuser/DASHSDK/install_root
+
+  - Start the make process to compile the complete code. Watch for any messages you might install some missing packages.
+  	# make
+  - Install the library and dashcli
+  	# make install
+    The following components will be built:
+      dashcli (application) 
+      mof2oal (tool to generate C++ files from mof file) 
+      dashapi (C++ library) 
+      dashapic (C library)
+      wsman_client_lib (library)
+      Openwsman (library) 
+      wseventsink (library)
+      webserver
+
+-------------------------------------------------------------------------------
+
+4. Generating Documents.
+------------------------
+
+
+DASH SDK is documented by using doxygen.
+
+
+4.1. Prerequisites.
+-------------------
+
+a) Download and install doxygen.
+	http://ftp.stack.nl/pub/users/dimitri/doxygen-1.6.2-setup.exe
+b) Download and install graphviz
+	http://www.graphviz.org/pub/graphviz/stable/windows/graphviz-2.26.3.msi
+c) Edit 'doxyfile' in dashsdk root folder and modify following variable.
+	DOT_PATH               = "C:/Program Files/Graphviz2.26.3/bin"
+
+4.2. Generate documents.
+------------------------
+
+a) Create the documentation.
+  - From the dashsdk root directory type:
+    #doxygen
+    This will generate the html documents in dox/html folder.
+b) Use the documentation.
+  - Open dox/html/index.html. into any web browser.
+
+
+
+-------------------------------------------------------------------------------
+
+5. Getting Started.
+-------------------
+
+
+How to start quickly using the DASH 1.0 SDK:
+
+5.1. Windows.
+------------------------
+
+Please follow the steps outlined below for getting started in Windows:
+a) The quickest way to test the SDK library is to use the DASH CLI.
+    NOTE: DASHCLI uses the SDK library to communicate with a DASH enabled system.
+b) After the source is built successfully, go to the release directory where the Window package is stored:
+    e.g. windows\win32pkg\release
+c) From described directory, run the DASHCLI to start using and testing SDK library.
+d) To write an application using the DASH SDK, see the DASH 1.0 SDK API reference document.
+
+
+5.2. Linux.
+------------------------
+
+Please follow the steps outlined below for getting started in Linux:
+a) The quickest way to test the SDK library is to use the DASH CLI.
+    NOTE: DASHCLI uses the SDK library to communicate with a DASH enabled system.
+b) After the source is built successfully, from the DASH SDK root directory type the following command.
+    To start dashcli type from the command prompt:
+    #cd install_root/bin
+c) To start the DASH CLI type from the command prompt:
+    #dashcli
+d) To write an application using the DASH SDK, see the DASH 1.0 SDK API reference document.
+
+
+This screen is shown on both systems, Windows and Linux:
+
+????????????????????????????????????????????????????????????????????????????????
+?dashcli v1.2 (1.2 Build 0)
+?
+?Copyright (c) 2009  Advanced Micro Devices Inc.
+?Command Line Interface to manage DASH targets.
+?
+?Usage: dashcli [options] commands
+
+?Options allowed:
+?        -h <host>               Host Name
+?        -p <port(s)>            Server Port(s)(For discovery
+?more than one ports
+? can be specified seperated by commas)
+?        -u <username>           User Name
+?        -P <password>           Password
+?        -a <digest|basic|gss>   Authentication Type 
+?[default=digest]
+?        -S <http|https>         HTTP Scheme [default=http]
+?       -C                      Ignore certificate/do not verify ?certificate (To
+? verify, certificate should be stored in certificate store)
+?        -t <targetpath>         Target Path
+?        -s <startip>            Start IP address for discovery ?(only for discovery)
+?        -e <endip>              End IP address for discovery 
+?(only for discovery
+?)
+?        -T <timeout>            Timeout in seconds
+?        -v <1|2>                Verbose Level [ 1 - More 
+?explanation on error or
+? 2-Dump WSMAN data]
+?        -o <verboseoutput>      Verbose output file to dump 
+?wsman data [default is sdtout].
+?
+?Commands allowed:
+?        help                    Display help
+?        enumerate               Enumerate targets
+?        show                    Show dashcli information
+?        discover                Perform discovery
+?        registeredprofile       Checks the profile support
+?        indication              Indication commands(subscribe 
+?for indication, create filters/destinations
+?        listenevents            Listen for events/alerts
+?        textredirection         Configure Text Redirection 
+?services
+?        usbredirection          Configure USB Redirection 
+?services
+?        raw                     Issue raw commands
+?        account                 Creates,Deletes and Manages the ?Account
+?        roles                   Creates,Deletes and Manages the ?Roles
+?        shell                   Launch interactive DASH shell
+?        capabilities            Display Capabilities of a 
+?target
+?
+?For commands specific to targetsdashcli help target
+?
+?Where allowed targets are
+?        registeredprofile
+?        computersystem
+?        processor
+?        memory
+?        asset
+?        bootconfig
+?        bios
+?        powersupply
+?        fan
+?        software
+?        operatingsystem
+?        battery
+?        role
+?        networkport
+?        dhcpclient
+?        ipinterface
+?        dnsclient
+?        opaquemanagementdata
+?        indicationsubscription
+?       ethernetport
+?
+?Example usage:
+?Discovery example:
+?dashcli -s 192.168.0.4 -e 192.168.0.15 -u admin -P admin -p 623 ?discover
+?dashcli -s 192.168.0.4 -e 192.168.0.15 -p 623 discover
+?dashcli -s 192.168.0.4 -e 192.168.0.15 -p 623,664,8889 discover
+?dashcli -s 192.168.0.4 -e 192.168.0.15 -S http  -p 623 discover
+?dashcli -s 192.168.0.4 -e 192.168.0.15 -S https -p 664 discover
+?dashcli -s 192.168.0.4 -e 192.168.0.15 discover info
+?dachcli -h hounds-demo -S http -p 623 discover
+?dachcli -h 192.168.0.8 -S http -p 623 discover
+?dachcli -h hounds-demo -S http -p 623 discover info
+?dachcli -h 192.168.0.8 -S http -p 623 discover info
+?
+?Enumerate target example:
+?dashcli -h 192.168.0.4 -p 623 -u admin -P admin enumerate 
+?computersystem
+?dashcli -h 192.168.0.4 -p 623 -u admin -P admin enumerate 
+?processor
+?dashcli -h 192.168.0.4 -p 623 -u admin -P admin enumerate 
+?bootconfig
+?
+?Executing commands on a target example:
+?dashcli -h 192.168.0.4 -p 623 -u admin -P admin -t 
+?computersystem[0] power on
+?dashcli -h 192.168.0.4 -p 623 -u admin -P admin -t processor[0] ?enumerate memory
+?
+?dashcli -h 192.168.0.4 -p 623 -u admin -P admin -t bootconfig
+?[0] changebootorder
+? 1 0
+????????????????????????????????????????????????????????????????????????????????
+-------------------------------------------------------------------------------
+
+6. Know Issues.
+---------------
+
+a)Wrong version info displayed under 'Add/Remove Program'. (Windows)
+
+b)Dash Discovery happens through 623 port only. (Windows/Linux)
+
+c)Active Directory works only on the Domain Controller. (Windows)
+
+d)"exportfromuri" option  of Opaquemanagement  is not supported. (Windows/Linux)
+
+e) Discovery of Intel AMT system not working on Suse. (Linux)
+
+f)  Indication Subscribe not working in https mode. (Comes back with unknown error). (Windows/Linux)
+
+g) Alerts were not received for Intel AMT Targets on Suse. (Linux)
+
+h) #./configure does not work without prefix( Check the Linux build instructions for more details). (Linux)
+
+i) DASH SDK Crashes when trying to Add a role to the target. (Windows/Linux)
+
+j) ChangeBootOrder fails on Intel AMT Targets. (Windows/Linux)
+
+k) "user add" fails on Intel AMT Targets. (Windows/Linux)
+
+l) "user delete" fails on Intel AMT Targets. (Windows/Linux)
+
+m) Delete Roles fails on both Broadcom and Intel AMT Targets. (Windows/Linux)

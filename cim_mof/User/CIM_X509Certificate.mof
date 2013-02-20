@@ -1,0 +1,102 @@
+// Copyright (c) 2007, DMTF. All Rights Reserved.
+   [Experimental, Version ( "2.17.0" ), 
+    UMLPackagePath ( "CIM::User::PublicKey" ), 
+    Description ( 
+       "CIM_X509Certificate describes Internet X509 Public Key "
+       "Infrastructure (PKI) standard based certificates. The "
+       "certificates are signed by a trusted Certificate Authority "
+       "(CA) or by the owner of the certificate and issued to an "
+       "authenticated entity (e.g., human user, service, etc.) called "
+       "the Subject in the certificate. The public key in the "
+       "certificate is cryptographically related to a private key that "
+       "is held and kept private by the authenticated Subject. The "
+       "certificate and its related private key can then be used for "
+       "establishing trust relationships and securing communications "
+       "with the Subject. Refer to the Internet X.509 PKI standard "
+       "(RFC 3280) for more information." )]
+class CIM_X509Certificate : CIM_X509Infrastructure {
+
+      [Description ( 
+          "String that identifies the issuer of the certificate." ), 
+       OctetString]
+   uint8 IssuerUID[];
+
+      [Description ( "Certificate subject identifier." ), 
+       MaxLen ( 256 )]
+   string Subject;
+
+      [Description ( 
+          "Alternate subject identifier for the Certificate." ), 
+       MaxLen ( 256 )]
+   string AltSubject;
+
+      [Description ( 
+          "The DER-encoded raw public key that belongs to the "
+          "subject the certificate vouches for." ), 
+       OctetString]
+   uint8 PublicKey[];
+
+      [Description ( 
+          "The length of the public key represented in the "
+          "PublicKey property." )]
+   uint16 PublicKeySize;
+
+      [Description ( 
+          "IsValid represents whether the certificate is currently "
+          "valid. When the certificate is revoked or expired the "
+          "IsValid shall be set to 3(InValid)." ), 
+       ValueMap { "0", "2", "3", "4..32767", "32768..65535" }, 
+       Values { "Unknown", "Valid", "Invalid", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint16 IsValid;
+
+      [Description ( 
+          "Unique number that identifies this certificate." ), 
+       OctetString]
+   uint8 SerialNumber[];
+
+      [Description ( "Public key algorithm." ), 
+       ValueMap { "0", "2", "3", "4..32767", "32768..65535" }, 
+       Values { "Unknown", "RSA", "DSA", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint16 PublicKeyAlgorithm;
+
+      [Description ( 
+          "Key usage defines the purpose of the key. Key usage "
+          "could include digital signing, key agreement, "
+          "certificate signing, and more. The key usage is an "
+          "extension to the X.509 specification." ), 
+       ValueMap { "0", "2", "3", "4", "5", "6", "7", "8..32767", 
+          "32768..65535" }, 
+       Values { "Unknown", "Digital Signature", "Non Repudiation", 
+          "Key Encipherment", "Data Encipherment", "Key Agreement", 
+          "Key Certificate Signature", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint16 KeyUsage;
+
+      [Description ( 
+          "This extension indicates one or more purposes for which "
+          "the certified public key may be used, in addition to or "
+          "in place of the basic purposes indicated in the key "
+          "usage extension." )]
+   string ExtendedKeyUsage;
+
+      [Description ( 
+          "An X.509 certificate may contain an optional extension "
+          "that identifies whether the subject of the certificate "
+          "is a certificate authority (CA). If the subject is a CA, "
+          "this property defines the number of certificates that "
+          "may follow this certificate in a certification chain." )]
+   uint16 PathLengthConstraint;
+
+      [Description ( "Identifies the subject of the certificate." ), 
+       OctetString]
+   uint8 SubjectUID[];
+
+      [Description ( 
+          "The full content of the certificate in binary form." ), 
+       OctetString]
+   uint8 EncodedCertificate[];
+
+
+};

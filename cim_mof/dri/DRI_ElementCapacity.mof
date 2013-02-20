@@ -1,0 +1,2 @@
+class DRI_ElementCapacity : CIM_ElementCapacity {
+};

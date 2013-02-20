@@ -1,0 +1,65 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SMWGCR00005.014" type = "new"> Created
+// TelnetCapabilities.</change>
+// <change cr="SMWGCR00081" type = "change"> Change
+// subclass to CIM_EnabledLogicalElementCapabilities.</change>
+// <change cr="SMWGCR00087" type = "change">
+// Create CIM_ProtocolServiceCapabilities as a parent class for
+// SSHCapabilities
+// and TelnetCapabilities .</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_TelnetCapabilities
+// ==================================================================
+   [Experimental, Version ( "2.12.0" ), 
+    UMLPackagePath ( "CIM::Network::ConsoleProtocols" ), 
+    Description ( 
+       "A subclass of ProtocolServiceCapabilities that defines the "
+       "capabilities of a Telnet Service. An instance of "
+       "TelnetCapabilities is associated with the ProtocolService "
+       "using ElementCapabilities." )]
+class CIM_TelnetCapabilities : CIM_ProtocolServiceCapabilities {
+
+      [Description ( 
+          "An array of integers indicating the terminal modes that "
+          "the service supports." ), 
+       ValueMap { "0", "1", "2", "3", "4..32767", "32768..65535" }, 
+       Values { "Unknown", "Other", "VT100", "ANSI", 
+          "DMTF Reserved", "Vendor Reserved" }, 
+       ArrayType ( "Indexed" ), 
+       ModelCorrespondence { 
+          "CIM_TelnetCapabilities.OtherSupportedTerminalMode" }]
+   uint16 SupportedTerminalModes[];
+
+      [Description ( 
+          "If the TerminalModes property is set to 1, \"Other\" "
+          "then free form string providing more information about "
+          "supported terminal modes. If not set to 1, this string "
+          "has no meaning." ), 
+       ModelCorrespondence { 
+          "CIM_TelnetCapabilities.SupportedTerminalModes" }]
+   string OtherSupportedTerminalMode;
+
+      [Description ( 
+          "An array of integers indicating the Character display "
+          "modes supported by the service." ), 
+       ValueMap { "0", "1", "2", "3", "4..32767", "32768..65535" }, 
+       Values { "Unknown", "Other", "Console", "Stream", 
+          "DMTF Reserved", "Vendor Reserved" }, 
+       ArrayType ( "Indexed" ), 
+       ModelCorrespondence { 
+          "CIM_TelnetCapabilities.OtherSupportedCharacterDisplayMode" }]
+   uint16 SupportedCharacterDisplayModes[];
+
+      [Description ( 
+          "If the SupportedCharacterDisplayModes property is set to "
+          "1 \"Other\" then free form string providing more "
+          "information about the supported modes. If not set to 1, "
+          "this string has no meaning." ), 
+       ModelCorrespondence { 
+          "CIM_TelnetCapabilities.SupportedCharacterDisplayModes" }]
+   string OtherSupportedCharacterDisplayMode;
+
+
+};

@@ -1,0 +1,2 @@
+class DRI_TimeService : CIM_TimeService {
+};

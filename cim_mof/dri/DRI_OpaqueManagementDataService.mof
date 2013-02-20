@@ -1,0 +1,2 @@
+class DRI_OpaqueManagementDataService : CIM_OpaqueManagementDataService {
+};

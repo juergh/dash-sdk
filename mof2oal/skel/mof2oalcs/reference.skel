@@ -1,0 +1,30 @@
+	/**
+	 * Gets %REFERENCE_NAME%
+	 */
+
+        public %NEW% %REFERENCE_OBJ% get%REFERENCE_NAME%(Client client) {
+        
+			OalDllArg o = new OalDllArg();
+			Int32 ret;
+			
+			ret = %CLASSNAME%_get%REFERENCE_NAME%(client, OalObj, ref o);
+			if (ret != PP.OK) {
+				if (throwWrapperExceptions) {
+					throw new wrapperException(ret);
+				} else {
+					return new %REFERENCE_OBJ%(IntPtr.Zero);
+				}
+            }
+
+			IntPtr[] a = oalConvert.ToIntPtrArray(o);
+			if (a != null && a.Length == 1) {
+				return new %REFERENCE_OBJ%(a[0]);
+			}
+			return new %REFERENCE_OBJ%(IntPtr.Zero);			
+
+        }
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_get%REFERENCE_NAME%(
+            IntPtr Client, IntPtr c, [In] ref OalDllArg arg);

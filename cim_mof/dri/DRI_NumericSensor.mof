@@ -1,0 +1,2 @@
+class DRI_NumericSensor : CIM_NumericSensor {
+};

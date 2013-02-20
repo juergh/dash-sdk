@@ -1,0 +1,2 @@
+class DRI_UserContact : CIM_UserContact {
+};

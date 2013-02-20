@@ -1,0 +1,80 @@
+		
+	/**
+	 * Enumerate instances of %RESULT% (%RESULT_OBJ%) that refer to %REFERED% (%REFERED_OBJ%).
+	 */
+        public %RESULT_OBJ%[] get%RESULT%sBy%REFERED% (%REFERED_OBJ% %REFERED%) {
+			return get%RESULT%sBy%REFERED% (%REFERED%, "");
+        }
+
+        public %RESULT_OBJ%[] get%RESULT%sBy%REFERED% (%REFERED_OBJ% %REFERED%, String filter) { 
+			IntPtr f = IntPtr.Zero;
+			List<%RESULT_OBJ%> lst = new List<%RESULT_OBJ%>();
+            OalDllArg o = new OalDllArg();
+            Int32 ret;
+            
+            if (filter != "")
+				f = oalConvert.toOALDLLPtr(filter); 
+
+            ret = %CLASSNAME%_get%RESULT%s_by%REFERED%(client, %REFERED%, f, ref o);
+			
+			if (ret != PP.OK) {
+				Common.freeOalArg(ref o);
+				if (throwWrapperExceptions) {
+					throw new wrapperException(ret);
+				} else {
+					return lst.ToArray();
+				}
+			} else {
+				IntPtr[] a = oalConvert.ToIntPtrArray(o);
+				if (a != null && a.Length != 0) {
+					foreach (IntPtr p in a) {
+						lst.Add(new %RESULT_OBJ%(p));
+					}
+				}
+				Common.freeOalArg(ref o);
+			}
+			return lst.ToArray();
+        }
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_get%RESULT%s_by%REFERED%(
+		IntPtr client, IntPtr %REFERED%, IntPtr filter, [In] ref OalDllArg arg);
+
+	/**
+	 * Enumerate instances of %CLASSNAME% that refer to %REFERED% (%REFERED_OBJ%).
+	 */
+	 
+        public %CLASSNAME%[] getInstancesBy%REFERED% (%REFERED_OBJ% %REFERED%) { 
+			List<%CLASSNAME%> lst = new List<%CLASSNAME%>();
+            OalDllArg o = new OalDllArg();
+
+            Int32 ret;
+            ret = %CLASSNAME%_getInstances_by%REFERED%(client, %REFERED%, ref o);
+
+			if (ret != PP.OK) {
+				Common.freeOalArg(ref o);
+				if (throwWrapperExceptions) {
+					throw new wrapperException(ret);
+				} else {
+					return lst.ToArray();
+				}
+			} else {
+				IntPtr[] a = oalConvert.ToIntPtrArray(o);
+
+				if (a != null && a.Length != 0) {
+					foreach (IntPtr p in a) {
+						lst.Add(new %CLASSNAME%(p));
+					}
+				}
+				Common.freeOalArg(ref o);
+			}
+			return lst.ToArray();
+				
+        }
+
+        [DllImport(%WRAPPER_DLL_NAME%,
+        CallingConvention = CallingConvention.Cdecl)]
+        private static extern Int32 %CLASSNAME%_getInstances_by%REFERED%(
+		IntPtr client, IntPtr %REFERED%, [In] ref OalDllArg arg);
+		

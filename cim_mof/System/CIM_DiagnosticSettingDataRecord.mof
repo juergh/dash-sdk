@@ -1,0 +1,24 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00797.003" type = "Add"> Change Diagnostic Settings 
+// to derive from CIM_SettingData rather than CIM_Setting.</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_DiagnosticSettingDataRecord
+// ==================================================================
+   [Experimental, Version ( "2.11.0" ), 
+    UMLPackagePath ( "CIM::System::Diagnostics" ), 
+    Description ( 
+       "This class contains a snapshot of the settings that were used "
+       "when the associated Diagnostic service was run." )]
+class CIM_DiagnosticSettingDataRecord : CIM_DiagnosticRecord {
+
+      [Description ( 
+          "A string containing an encoding of the "
+          "DiagnosticSettingData instance that was used when the "
+          "diagnostic service was run." ), 
+       EmbeddedInstance ( "CIM_DiagnosticSettingData" )]
+   string Settings;
+
+
+};

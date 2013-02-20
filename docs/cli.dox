@@ -1,0 +1,18 @@
+/**
+ @page cliref CLI Reference
+
+ @section cmdformat Command Format
+ Usage : dashcli [options] commands\n
+ @ref dashclihelp
+
+
+ @section options Options
+ @ref clioptions
+
+ @section commands Commands
+ @ref clicommands
+
+ @section target Targets
+ @ref clitargets
+
+**/

@@ -1,0 +1,2 @@
+class DRI_Group : CIM_Group {
+};

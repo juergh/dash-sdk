@@ -1,0 +1,265 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Version ( "2.18.0" ), 
+    UMLPackagePath ( "CIM::Device::StorageServices" ), 
+    Description ( 
+       "A subclass of Capabilities that defines the Capabilities of a "
+       "StorageConfigurationService. An instance of "
+       "StorageConfigurationCapabilities is associated with a "
+       "StorageConfigurationService using ElementCapabilities. The "
+       "properties in this class specify the envelope of capabilites "
+       "for storage configuration in the context of the Service or "
+       "Pool with which the instance is associated. These properties "
+       "correspond to the properties of the same base names in "
+       "StorageSetting and StorageSettingWithHints when either is used "
+       "as a goal parameter to the StorageConfigurationService methods "
+       "(CreateOrModifyStoragePool, "
+       "CreateOrModifyElementFromStoragePool, or "
+       "CreateOrModifyElementFromElements)." )]
+class CIM_StorageConfigurationCapabilities : CIM_Capabilities {
+
+      [Description ( 
+          "Enumeration indicating what operations will be executed "
+          "as asynchronous jobs. If an operation is included in "
+          "both this and SupportedSynchronousActions then the "
+          "underlying implementation is indicating that it may or "
+          "may not create a job. \n"
+          "\n"
+          "The following values have been deprecated and replaced "
+          "by values in StorageReplicationCapabilities. "
+          "SupportedAsynchronousActions: \n"
+          "Replica Creation(8) to Local Replica Creation(2) and "
+          "Remote Replica Creation(3) \n"
+          "Replica Modification(9) to Local Replica "
+          "Modification(4), Remote Replica Modification(5) and \n"
+          "Replica Attachment(10) to Local Replica Attachment(6) "
+          "and Remote Replica Attachment(7)." ), 
+       ValueMap { "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+          "11", "12", "13", "14", "15", "16", ".." }, 
+       Values { "Storage Pool Creation", "Storage Pool Deletion", 
+          "Storage Pool Modification", "Storage Element Creation", 
+          "Storage Element Return", "Storage Element Modification", 
+          "Replica Creation", "Replica Modification", 
+          "Replica Attachment", "SCSI Scan", 
+          "Storage Element from Element Creation", 
+          "Storage Element from Element Modification", 
+          "Element Usage Modification", 
+          "StoragePool Usage Modification", 
+          "Storage Resource Affinity Assignment", "DMTF Reserved" }, 
+       ModelCorrespondence { 
+          "CIM_StorageConfigurationCapabilities.SupportedSynchronousActions" }]
+   uint16 SupportedAsynchronousActions[];
+
+      [Description ( 
+          "Enumeration indicating what operations will be executed "
+          "without the creation of a job. If an operation is "
+          "included in both this and SupportedAsynchronousActions "
+          "then the underlying instrumentation is indicating that "
+          "it may or may not create a job. \n"
+          "\n"
+          "The following values have been deprecated and replaced "
+          "by values in "
+          "StorageReplicationCapabilities.SupportedSynchronousActions: \n"
+          "Replica Creation(8) to Local Replica Creation(2) and "
+          "Remote Replica Creation(3) \n"
+          "Replica Modification(9) to Local Replica "
+          "Modification(4), Remote Replica Modification(5) and \n"
+          "Replica Attachment(10) to Local Replica Attachment(6) "
+          "and Remote Replica Attachment(7)." ), 
+       ValueMap { "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+          "11", "12", "13", "14", "15", "16", ".." }, 
+       Values { "Storage Pool Creation", "Storage Pool Deletion", 
+          "Storage Pool Modification", "Storage Element Creation", 
+          "Storage Element Return", "Storage Element Modification", 
+          "Replica Creation", "Replica Modification", 
+          "Replica Attachment", "SCSI Scan", 
+          "Storage Element from Element Creation", 
+          "Storage Element from Element Modification", 
+          "Element Usage Modification", 
+          "StoragePool Usage Modification", 
+          "Storage Resource Affinity Assignment", "DMTF Reserved" }, 
+       ModelCorrespondence { 
+          "CIM_StorageConfigurationCapabilities.SupportedAsynchronousActions" }]
+   uint16 SupportedSynchronousActions[];
+
+      [Description ( 
+          "Enumeration indicating the type of storage elements that "
+          "are supported by the associated "
+          "StorageConfigurationService." ), 
+       ValueMap { "2", "3", "4", "..", "0x8000..0xFFFF" }, 
+       Values { "StorageVolume", "StorageExtent", "LogicalDisk", 
+          "DMTF Reserved", "Vendor Specific" }, 
+       ModelCorrespondence { 
+          "CIM_StorageConfigurationService.CreateOrModifyElementFromStoragePool.ElementType", 
+          "CIM_StorageConfigurationService", 
+          "CreateOrModifyElementFromElements.ElementType" }]
+   uint16 SupportedStorageElementTypes[];
+
+      [Description ( 
+          "Enumeration indicating features supported by the "
+          "StoragePool methods." ), 
+       ValueMap { "2", "3", "4", "5", "6", "7", "..", 
+          "0x8000..0xFFFF" }, 
+       Values { "InExtents", "Single InPool", "Multiple InPools", 
+          "Storage Pool QoS Change", 
+          "Storage Pool Capacity Expansion", 
+          "Storage Pool Capacity Reduction", "DMTF Reserved", 
+          "Vendor Specific" }, 
+       ModelCorrespondence { 
+          "CIM_StorageConfigurationService.CreateOrModifyStoragePool.InPools", 
+          "CIM_StorageConfigurationService", 
+          "CreateOrModifyStoragePool.InExtents" }]
+   uint16 SupportedStoragePoolFeatures[];
+
+      [Description ( 
+          "Enumeration indicating features supported by the Storage "
+          "Element methods." ), 
+       ValueMap { "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+          "11", "12", "13", "..", "0x8000..0xFFFF" }, 
+       Values { "StorageExtent Creation", "StorageVolume Creation", 
+          "StorageExtent Modification", 
+          "StorageVolume Modification", "Single InPool", 
+          "Multiple InPools", "LogicalDisk Creation", 
+          "LogicalDisk Modification", "InElements", 
+          "Storage Element QoS Change", 
+          "Storage Element Capacity Expansion", 
+          "Storage Element Capacity Reduction", "DMTF Reserved", 
+          "Vendor Specific" }, 
+       ModelCorrespondence { 
+          "CIM_StorageConfigurationService.CreateOrModifyElementFromStoragePool.ElementType", 
+          "CIM_StorageConfigurationService.CreateOrModifyElementFromStoragePool.InPool", 
+          "CIM_StorageConfigurationService", 
+          "CreateOrModifyElementFromElements.InElements" }]
+   uint16 SupportedStorageElementFeatures[];
+
+      [Description ( 
+          "SupportedCopyTypes describes the replication "
+          "capabilities supported by the associated "
+          "StorageConfigurationServices. Values are: \n"
+          "Async: asynchronous copies may be created and "
+          "maintained. \n"
+          "Sync: synchronous copies may be created and maintained. \n"
+          "UnSyncAssoc: unsynchronized copies may be created and "
+          "maintained. \n"
+          "UnSyncUnAssoc: a \'straight copy\' may be created." ), 
+       ValueMap { "2", "3", "4", "5", "..", "0x8000..0xFFFF" }, 
+       Values { "Async", "Sync", "UnSyncAssoc", "UnSyncUnAssoc", 
+          "DMTF Reserved", "Vendor Specific" }, 
+       ModelCorrespondence { 
+          "CIM_StorageConfigurationService.CreateReplica.CopyType" }]
+   uint16 SupportedCopyTypes[];
+
+      [Description ( 
+          "InitialReplicationState specifies which initial "
+          "ReplicationState is supported by a particular provider. "
+          "Values are: \n"
+          "Initialized: The replication relationship is known and "
+          "unsynchronized, but time required to synchronize may be "
+          "long. \n"
+          "Prepared: The replication relationship is known and "
+          "unsynchronized and the time required to synchronize will "
+          "be short. \n"
+          "Synchronized: The replicas are synchronized." ), 
+       ValueMap { "2", "3", "4", "..", "0x8000..0xFFFF" }, 
+       Values { "Initialized", "Prepared", "Synchronized", 
+          "DMTF Reserved", "Vendor Specific" }, 
+       ModelCorrespondence { 
+          "CIM_StorageConfigurationService.AttachReplica", 
+          "CIM_StorageConfigurationService.CreateReplica" }]
+   uint16 InitialReplicationState;
+
+      [Experimental, Description ( 
+          "Indicates the intended usage or any restrictions that "
+          "may have been imposed on the usage of Supported Storage "
+          "Elements. For example, an element may be reserved for "
+          "use by the block server. In that case the Usage of the "
+          "element is marked as \"Reserved for the ComputerSystem\". "
+          "In the case of \"Other\", see OtherUsageDescription for "
+          "more information. For additional information on "
+          "variousvalues, see the classes noted in "
+          "ModelCorrespondence." ), 
+       ValueMap { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+          "11", "12", "13", "..", "32768..65535" }, 
+       Values { "Other", "Unrestricted", 
+          "Reserved for ComputerSystem (the block server)", 
+          "Reserved by Replication Services", 
+          "Reserved by Migration Services", "Local Replica Source", 
+          "Remote Replica Source", "Local Replica Target", 
+          "Remote Replica Target", "Local Replica Source or Target", 
+          "Remote Replica Source or Target", "Delta Replica Target", 
+          "Element Component", "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_StorageExtent.Usage", 
+          "CIM_StorageVolume.Usage", "CIM_LogicalDisk.Usage", 
+          "CIM_StorageExtent.OtherUsageDescription", 
+          "CIM_StorageVolume.OtherUsageDescription", 
+          "CIM_LogicalDisk.OtherUsageDescription" }]
+   uint16 SupportedStorageElementUsage[];
+
+      [Experimental, Description ( 
+          "Indicates the intended usage or any restrictions that "
+          "may have been imposed on the usage of Client Settable "
+          "Elements. For example, an element may be reserved for "
+          "use by the block server. In that case the Usage of the "
+          "element is marked as \"Reserved for the ComputerSystem\". "
+          "In the case of \"Other\", see OtherUsageDescription for "
+          "more information. For additional information on "
+          "variousvalues, see the classes noted in "
+          "ModelCorrespondence." ), 
+       ValueMap { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+          "11", "12", "13", "..", "32768..65535" }, 
+       Values { "Other", "Unrestricted", 
+          "Reserved for ComputerSystem (the block server)", 
+          "Reserved by Replication Services", 
+          "Reserved by Migration Services", "Local Replica Source", 
+          "Remote Replica Source", "Local Replica Target", 
+          "Remote Replica Target", "Local Replica Source or Target", 
+          "Remote Replica Source or Target", "Delta Replica Target", 
+          "Element Component", "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_StorageExtent.Usage", 
+          "CIM_StorageVolume.Usage", "CIM_LogicalDisk.Usage", 
+          "CIM_StorageExtent.OtherUsageDescription", 
+          "CIM_StorageVolume.OtherUsageDescription", 
+          "CIM_LogicalDisk.OtherUsageDescription" }]
+   uint16 ClientSettableElementUsage[];
+
+      [Experimental, Description ( 
+          "Indicates the intended usage or any restrictions that "
+          "may have been imposed on the usage a supported storage "
+          "pool. For example, a storage pool may be reserved for "
+          "use by the block server. In that case the Usage of the "
+          "storage pool is marked as \"Reserved for the "
+          "ComputerSystem\". In the case of \"Other\", see "
+          "OtherUsageDescription for more information." ), 
+       ValueMap { "1", "2", "3", "4", "5", "6", "7", "8", "..", 
+          "32768..65535" }, 
+       Values { "Other", "Unrestricted", 
+          "Reserved for ComputerSystem (the block server),", 
+          "Reserved as a Delta Replica Container", 
+          "Reserved for Migration Services", 
+          "Reserved for Local Replication Services", 
+          "Reserved for Remote Replication Services", 
+          "Reserved for Sparing", "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_StoragePool.OtherUsageDescription" }]
+   uint16 SupportedStoragePoolUsage[];
+
+      [Experimental, Description ( 
+          "Indicates the intended usage or any restrictions thatmay "
+          "have been imposed on the usage a client settable storage "
+          "pool. For example, a storage pool may be reserved for "
+          "use by the block server.In that case the Usage of the "
+          "storage pool is marked as \"Reserved for the "
+          "ComputerSystem\". In the case of \"Other\", see "
+          "OtherUsageDescription for more information." ), 
+       ValueMap { "1", "2", "3", "4", "5", "6", "7", "8", "..", 
+          "32768..65535" }, 
+       Values { "Other", "Unrestricted", 
+          "Reserved for ComputerSystem (the block server)", 
+          "Reserved as a Delta Replica Container", 
+          "Reserved for Migration Services", 
+          "Reserved for Local Replication Services", 
+          "Reserved for Remote Replication Services", 
+          "Reserved for Sparing", "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_StoragePool.OtherUsageDescription" }]
+   uint16 ClientSettablePoolUsage[];
+
+
+};

@@ -1,0 +1,1 @@
+class DRI_DeviceSAPImplementation : CIM_DeviceSAPImplementation {};

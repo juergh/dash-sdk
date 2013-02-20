@@ -1,0 +1,2 @@
+class DRI_IPRemoteAccessAvailableToElement : CIM_RemoteAccessAvailableToElement {
+};

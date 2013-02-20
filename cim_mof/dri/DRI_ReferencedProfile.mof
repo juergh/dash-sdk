@@ -1,0 +1,1 @@
+class DRI_ReferencedProfile : CIM_ReferencedProfile {};

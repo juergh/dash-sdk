@@ -1,0 +1,123 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SMWGCR00025.003" type ="new">Create
+// CLPProtocolEndpoint.</change>
+// <change cr="SMWGCR00067.005" type ="add">Added properties
+// CurrentDefaultTarget, KeepTime, WaitBehavior, OutputFormat,
+// OutputVerbosity, OutputLanguage, OutputPosition, OutputOrder, and
+// OutputCount.</change>
+// <change cr="SMWGCR00088" type ="change">Add property
+// DisplayOption.</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// <change cr="ArchCR00089.003" type="add">Add PUnit qualifier values
+// to Units qualifier values.</change>
+// ==================================================================
+//  CIM_CLPProtocolEndpoint
+// ==================================================================
+   [Experimental, Version ( "2.11.0" ), 
+    UMLPackagePath ( "CIM::Network::ProtocolEndpoints" ), 
+    Description ( 
+       "A representation of a communication endpoint where the CLP "
+       "protocol may be accessed." )]
+class CIM_CLPProtocolEndpoint : CIM_ProtocolEndpoint {
+
+      [Write, Description ( 
+          "Identifies the Current Default Target when a CLP Session "
+          "is established. The Current Default Target is the CLP "
+          "session environment setting that establishes a default "
+          "base address for all command targets that are expressed "
+          "as a relative target address and is used as the command "
+          "target if no command target is specified in a command." ), 
+       ModelCorrespondence { 
+          "CIM_CLPSettingData.CurrentDefaultTarget" }]
+   string CurrentDefaultTarget;
+
+      [Write, Description ( 
+          "The amount of time in seconds that the CLP Session "
+          "should retain a CLP command job status. A KeepTime value "
+          "of zero shall be interpreted to mean keep forever." ), 
+       Units ( "Seconds" ), 
+       ModelCorrespondence { "CIM_CLPSettingData.KeepTime" }, 
+       PUnit ( "second" )]
+   uint16 KeepTime;
+
+      [Write, Description ( 
+          "When TRUE the CLP Session will not return a command "
+          "response until all spawned jobs have completed, "
+          "otherwise it may." ), 
+       ModelCorrespondence { "CIM_CLPSettingData.WaitBehavior" }]
+   boolean WaitBehavior;
+
+      [Write, Description ( 
+          "OutputFormat establishes the default CLP Session command "
+          "output format, as described in SM CLP Specification, "
+          "DMTF document DSP0214." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "..", 
+          "0x8000..0xFFFF" }, 
+       Values { "DMTF Reserved", "DMTF Reserved", "Text", "clpcsv", 
+          "Keyword", "clpxml", "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_CLPSettingData.OutputFormat" }]
+   string OutputFormat;
+
+      [Write, Description ( 
+          "OutputVerbosity establishes the default CLP Session "
+          "output level of detail, as described in SM CLP "
+          "Specification, DMTF document DSP0214." ), 
+       ValueMap { "0", "1", "2", "3", "4", "..", "0x8000..0xFFFF" }, 
+       Values { "DMTF Reserved", "DMTF Reserved", "Error", "Terse", 
+          "Verbose", "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_CLPSettingData.OutputVerbosity" }]
+   string OutputVerbosity;
+
+      [Write, Description ( 
+          "The default CLP Session command output language. As "
+          "described in SM CLP Specification, DMTF document "
+          "DSP0214, the language value is a 3-character string "
+          "identifier of language as specified in ISO 639.2; \"eng\" "
+          "is the default." ), 
+       ModelCorrespondence { "CIM_CLPSettingData.OutputLanguage" }]
+   string OutputLanguage;
+
+      [Write, Description ( 
+          "OutputPosition establishes the default CLP Session "
+          "command output beginning position when multiple items "
+          "are returned in the command output, as described in SM "
+          "CLP Specification, DMTF document DSP0214." ), 
+       ValueMap { "0", "1", "2", "3", "..", "0x8000..0xFFFF" }, 
+       Values { "DMTF Reserved", "DMTF Reserved", "Begin", "End", 
+          "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_CLPSettingData.OutputPosition" }]
+   string OutputPosition;
+
+      [Write, Description ( 
+          "OutputOrder establishes the default CLP Session command "
+          "output order when multiple items are returned in the "
+          "command output as described in SM CLP Specification, "
+          "DMTF document DSP0214." ), 
+       ValueMap { "0", "1", "2", "3", "..", "0x8000..0xFFFF" }, 
+       Values { "DMTF Reserved", "DMTF Reserved", "Default", 
+          "Reverse", "DMTF Reserved", "Vendor Reserved" }, 
+       ModelCorrespondence { "CIM_CLPSettingData.OutputOrder" }]
+   string OutputOrder;
+
+      [Write, Description ( 
+          "Establishes the default CLP Session command output count "
+          "number when multiple items are returned in the output as "
+          "described in SM CLP Specification, DMTF document "
+          "DSP0214. The value 0xFFFFFFFF shall be interpreted to "
+          "mean that all items are to be returned. The maximum "
+          "value for the count number is determined by the class of "
+          "the target." ), 
+       ModelCorrespondence { "CIM_CLPSettingData.OutputCount" }]
+   uint32 OutputCount;
+
+      [Write, Description ( 
+          "Maintains the session default value for the display "
+          "option. The argument string is stored \"as-is\" without "
+          "normalization beyond capitalization. The argument string "
+          "is compliant with the SM CLP command line grammar." ), 
+       ModelCorrespondence { "CIM_CLPSettingData.DisplayOption" }]
+   string DisplayOption;
+
+
+};

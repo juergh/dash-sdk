@@ -1,0 +1,2 @@
+class DRI_Slot : CIM_Slot {
+};

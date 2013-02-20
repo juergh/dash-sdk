@@ -1,0 +1,2016 @@
+<html>
+<head>
+<title>Getting Started with the DASH SDK</title>
+<style type="text/css">
+h1 { text-align: center }
+h2 { text-align:center }
+.codecell {background-color: lightgrey}
+</style>
+</head>
+<body>
+<h1>Getting Started with the DASH SDK</h1>
+
+<h2>1. Introduction</h2>
+<p align="right">
+Version 1.0<br/>
+July 15, 2008<br/>
+Contact: bob.blair@amd.com
+</p>
+<p>
+The DASH SDK is a set of C and C++ APIs that allow console and tool
+developers to find DASH conformant systems on a network and to manage those
+systems using DASH. The SDK is downloadable from Source Forge.  It can be built
+using gcc 4.2 or higher on linux, or under Visual Studio Express 2008 on
+Windows.
+</p>
+<p>
+The design principals behind the SDK are:
+</p>
+<ol>
+    <li> Hide the complexity of WS-Management and the CIM model while
+       exposing the management functions described in the DASH profiles.</li>
+    <li> Minimize dependencies.  For example, assume that users will handle
+       threading.</li> 
+    <li> Couple loosely to the WS-Management layer so that the APIs can
+       be implemented on top of different WS-Management stacks.</li>
+    <li> In the C++ API, do not burden the user with memory management.</li>
+</ol>
+<p>
+The scope of the SDK increases over time, but currently it supports most of
+the DASH 1.1 profiles and includes support for subscription to and receipt
+of indications.  It also includes implementations of two features the
+management of which is specified by DASH, but the implementation of which is
+not:  serial redirection and USB redirection.
+</p>
+<p>
+Build and install the DASH SDK using the instructions in
+the README file.  For linux there is a make install option that puts libraries
+in
+<code>/usr/local/lib</code>
+and header files in
+<code>/usr/local/include</code>.
+For Windows,
+the header files are placed in
+<code>windows/win32pkg/include</code>;
+and the libraries
+are copied into
+<code>windows/win32pkg/xxxx</code>, where "xxxx" is the Visual Studios
+configuration name ("release", "release_static", etc.)
+</p>
+
+<h2>2. Hello, World!</h2>
+<p>
+The "Hello, world!" of the DASH SDK is getting the Computer System objects
+from a DASH Management Access Point (MAP).
+
+<h3>C++ API</h3>
+A C++ program to do that is
+shown in Example 2.1.
+</p>
+
+<table class="codesample">
+<caption class="codecaption">Example 2.1</caption>
+<tr>
+<td class="codecell">
+<pre>
+ 1 #include &lt;stdio.h&gt;
+ 2 #include "client.h"
+ 3 #include "computersystem.h"
+
+ 4 using namespace dsdk;
+
+ 5 int
+ 6 main(void)
+ 7 {
+ 8   CCIMMAP cm ("mycomputer.amd.com", "623");
+ 9   CSubject subject("admin", "admin", "digest");
+10   IClient *client = cm.connect(subject);
+
+11   try {
+12     CComputerSystem::iterator iter =
+                              CComputerSystem::enumComputerSystems(client);
+13     for (; iter != CComputerSystem::iterator::end(); ++iter) {
+14       CComputerSystem cs = *iter;  // get each instance of ComputerSystem
+15       fprintf(stdout, "Computer System Name : %s\n", cs.getName().c_str());
+16     }
+17   } catch (exception &amp;e) {
+18       fprintf(stderr, "Error : %s\n", e.what());
+19   }
+20   delete client;  // Don't forget to free the client instance
+21   return 0;
+22 }
+</pre>
+</td>
+</tr>
+</table>
+<p>
+Makefiles are in Appendix A.1.  Let's go through the program line by line.
+</p>
+<p>
+<i>Lines 1-3.</i>
+<code>stdio.h</code>
+ is needed for this example (fprintf).<br/>
+<code>client.h</code> declares the IClient interface and includes headers for
+CCIMMAP and CSubject classes (discussed below).<br/>
+<code>computersystem.h</code>
+declares the <code>CComputerSystem</code> class.
+</p>
+<p>
+<i>Line 4.</i>
+All the methods and structures of the DASH SDK are in the namespace
+<code>dsdk</code>.
+</p>
+<p>
+<i>Lines 8-10.</i>
+To do any action on a remote DASH MAP, you need an object that
+implements the
+<code>IClient</code>
+interface.
+An
+<code>IClient</code>
+is returned when the
+<code>connect()</code>
+ method
+of class
+<code>CCIMMAP</code>
+is called.  It associates a
+<code>CCIMMAP</code>
+ with a
+<code>CSubject</code>
+to aggregate all the information needed to connect to a DASH MAP.
+There are two ways to create a
+<code>CCIMMAP</code>
+object: by <i>discovery</i>
+(see next section) or by constructing it directly as
+shown in line 8.  The
+<code>CSubject</code>
+object has many members beyond the three shown
+in the constructor in line 9; but for many applications, just the user ID,
+password and http authentication method are needed. An operation
+timeout can also be specified in the
+<code>CSubject</code>
+object.  By default it is 5
+seconds.
+These three
+lines do not involve any network activity: they just get all the information&mdash;a minimum of IP address, port, user ID, password and http authentication
+method&mdash;needed to attempt a Web Services connection.
+</p>
+<p>
+<i>Line 12.</i> The
+<code>enumComputerSystems()</code>
+method (a static method of
+<code>CComputerSystem</code>)
+encapsulates all the WS-Management traffic to find and return the instances
+of CIM_ComputerSystem known by the MAP.  The CIM instances are encapsulated in
+instances of
+<code>CComputerSystem</code>.
+The value returned by this method is an
+iterator that has the normal methods of an iterator. In particular, you can
+increment it (line 13) and dereference it (line 14).
+Note that the increment operator is prefix only and coding it as postfix will
+generate a compiler error.  Dereferencing a
+<code>CComputerSystem</code> iterator constructs
+an instance of
+<code>CComputerSystem</code>.  Note that there are any number of reasons
+why this method may fail:  the MAP may not be responding; the IP address or
+port may be invalid; the user ID may not exist; the password may be wrong, 
+and so on.  In any of these cases, the method will throw an exception (see
+lines 11 and 17 below).
+</p>
+<i>Line 15.</i>  Once you have the instance of
+<q>CComputerSystem</q>, you can use any of
+its methods, which include getting and setting its properties, powering the
+system on or off, and so on.  See the Doxygen API documentation for
+thje methods of
+<q>CComputerSystem</q>.
+In this case, we invoke the
+<code>getName()</code>
+method to retrieve an identifier for this system.
+</p>
+<p>
+<i>Lines 11 and 17.</i> 
+Almost every SDK method (even ones you might not expect) may
+throw an exception of class
+<i>DSDKException</i>
+(see
+<i>dsdkexception.h</i>).
+Often
+it is sufficient to catch a superclass, <i>exception</i>.
+</p>
+<p>
+<i>Line 20.</i> 
+The SDK cleans up nicely after itself with one exception.  When
+you create a client object, you need to free it.
+</p>
+
+<h3>C API</h3>
+<p>
+Example 2.2 shows the equivalent program using the C API.  
+</p>
+<table class="codesample">
+<caption class="codecaption">Example 2.2</caption>
+<tr>
+<td class="codecell">
+<pre>
+ 1 #include &lt;computersystem_c.h&gt;   // declares the Computer System structure
+ 2 #include &lt;cimmap_c.h&gt;           // declares the DSDKCIMMAP structure
+ 3 #include &lt;stdio.h&gt;              // for fprintf
+ 4 #include &lt;error_c.h&gt;            // for getLastError
+
+ 5 int 
+ 6 main(void)
+ 7 {
+ 8   DSDKSubject    *subject;      // corresponds to CSubject in the C++ API
+ 9   DSDKCIMMAP     *map;          // corresponds to CCIMMAP
+10   DSDKClient     *client;       // corresonds to IClient
+11   DSDKComputerSystemIterator *iter;  /* corresponds to */
+                                  /* CComputerSystem::Iterator */
+
+12   subject = makeSubject("admin", "admin", "digest", "http",
+	                   0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+13   map = makeCIMMAP("10.236.48.218", "623");
+14   client = map-&gt;ft-&gt;connect(map, subject);
+15   /* enumerate computer systems.  The 2nd arg means "use cached results" */
+16   iter = enumComputerSystems(client, 1);
+17   /* make sure enumeration succeeded */
+18   if (iter &amp;&amp; !dsdkc_getLastError()) {
+19     /* for each computer instance reported by the MAP */
+20     while (!iter-&gt;ft-&gt;isEnd(iter)) {
+         /*  get the instance of ComputerSystem and do something with it */
+21       DSDKComputerSystem *cs = iter-&gt;ft-&gt;getItem(iter);
+22       if (cs) {
+23         char name[257];
+24         cs-&gt;ft-&gt;getName(cs, name, 256);
+25         fprintf(stdout, "%s\n", name);
+26         cs-&gt;ft-&gt;release(cs);
+27       }
+28       iter-&gt;ft-&gt;next(iter);  
+29     }
+30     iter-&gt;ft-&gt;release(iter);  // Done with the iterator. Release it.
+31   } else {
+32     char errmsg[256];
+33     dsdkc_getLastErrorStr(errmsg, 255);
+34     fprintf(stderr, "Error iterating computer systems: %s\n", errmsg);
+35   }
+36   subject-&gt;ft-&gt;release(subject);
+37   map-&gt;ft-&gt;release(map);
+38   return 0;
+39 }
+</pre>
+</td>
+</tr>
+</table>
+<p>
+Make files are in Appendix A.2.
+</p>
+<p>
+<i>Line 12.</i>
+The 14 arguments to the
+<code>makeSubject()</code>
+function are daunting, but
+only the first 5 are usually used.  This line corresponds to line 9 in the
+C++ example.
+</p>
+<i>Line 14.</i> This is the first example we see of the use of a function table
+in the C API.  A function table is a list of pointers to functions.  The C API
+uses this pattern frequently.  On this line, we are doing the C equivalent
+of invoking
+<code>connect()</code>
+method of the <code>CCIMMAP</code> class in the C++ example.
+</p>
+<p>
+<i>Line 16.</i> All the enumeration functions return an iterator.  The second
+argument says that cached data may be used to satisfy the request.  When
+the SDK sees this flag, it first tries to form results from previously-fetched
+results, only communicating with the MAP when it has to.
+</p>
+<p>
+<i>Line 18.</i> All the C API methods set an SDK-wide result code.  To find out
+if a function encountered an error, call
+<code>dsdkc_getLastError()</code>.  A result code
+of 0 means no error.
+</p>
+<p>
+<i>Line 20.</i>
+C iterators act as you would expect.  See the functions described
+in dsdkiterator.h
+</p>
+<p>
+<i>Line 21.</i>  Dereferencing an iterator gives a pointer to a structure that
+contains the iterator function table.  In this case, we call the function that
+returns the computer system data structure (the <q>Item</q>).
+</p>
+<p>
+<i>Line 24.</i>  The 
+<code>DSDKComputerSystem</code>
+structure has its own function table, and we
+use it to call a method that returns the name.  It is a common pattern in
+the C API that methods that return strings require the caller to reserve
+space for the data and tell the API how much space is available.
+</p>
+<p>
+<i>Line 27.</i>  As a general rule, any time you get a pointer to a structure from
+the C API, you need to free it.  The is always done by calling the
+<code>release()</code>
+function from the structure's function table.  The structures are
+reference-counted in this implementation and should not be freed directly.
+</p>
+<p>
+<i>Line 30.</i>
+Also as a general rule, free iterators when you are done with them.
+</p>
+<p>
+<i>Lines 36 and 37.</i> It is safe to release subject and map after they have been
+used to create a client.  The client structure itself does not have a
+release function in its function table.
+</p>
+
+<h2>3. Discovery</h2>
+<p>
+In some cases is is useful to search a part of the network address space
+for systems that have DASH MAPs.  The SDK provides methods for doing that.
+This section shows the C++ and C discovery APIs and then discusses
+performance aspects of discovery.
+</p>
+
+<h3>C++ API</h3>
+<p>
+The program
+shown in Example 3.1 finds DASH MAPs at
+three addresses and prints some information
+about them.
+</p>
+
+
+<table class="codesample">
+<caption class="codecaption">Example 3.1</caption>
+<tr>
+<td class="codecell">
+<pre>
+ 1 #include &lt;stdio.h&gt;
+ 2 #include "cimmap.h"
+ 3 #include "discoverer.h"
+
+ 4 using namespace dsdk;
+
+ 5 int main(void)
+ 6 {
+ 7   vector&lt;pair&lt;string, string&gt; &gt; ports;
+
+ 8   ports.push_back(pair&lt;string, string&gt;("623", "http"));
+ 9   ports.push_back(pair&lt;string, string&gt;("664", "https"));
+10   ports.push_back(pair&lt;string, string&gt;("16992", "http"));
+
+11   try {
+12      /* do the discovery */
+13      vector&lt;CCIMMAP&gt; cimmap = CDiscoverer::discoverMAPs("10.236.48.216",
+ 							   "10.236.48.218",
+							   ports);
+14      /* display the discovered management access points */
+15      fprintf (stdout, "Discovered:\n");
+16      for (size_t i = 0; i &lt; cimmap.size(); i++) {
+17        fprintf(stdout, "\t%s:%s\n", cimmap[i].getHostName().c_str(),
+		                       cimmap[i].getPort().c_str());
+18      }
+19   } catch (exception &e) {
+20       fprintf(stdout, "Error : %s\n", e.what());
+21   }
+22   return 0;
+22 }
+</pre>
+</td>
+</tr>
+</table>
+
+<p>
+Makefiles are in Appendix A.3.
+</p>
+<p>
+<i>Line 3.</i>  The header file
+<code>discoverer.h</code>
+declares the discovery API.
+</p>
+<p>
+<i>Lines 7-10.</i>
+Specifying the ports and http schemes to try during discovery
+is a little bit tedious.  The port with the scheme form a pair; you specify
+an array of those pairs.
+</p>
+<p>
+<i>Line 13.</i>
+The
+<code>discoverMAPs()</code>
+method finds maps in a range of address on the
+specified ports.  You can also specify a timeout (it defaults to 5 seconds).
+This method differs from most of the SDK enumeration methods in that it
+returns a vector rather than an enumerator.
+</p>
+<p>
+<i>Lines 16-17.</i>
+The data returned from discovery is a vector of
+<code>CCIMMAP</code>
+objects.
+A real program might cache these to maintain a list of DASH-enabled systems,
+or immediately use the
+<code>CCIMMAP</code>
+object to create a client, as shown in line 10 of Example 2.1.
+Here, we just print the host name and port of
+the discovered systems.  (The method name
+<code>getHostName()</code> is slightly
+misleading in that the current implementation makes no attempt to do a network
+name lookup.)
+</p>
+
+<h3>C API</h3>
+<p>
+Roughly the same program, written to the C-language discovery API, is shown
+in Example 3.2.
+
+<table class="codesample">
+<caption class="codecaption">Example 3.2</caption>
+<tr>
+<td class="codecell">
+<pre>
+ 1 #include <stdio.h>         /* for fprintf */
+ 2 #include <stdlib.h>        /* for malloc and free */
+ 3 #include "cimmap_c.h"      /* declares the DSDKCIMMAP type */
+ 4 #include "discoverer_c.h"  /* declares the discovery API */
+ 5 #include "error_c.h"       /* for dsdkc_getLastError() */
+
+ 6 #define MAX_MAP_COUNT 25   /* don't discover any more than 25 maps */
+
+ 7 int main(void)
+ 8 {
+ 9   DSDKCIMMAP **maps; /* to be filled in with a list of pointers */
+10                      /* to discovered maps */
+11   int mapcount;      /* to be filled in with # of discovered maps */
+12   int errorcode, i;
+13   char hostname[100]; char port[100];
+14   PortScheme_T ports[3];
+
+15   ports[0].port = "623"; ports[0].http_scheme = "http";
+16   ports[1].port = "664"; ports[1].http_scheme = "https";
+17   ports[2].port = "16992"; ports[2].http_scheme = "http";
+
+18   maps = (DSDKCIMMAP **)malloc(sizeof(DSDKCIMMAP *) * MAX_MAP_COUNT);
+
+19   /* do the discovery */
+20   discoverMAPs("10.236.48.216",    /* starting address */
+21	          "10.236.48.218",    /* ending address */
+22	          ports,              /* list of ports to check */
+23	          3,                  /* number of ports in the list */
+24	          2,                  /* timeout in seconds */
+25	          MAX_MAP_COUNT,    /* don't discover any more than this many*/
+26	          maps,              /* where to put the discovered maps */
+27	          &mapcount         /* where to put the # of discovered maps */
+28	       );
+29   errorcode = dsdkc_getLastError();
+30   /* display the discovered management access points */
+31   if (!errorcode) {
+32     fprintf (stdout, "Discovered %d maps:\n", mapcount);
+33     for (i = 0; i < mapcount; i++) {
+34       hostname[0] = '\0'; port[0] = '\0';
+35       maps[i]->ft->getHostName(maps[i], hostname, 99);
+36       maps[i]->ft->getPort(maps[i], port, 99);
+37       fprintf(stdout, "\t%s:%s\n", hostname, port);
+38       free (maps[i]);
+39       maps[i] = 0;
+40     }
+41   } else {
+42     char errstr[256];
+43     dsdkc_getLastErrorStr(errstr, 255);
+44     fprintf(stderr, "Error : %s\n", errstr);
+45   }
+46 }
+</pre>
+</td>
+</tr>
+</table>
+<p>
+Makefiles are in Appendix A.4.
+</p>
+<i>Line 6.</i>  In the C API, the caller is responible for allocating space for
+the list of discovered MAPs.  In line 18, we will
+<code>malloc()</code> enough space for
+25 of them.  The
+<code>discoverMAPs()</code>
+API will stop after discovering this many
+MAPs.
+</p>
+<p>
+<i>Lines 15-17.</i>  This is the C equivalent of lines 7-10 in the C++ program
+(Example 3.1).
+</p>
+<p>
+<i>Line 18.</i>  This is where we allocate enough memory for a list of pointers to
+the maximum number of MAPs that will be discovered.
+</p><p>
+<i>Line 20.</i>  The C discoverMAPs function is similar to CDiscoverer::discoverMAPs,
+except for the last 3 arguments.  Arg 7 (line 25) is the maximum number of MAPs to
+be discovered.  Arg 8 (line 26) is the address of the memory we allocated for the list
+of MAPs.  Arg 9 (line 27) is the address of an integer where the number of discovered
+MAPs will be stored.
+</p><p>
+<i>Line 29.</i> All the C API methods set an SDK-wide result code which should usually
+be checked using dsdkc_getLastError().
+</p><p>
+<i>Line 31.</i> A non-zero result code indicates an error.  The various codes are
+listed in error_c.h.
+</p><p>
+<i>Lines 35 and 36.</i>  The C APIs consistently use function tables to provide
+access to methods.  The name of the function table is always "ft". These two
+lines call methods that return name and port of a discovered map.  Note that
+in these two functions, the caller allocates the space and specifies the
+size; this pattern is consistent in the C API.
+</p><p>
+<i>Line 37.</i>  We have to free the DSDKCIMMAP structures that represent each
+discovered system.  A real program would do something with this, like
+connect to the system.  But here, we're done with it so we free the memory.
+</p><p>
+<i>Line 44.</i> You can get a string describing the most recent result code by
+calling dsdk_getLastErrorStr().
+</p>
+
+<h3>Discovery Performance</h3>
+<p>
+Brute force discovery is almost always a bad idea.  If DASH MAPs exist at
+only a small number of addresses in the address space, a discovery program
+will spend most of its time waiting for timeouts.  If there are lots of
+maps to discover, a lot of network traffic will be generated.  One solution
+is to parallelize discovery in a limited number of threads.
+</p><p>
+The method in Example 3.3 shows how discovery for a range of address can be run in
+a separate thread.  It uses the thread abstraction from the Qt4 library.
+The source for the entire program is in Appendix A.5.
+</p>
+<table class="codesample">
+<caption class="codecaption">Example 3.3</caption>
+<tr>
+<td class="codecell">
+<pre>
+ 1   void
+ 2   run()
+ 3   {
+ 4     vector&lt;CCIMMAP&gt; maps;
+ 5     try {
+ 6       maps = CDiscoverer::discoverMAPs(mAddrs.first().toString(),
+ 7 				       mAddrs.last().toString(),
+ 8 				       mPortlist,
+ 9 				       timeout);
+10       if (mpMutex) {
+11         mpMutex-&gt;lock();
+12       }
+13       for (unsigned int i = 0; i &lt; maps.size(); i++) {
+14         gmaps.push_back(maps[i]);
+15       }
+16       if (mpMutex) {
+17         mpMutex-&gt;unlock();
+18       }
+19     } catch (EDSDKError &e) {
+20       if (mpMutex) {
+21         mpMutex-&gt;lock();
+22         printf("Discovery starting at %s failed.\n"
+23                "  Error code = %d (%s)",
+24                mAddrs.first().toString().c_str(),
+25                e.getErrorCode(), e.what());
+26         mpMutex-&gt;unlock();
+27       }
+28     } 
+29   }
+</pre>
+</td>
+</tr>
+</table>
+<p>
+<i>Line 2.</i>  Execution in a thread begins when this method is entered.
+</p><p>
+<i>Line 6.</i>  This initiates the search over some subset of the addres space.
+</p><p>
+<i>Line 10.</i> Note that the mutex is acquired only to serialize access to the
+output cache, a vector of <code>CCIMMAP</code> called gmaps.
+</p><p>
+<i>Line 14.</i> This line copies the maps discovered in this thread into a single
+common list.
+</p>
+
+<h2>4. Enumeration</h2>
+<p>
+In the SDK, DASH behavior (methods) and information are abstracted in the
+system component classes, which are roughly equivalent to CIM classes.
+These classes are declared in header files like these, and others simililarly
+named:
+</p>
+<ul>
+<li><code>battery.h</code>&mdash;CBattery</li>
+<li><code>biosmanagement.h</code>&mdash;CBIOSAttrubyte, CBIOSElement, </li>
+<li><code>bootconfig.h</code>&mdash;CBootConfig, CBootConfigSetting</li>
+<li><code>computersystem.h</code>&mdash;CComputerSystem</li>
+<li><code>dhcpclient.h</code>&mdash;CDHCPClient</li>
+<li><code>dnsclient.h</code>&mdash;CDNSClient</li>
+<li><code>fan.h</code>&mdash;CFan, CFanRedundancySet</li>
+<li><code>ipinterface.h</code>&mdash;CIPInterface</li>
+<li><code>networkport.h</code>&mdash;CNetworkPort</li>
+<li><code>opaquemanagementdata.h</code>&mdash;COpaqueManagementData</li>
+<li><code>operatingsystem.h</code>&mdash;COperatingSystem</li>
+<li><code>physicalasset.h</code>&mdash;CPhysicalAsset</li>
+<li><code>physicalmemory.h</code>&mdash;CPhysicalMemory</li>
+<li><code>powersupply.h</code>&mdash;CPOowerSupply, CPowerSupplyRedundancySet</li>
+<li><code>processor.h</code>&mdash;CProcessor, CProcessorCore</li>
+<li><code>sensor.h</code>&mdash;CSensor, CNumericSensor.  (Note an important
+difference between the SDK and CIM classes:  in the SDK, NumericCensor is
+a <i>subclass</i> of Sensor; in CIM, it is a <i>peer class</i>.</li>
+<li><code>software.h</code>&mdash;CSoftware</li>
+<li><code>textredirection.h</code>&mdash;CTextRedirection.  Note that the SDK contains support for receiving and displaying a text redirection session.</li>
+<li><code>usbredirection.h</code>&mdash;CUSBRedirection.  Note that the SDK contains support for initiating and terminating USB redirection from the client.</li>
+<li><code>user.h</code>&mdash;CUser, CRole</li>
+<li><code>virtualmedia.h</code>&mdash;CVirtualMedia</li>
+</ul>
+<p>
+To use the methods of these classes, you need an instance.  The SDK
+provides a number of interfaces for enumerating the instances that are
+exposed by a DASH MAP.  These interfaces are declared in the header
+file <code>enumeration.h</code>.
+</p>
+<p>
+Example 4.1 shows how the enumeration interfaces might be used.  Example 4.2
+shows how to enumerate CIM Registered Profiles, for which there is no 
+interface currently.  The entire program which contains both of these functions
+is in Appendix A.6.
+</p>
+<table class="codesample">
+<caption class="codecaption">Example 4.1</caption>
+<tr>
+<td class="codecell">
+<pre>
+  1 void
+  2 illustrateTheEnumAPI()
+  3 {
+  4   // enumerate computer systems
+  5   try {
+  6     string s, ss;
+  7     CComputerSystem::iterator csi =
+  8     CComputerSystem::enumComputerSystems(gClient);
+  9     // for each computer system
+ 10     for (; csi != CComputerSystem::iterator::end(); ++csi) {
+ 11       // print the computer system name
+ 12       try { s = (*csi).getName(); } catch (...) { s = ""; }
+ 13       fprintf(stdout, "Computer system: name = %s\n", s.c_str());
+ 14       // Enumerate the Physical Asset objects immediately associated with
+ 15       // this computer system. (Does not return Physical Asset objects
+ 16       // associated with components like fans, processors, etc.)
+ 17       CPhysicalAsset::iterator pai = enumPhysicalAssets(gClient, *csi);
+ 18       for (; pai != CPhysicalAsset::iterator::end(); ++pai) {
+ 19         try { s = (*pai).getModel(); } catch(...) { s = ""; }
+ 20         try { ss = (*pai).getPartNumber(); } catch(...) { ss = ""; }
+ 21         fprintf(stdout, "\tModel: %s, Part #: %s\n",
+                    s.c_str(), ss.c_str());
+ 22       }
+ 23       // enumerate the processors in that system
+ 24       CProcessor::iterator pi = dsdk::enumProcessors(gClient, *csi);
+ 25       // and print the family name for each
+ 26       for (; pi != CProcessor::iterator::end(); ++pi) {
+ 27         try { s = (*pi).getFamily(); } catch(...) { s = ""; }
+ 28         fprintf(stdout,  "\tProcessor: family = %s\n", s.c_str());
+ 29         // Show FRU info
+ 30         CPhysicalAsset::iterator pai = enumPhysicalAssets(gClient, *pi);
+ 31         for (; pai != CPhysicalAsset::iterator::end(); ++pai) {
+ 32           try { s = (*pai).getModel(); } catch(...) { s = ""; }
+ 33           try { ss = (*pai).getPartNumber(); } catch(...) { ss = ""; }
+ 34           fprintf(stdout, "\t\tModel: %s, Part #: %s\n",
+ 35                   s.c_str(), ss.c_str());
+ 36         }
+ 37         // Enumerate any associated sensors
+ 38         CSensor::iterator si = enumSensors(gClient, *pi);
+ 39         for (; si != CSensor::iterator::end(); ++si) {
+ 40           try { s = (*si).getDeviceID(); } catch(...) { s = ""; }
+ 41           fprintf(stdout, "\t\tAssociated Sensor: device ID = %s\n",
+ 42                   s.c_str());
+ 43         }
+ 44         // Get associated physical memory
+ 45         vector&lt;CPhysicalMemory&gt; pmv = getPhysicalMemory(gClient, *pi);
+ 46         for (unsigned int i = 0; i &lt; pmv.size(); i++) {
+ 47           int width = 0;
+ 48           try { s = pmv[i].getTotalWidth(); } catch(...) { }
+ 49             fprintf(stdout, "\\tLocal Physical Memory: width = %d\n",
+                        width);
+ 50         }
+ 51         // Enumerate processor cores
+ 52         CProcessorCore::iterator pci =
+                dsdk::enumProcessorCores(gClient, *pi);
+ 53         for (; pci != CProcessorCore::iterator::end(); ++pci) {
+ 54           try { s = (*pci).getInstanceID(); } catch(...) { s = ""; }
+ 55           fprintf(stdout, "\t\tCore: %s\n", s.c_str());
+ 56         }
+ 57       }  // for each processor
+ 58     } // for each computer system
+ 59   } catch( exception &amp;e) {
+ 60      fprintf(stderr, "Caught unexpected exception: %s\n", e.what());
+ 61   }
+ 62 }
+</pre>
+</tr>
+</td>
+</table>
+<p>
+<i>Line 8</i>.  This enumerates the computer systems, as we have seen
+in earlier examples.  Note that the same method is available in the
+<code>CComputerSystem</code> class.
+Note that we can't assume that only one <code>CComputerSystem</code>
+instance will be returned: some DASH Maps report one instance for the
+managed system and one instance for the management controller.  You can
+disginguish them by examining the "dedicated" property of the instance.
+</p>
+<p>
+<i>Lines 10-58.</i>  The remaining enumerations will be in the context
+of a single computer system.
+</p>
+<p>
+<i>Line 12.</i> Note that <i>all</i> the SDK methods have try catch blocks
+around them, even seemingly innocuous ones like <code>getName()</code>.
+Tis is because the underlying data conversion functions can throw exceptions.
+In this case, it is possible (but not DASH compliant) that the MAP did not
+report a Name property; the SDK throws an exception to signal that it was
+asked to convert a null value to a string.
+</p>
+<p>
+<i>Lines 38-57.</i> These enumerations all are done in the context of
+a single processor.  This kind of scoping occurs frequently in the
+enumeration API and is usually obvious when you example the second argument
+to the enumeration method.
+</p>
+<p>
+Example 4.2 shows how to enumerate profiles.  DASH clients often do
+this when they first contact a DASH MAP to find out what DASH profiles are
+supported and at what version levels.  One of the complexities of DASH
+which unfortunately surfaces in the SDK is the client has to know
+<i>a priori</i> in what namespace the instances of
+CIM_RegisteredProfile exist on the MAP.  Fortunately,
+there are only 4 choices, which are shown in the example.
+</p>
+<table class="codesample">
+<caption class="codecaption">Example 4.2</caption>
+<tr>
+<td class="codecell">
+<pre>
+ 1 void
+ 2 enumRegisteredProfiles()
+ 3 {
+ 4   vector&lt;string&gt; InteropNSList;
+ 5   vector&lt;string&gt; empty;
+ 6   InteropNSList.push_back("/root/interop");
+ 7   InteropNSList.push_back("/interop");
+ 8   InteropNSList.push_back("root/interop");
+ 9   InteropNSList.push_back("interop");
+10   // For each namespace, see if there are any instances of RegisteredProfile
+11   for (unsigned int i = 0; i &lt; InteropNSList.size(); i++) {
+12     try {
+13       CCIMObjectPath path(InteropNSList[i], "CIM_RegisteredProfile");
+14       CCIMInstance::iterator iter =
+15                gClient-&gt;enumInstances(path,
+16                                       CMPI_FLAG_DeepInheritance,
+17                                       empty);
+18       // If any instances are found in this namespace, print them and return
+19       if (!(iter == CCIMInstance::iterator::end())) {
+20         fprintf(stdout, "Supported profiles:\n");
+21         for (; iter != CCIMInstance::iterator::end(); ++iter) {
+22           CCIMData nameData = (*iter).getProperty("RegisteredName");
+23           CCIMData verData = (*iter).getProperty("RegisteredVersion");
+24           CCIMValue nameValue = nameData.getValue();
+25           CCIMValue verValue = verData.getValue();
+26           fprintf(stdout,
+27                   "\t%s, Version %s\n",
+28                   to&lt;stringAdapter&gt;(nameValue).c_str(),
+29                   to&lt;stringAdapter&gt;(verValue).c_str());
+30         }
+31         return;
+32       }
+33     } catch (exception &amp;e) {
+34       // We will catch DestinationUnreachable for all invalid namespaces
+35     }
+36   }
+37 }
+</td>
+</tr>
+</table>
+<p>
+<i>Lines 6-9.</i> There are four possible names for the "Interop namespace"
+where a DASH MAP keeps instances of CIM_RegisteredProfile.  They are the 4
+shown here.  This method tries each one in succession until it finds one
+that actually has instances of CIM_RegisteredProfile.
+</p>
+<p>
+<i>Lines 13-14.</i> This is the first look we have had of the low-level
+API of the SDK. The <code>CCIMObjectPath</code> class encapsulates an
+addressable element or elements on a DASH MAP. In line 13, we create
+a <code>CCIMObjectPath</code>
+that names a particular CIM class (CIM_RegisteredProfile)
+in a particular namespace.  Line 14 asks the MAP to enumerate the
+instances that match the namespace and class name.
+</p>
+<p>
+<i>Line 19.</i> To tell whether any instances were found in the namespace,
+we just check if the returned iterator is empty.
+</p>
+<i>Lines 22 to 29.</i> In the low-level API, access to property, parameter
+and method result data is done in three steps:
+<ol type="a">
+<li>
+Extract the <code>CCIMData</code> object from the element.  This is shown in lines 22 and
+23.
+</li>
+<li>
+From the <code>CCIMData</code>, extract the <code>CCIMValue</code> object, as shown in lines 24 and 25.
+</li>
+<li>
+Extract the displayable value from the <code>CCIMValue</code> in an appropriate format.
+The methods for doing this are declared in <code>cimconversion.h</code>.
+In this case, we want to extract the value as a string, so we use the
+<code>to&lt;stringAdapter&gt;()</code> template function.  Conversion issues
+are discussed in more detail in the section on the Low Level API below.
+</li>
+</ol>
+</p>
+<h2>5. Low Level APIs</h2>
+<p>
+More information about getting started with the low level APIs will provided
+in a later update.  A complete GUI program that uses
+the C++ Low Level API is available on request from bob.blair@amd.com.
+</p>
+<h2>Appendix A.1. Make files for DASH SDK "Hello, World!" in C++</h2>
+<h3>GNU Makefile for Example 2.1</h3>
+<pre>
+SDKINCL=-I$(SDKDIR)/include
+SDKLIB=-L$(SDKDIR)/lib -ldashapi
+EXE=Example2.1
+CC=g++
+
+all : $(EXE)
+
+% : %.cpp
+	$(CC) -o $@ $&lt; $(SDKINCL) $(SDKLIB)
+
+clean :
+	rm $(EXE)
+</pre>
+<h3>NMAKE file for example 2.1</h3>
+<pre>
+SDKDIR=C:/src/DASHSDK/dash-sdk-1.1.0/windows/win32pkg
+SDKINCL=-I$(SDKDIR)/include
+SDKLIB=$(SDKDIR)/release
+LIBFILES=dashapi.lib
+LINKFLAGS=/link /LIBPATH:$(SDKLIB)
+EXE=Example2.1.exe
+CC=cl
+CLFLAGS=/EHsc \
+        /O2 \
+        /GL \
+        $(INCLUDES) \
+        /D "WIN32" \
+        /D "NDEBUG" \
+        /D "_CONSOLE" \
+        /D "_CRT_SECURE_NO_DEPRECATE" \
+        /DDSDK_STATIC_LIB  \
+        /MD \
+        /Zi  \
+        /D _WIN32_WINNT=0x0501
+
+all : $(EXE)
+
+.cpp.exe :
+	$(CC)  $&lt; $(CLFLAGS) $(SDKINCL) $(LIBFILES) $(LINKFLAGS)
+
+clean:
+	rm $(EXE)
+</pre>
+
+<h2>Appendix A.2. Make files for DASH SDK "Hello, World!" in C</h2>
+<h3>GNU Makefile for Example 2.2</h3>
+<pre>
+SDKDIR=/usr/local
+SDKINCL=-I$(SDKDIR)/include
+SDKLIB=-L$(SDKDIR)/lib -ldashapic
+EXE=Example2.2
+CC=gcc
+
+all : $(EXE)
+
+% : %.c
+	$(CC) -o $@ $&lt; $(SDKINCL) $(SDKLIB)
+
+clean :
+	rm $(EXE)
+</pre>
+
+<h3>NMAKE file for Example 2.2</h3>
+<pre>
+SDKDIR=C:/src/HP1.1Beta/dash-sdk-1.1.0/windows
+SDKINCL=-I$(SDKDIR)/win32pkg/include
+SDKLIB=$(SDKDIR)/dash/release
+LIBFILES=dashapic.lib
+LINKFLAGS=/link /LIBPATH:$(SDKLIB)
+EXE=Example2.2.exe
+CC=cl
+CLFLAGS=/EHsc \
+        /O2 \
+        /GL \
+        $(INCLUDES) \
+        /D "WIN32" \
+        /D "NDEBUG" \
+        /D "_CONSOLE" \
+        /D "_CRT_SECURE_NO_DEPRECATE" \
+        /MD \
+        /Zi  \
+        /D _WIN32_WINNT=0x0501
+
+all : $(EXE)
+
+.c.exe :
+	$(CC)  $&lt; $(CLFLAGS) $(SDKINCL) $(LIBFILES) $(LINKFLAGS)
+
+clean:
+	rm $(EXE)
+</pre>
+
+<h2>Appendix A.3. Makefiles for Discovery Example in C++</h2>
+<h3>GNU Makefile for Example 3.1</h3>
+<pre>
+SDKDIR=/usr/local
+SDKINCL=-I$(SDKDIR)/include
+SDKLIB=-L$(SDKDIR)/lib -ldashapi
+EXE=Example3.1
+CC=g++
+
+all : $(EXE)
+
+% : %.cpp
+	$(CC) -o $@ $&lt; $(SDKINCL) $(SDKLIB)
+
+clean :
+	rm $(EXE)
+</pre>
+<h3>NMAKE file for Example 3.1</h3>
+<pre>
+SDKDIR=C:/src/HP1.1Beta/dash-sdk-1.1.0/windows/win32pkg
+SDKINCL=-I$(SDKDIR)/include
+SDKLIB=$(SDKDIR)/release
+LIBFILES=dashapi.lib
+LINKFLAGS=/link /LIBPATH:$(SDKLIB)
+EXE=Example3.1.exe
+CC=cl
+CLFLAGS=/EHsc \
+        /O2 \
+        /GL \
+        $(INCLUDES) \
+        /D "WIN32" \
+        /D "NDEBUG" \
+        /D "_CONSOLE" \
+        /D "_CRT_SECURE_NO_DEPRECATE" \
+        /MD \
+        /Zi  \
+        /D _WIN32_WINNT=0x0501
+
+all : $(EXE)
+
+.cpp.exe :
+	$(CC)  $&lt; $(CLFLAGS) $(SDKINCL) $(LIBFILES) $(LINKFLAGS)
+
+clean:
+	rm $(EXE)
+</pre>
+
+<h2>Appendix A.4. Makefiles for Discovery Example in C</h2>
+<p>
+<h3>GNU Makefile for Example 3.2</h3>
+<pre>
+SDKDIR=/usr/local
+SDKINCL=-I$(SDKDIR)/include
+SDKLIB=-L$(SDKDIR)/lib -ldashapic
+EXE=Example3.2
+CC=gcc
+
+all : $(EXE)
+
+% : %.c
+	$(CC) -o $@ $&lt; $(SDKINCL) $(SDKLIB)
+
+clean :
+	rm $(EXE)
+</pre>
+<h3>NMake file for Example 3.2</h3>
+Note:  this example does not link in the SDK 1.1 beta because
+the symbol _discoverMAPs is not correctly exported. You can build
+and link static SDK libraries, though, that will work.
+</p>
+<pre>
+SDKDIR=C:/src/HP1.1Beta/dash-sdk-1.1.0/windows
+SDKINCL=-I$(SDKDIR)/win32pkg/include
+SDKLIB=$(SDKDIR)/dash/release
+LIBFILES=dashapic.lib
+LINKFLAGS=/link /LIBPATH:$(SDKLIB)
+EXE=Example3.2.exe
+CC=cl
+CLFLAGS=/EHsc \
+        /O2 \
+        /GL \
+        $(INCLUDES) \
+        /D "WIN32" \
+        /D "NDEBUG" \
+        /D "_CONSOLE" \
+        /D "_CRT_SECURE_NO_DEPRECATE" \
+        /MD \
+        /Zi  \
+        /D _WIN32_WINNT=0x0501
+
+all : $(EXE)
+
+.c.exe :
+	$(CC)  $&lt; $(CLFLAGS) $(SDKINCL) $(LIBFILES) $(LINKFLAGS)
+
+clean:
+	rm $(EXE)
+</pre>
+</body>
+</html>
+
+<h2>Appendix A.5.  A Sample Threaded Discovery Program.</h2>
+<p>
+This program uses the cross-platform Qt4 libraries, freely downloadable from
+TrollTech, Inc.
+<h3>Main module</h3>
+<p>
+This module contains the main logic, including the thread class that runs
+parallel discoveries.
+</p>
+<pre>
+//
+// Exercise the discovery API using threads
+//
+
+#include &lt;discoverer.h&gt;
+#include &lt;ctime&gt;
+#include &lt;QThread&gt;
+#include &lt;QMutex&gt;
+#include "IPAddressRange.hpp"
+
+using namespace dsdk;
+using namespace std;
+
+const char *start;
+const char *end;
+vector&lt;pair&lt;string, string&gt; &gt; portlist;
+int timeout;
+int verbosity;
+int threads;
+
+vector &lt;CCIMMAP&gt; gmaps;
+
+QMutex * pMutex = 0;
+    
+
+class DiscoveryThread : public QThread
+{
+private:
+  QMutex *mpMutex;
+  IPAddressRange mAddrs;
+  vector&lt;pair&lt;string, string&gt; &gt; mPortlist;
+  int mTimeout;
+public:
+  DiscoveryThread(QMutex *mutex,
+		  const IPAddressRange &amp;addrs,
+		  const vector&lt;pair&lt;string, string&gt; &gt; &amp;ports,
+		  int timeout) :
+    mpMutex(mutex), mAddrs(addrs), mPortlist(ports), mTimeout(timeout)
+  {
+  }
+
+  ~DiscoveryThread() {;}
+
+  void
+  run()
+  {
+    vector&lt;CCIMMAP&gt; maps;
+    try {
+      maps = CDiscoverer::discoverMAPs(mAddrs.first().toString(),
+				       mAddrs.last().toString(),
+				       mPortlist,
+				       timeout);
+      if (mpMutex) {
+	mpMutex-&gt;lock();
+      }
+      for (unsigned int i = 0; i &lt; maps.size(); i++) {
+	gmaps.push_back(maps[i]);
+      }
+      if (mpMutex) {
+	mpMutex-&gt;unlock();
+      }
+    } catch (EDSDKError &amp;e) {
+      if (mpMutex) {
+	mpMutex-&gt;lock();
+	printf("Discovery starting at %s failed.\n"
+	       "  Error code = %d (%s)",
+	       mAddrs.first().toString().c_str(), e.getErrorCode(), e.what());
+	mpMutex-&gt;unlock();
+      }
+    } 
+  }
+};
+
+void
+parsePortList(const char *list)
+{
+  string s(list);
+  string::size_type p1 = 0;
+  string::size_type p2 = 0;
+  while (p2 != string::npos) {
+    string thePort, theProtocol;
+    p2 = s.find(",", p1);
+    if (p2 == string::npos)
+      thePort = s.substr(p1);
+    else if (p1 != p2)
+      thePort = s.substr(p1, p2-p1);
+    if (thePort == "664")
+      theProtocol = "https";
+    else
+      theProtocol = "http";
+    portlist.push_back(pair&lt;string, string&gt;(thePort, theProtocol));
+    p1 = p2 + 1;
+  }
+}
+
+string
+portlistToStr()
+{
+  const char *buf[80];
+  string s = "";
+  for (unsigned int i = 0; i &lt; portlist.size(); i++) {
+    if (i)
+      s += ", ";
+    s += portlist[i].first;
+  }
+  return s;
+}
+
+void
+parseCmdLine(int argc,char ** argv)
+{
+  start = "";
+  end = "";
+  threads = 1;
+  timeout = 5;
+  verbosity = 0;
+  if (argc &lt; 2) {
+    printf("Usage: discover startaddr [endaddr [portlist [timeout [threads [verbosity]]]]]\n");
+    printf("          where portlist is a comma-separated list of port numbers.\n");
+    exit(-1);
+  }
+  start = argv[1];
+  if (argc &gt; 2) {
+    end = argv[2];
+    if (argc &gt; 3) {
+      parsePortList(argv[3]);
+      if (argc &gt; 4) {
+	timeout = atoi(argv[4]);
+	if (argc &gt; 5) {
+	  threads = atoi(argv[5]);
+	  if (argc &gt; 6) {
+	    verbosity = atoi(argv[6]);
+	  }
+	}
+      }
+    }
+  }
+  printf("Doing discovery with these parameters:\n"
+	 "  starting address: %s\n"
+	 "  ending address:   %s\n"
+	 "  port list:        %s\n"
+	 "  timeout:          %d\n"
+	 "  threads:          %d\n"
+	 "  verbosity:        %d\n",
+	 start, end, portlistToStr().c_str(), timeout, threads, verbosity);
+}
+
+void
+printDiscoveryList()
+{
+  unsigned int n = gmaps.size();
+  printf("Discovered %d maps:\n", n);
+  for (unsigned int i = 0; i &lt; n; i++)
+    printf("    %s:%s\n",
+	   gmaps[i].getHostName().c_str(),
+	   gmaps[i].getPort().c_str());
+}
+
+void
+TryToDiscover()
+{
+  vector&lt;DiscoveryThread *&gt; discoveryThreads;
+  IPAddressRange *r = new IPAddressRange(IPV4Address(start), IPV4Address(end));
+  QMutex *mutex = new QMutex();
+  if (threads == 0)
+    threads = r-&gt;size();
+  int addrPerThread = r-&gt;size() / threads;
+  if (r-&gt;size() % threads)
+    addrPerThread += 1;
+  for (unsigned int i = 0; i &lt; r-&gt;size(); i += addrPerThread) {
+    IPAddressRange sr = r-&gt;subrange(i, addrPerThread);
+    DiscoveryThread *t = new DiscoveryThread(mutex, sr, portlist, timeout);
+    discoveryThreads.push_back(t);
+    t-&gt;start();
+  }
+  delete r;
+  for (unsigned int i = 0; i &lt; discoveryThreads.size(); i++)
+    (discoveryThreads[i])-&gt;wait();
+}
+
+int
+main(int argc, char ** argv)
+{
+  time_t t1, t2;
+  parseCmdLine(argc, argv);
+  time(&amp;t1);
+  TryToDiscover();
+  time(&amp;t2);
+  printDiscoveryList();
+  printf("Elapsed time: %d seconds.\n", t2 - t1);
+  exit(0);
+}
+</pre>
+
+<h3>IPAddressRange.hpp</h3>
+<p>
+This is the interface for a useful class to hold and manipulate ranges
+of IPV4 addresses.
+</p>
+<pre>
+//
+// Represents a continuous range of IP addresses
+//
+
+#ifndef _IPADDRESSRANGE_HPP_
+#define _IPADDRESSRANGE_HPP_
+
+#include "IPV4Address.hpp"
+
+class IPAddressRange
+{
+private:
+  IPV4Address mStart;
+  IPV4Address mEnd;
+  unsigned int mSize;
+public:
+  IPAddressRange(const IPV4Address &amp;start);
+  IPAddressRange(const IPV4Address &amp;start, int howmany);
+  IPAddressRange(const IPV4Address &amp;start, const IPV4Address &amp;end);
+  IPAddressRange(const IPAddressRange &amp;clone);
+  ~IPAddressRange();
+  IPV4Address operator[](unsigned int n) const;
+  bool isInRange(const IPV4Address &amp;a) const;
+  IPAddressRange subrange(int from) const;
+  IPAddressRange subrange(int from, int howmany) const;
+  IPAddressRange subrange(const IPV4Address &amp;a) const;
+  unsigned int size() const { return mSize; }
+  IPV4Address first() const { return mStart; }
+  IPV4Address last() const { return mEnd; }
+  string toString() const;
+};
+
+#endif 
+</pre>
+<h3>IPAddressRange.cpp</h3>
+<p>The implementation of the IPAddressRange interface.</p>
+<pre>
+#include "IPAddressRange.hpp"
+
+using namespace std;
+
+IPAddressRange::IPAddressRange(const IPV4Address &amp;start)
+{
+  mStart = start;
+  mEnd = start;
+  mSize = 1;
+}
+
+IPAddressRange::IPAddressRange(const IPV4Address &amp;start,
+			       int howmany)
+{
+  mStart = start;
+  mEnd = start + (howmany - 1);
+  mSize = howmany;
+}
+
+IPAddressRange::IPAddressRange(const IPV4Address &amp;start,
+			       const IPV4Address &amp;end)
+{
+  mStart = start;
+  mEnd = end &gt; start ? end : start;
+  mSize = mEnd.distance(mStart) + 1;
+}
+
+IPAddressRange::IPAddressRange(const IPAddressRange &amp;clone)
+{
+  mStart = clone.mStart;
+  mEnd = clone.mEnd;
+  mSize = clone.mSize;
+}
+
+IPAddressRange::~IPAddressRange() 
+{
+}
+
+bool
+IPAddressRange::isInRange(const IPV4Address &amp;a) const
+{
+  return (a &gt;= mStart &amp;&amp; a &lt;= mEnd);
+}
+
+IPV4Address
+IPAddressRange::operator[](unsigned int n) const
+{
+  if (n &lt; mSize)
+    return mStart + n;
+  else
+    return mEnd;
+}
+
+IPAddressRange
+IPAddressRange::subrange(int from) const
+{
+  return IPAddressRange((*this)[from], mEnd);
+}
+
+IPAddressRange
+IPAddressRange::subrange(const IPV4Address &amp;a) const
+{
+  int dist = a.distance(mStart);
+  if (dist &lt; 1)
+    return IPAddressRange(mStart, mStart);
+  if (dist &gt; mSize)
+    return IPAddressRange(mEnd, mEnd);
+  return IPAddressRange(mStart + dist, mEnd);
+}
+
+IPAddressRange
+IPAddressRange::subrange(int from, int howmany) const
+{
+  if (from &lt; 0)
+    return IPAddressRange(mStart, mStart);
+  if (from &gt;= mSize)
+    return IPAddressRange(mEnd, mEnd);
+  int cnt = from + howmany &gt; mSize ? mSize - (from + howmany) : howmany;
+  IPV4Address start = (*this)[from];
+  IPAddressRange r(start, cnt);
+  return r;
+}
+
+string
+IPAddressRange::toString() const
+{
+  char buf[500];
+  sprintf(buf, "%s to %s: %d addresses.",
+	  mStart.toString().c_str(),
+	  mEnd.toString().c_str(),
+	  mSize);
+  return buf;
+}
+</pre>
+<h3>IPV4Address.hpp.</h3>
+<p>This code defines the interface for a class to hold and do arithmetic on
+an IPV4 address.</p>
+<pre>
+//
+// Class for storing, manipulating, and finding the characteristics of
+// an IPV4 endpoint address.
+//
+
+#ifndef IPV4ADDRESS_H_
+#define IPV4ADDRESS_H_
+
+#include &lt;string&gt;
+
+using namespace std;
+
+class IPV4Address {
+private:
+  unsigned int mRep;
+public:
+  IPV4Address();
+  IPV4Address(const string &amp;s);
+  IPV4Address(int p1, int p2=0, int p3=0, int p4=0);
+  IPV4Address(const IPV4Address &amp;a);
+  ~IPV4Address();
+  string toString() const;
+  void toString(string &amp;s) const;
+  void operator++(int n);
+  IPV4Address operator+(int n) const;
+  IPV4Address operator-(int n) const;
+  void operator--(int n);
+  bool operator==(const IPV4Address &amp;a) const;
+  bool operator!=(const IPV4Address &amp;a) const { return ! (*this == a); }
+  bool operator&lt;(const IPV4Address &amp;a) const;
+  bool operator&gt;(const IPV4Address &amp;a) const;
+  bool operator&lt;=(const IPV4Address &amp;a) const;
+  bool operator&gt;=(const IPV4Address &amp;a) const;
+  void operator=(const IPV4Address &amp;a);
+  bool isInRange(const IPV4Address &amp;a1, const IPV4Address &amp;a2) const;
+  int distance(const IPV4Address &amp;a) const { return mRep - a.mRep; }
+};
+
+#endif
+</pre>
+<h3>IPV4Address.cpp</h3>
+<p>The implementation of the IPV4Address interface.</p>
+<pre>
+#include "IPV4Address.hpp"
+#include &lt;Tokenizer.hpp&gt;
+
+using namespace std;
+
+IPV4Address::IPV4Address()
+{
+  mRep = 0;
+}
+
+IPV4Address::IPV4Address(int p1, int p2, int p3, int p4)
+{
+  mRep = p4 + p3 &lt;&lt; 8  + p2 &lt;&lt; 16 + p1 &lt;&lt; 24;
+}
+
+IPV4Address::IPV4Address(const IPV4Address &amp;a)
+{
+    mRep = a.mRep;
+}
+
+IPV4Address::IPV4Address(const string &amp;s)
+{
+  mRep = 0;
+  Tokenizer t(s, ".", "");
+  unsigned int i = 0;
+  unsigned int shift = 24;
+  while (t.hasMore() &amp;&amp; i &lt; 4) {
+    mRep += atoi(t.getNext().c_str()) &lt;&lt; shift;
+    shift -= 8;
+  }
+}
+
+IPV4Address::~IPV4Address()
+{
+}
+
+static string
+stringOf(int n, int base)
+{
+  char buf[128];
+  sprintf(buf, base == 16 ? "%x" : "%d", n);
+  return buf;
+}
+
+
+string
+IPV4Address::toString() const
+{
+  string s;
+  unsigned int mask = 0xff000000;
+  int shift = 24;
+  for (unsigned int i = 0; i &lt; 4; i++) {
+    if (i)
+      s += ".";
+    string s1 = stringOf((mRep &amp; mask) &gt;&gt; shift, 10);
+    s += s1;
+    mask &gt;&gt;= 8;
+    shift -= 8;
+  }
+  return s;
+}
+
+void
+IPV4Address::toString(string &amp;s) const
+{
+  s = this-&gt;toString();
+}
+
+void
+IPV4Address::operator++(int n)
+{
+  mRep++;
+}
+
+void
+IPV4Address::operator--(int n)
+{
+  mRep--;
+}
+
+IPV4Address
+IPV4Address::operator+(int n) const
+{
+  IPV4Address a(*this);
+  a.mRep += n;
+  return a;
+}
+
+IPV4Address
+IPV4Address::operator-(int n) const
+{
+  IPV4Address a(*this);
+  a.mRep -= n;
+  return a;
+}
+
+bool
+IPV4Address::operator==(const IPV4Address &amp;a) const
+{
+  return (mRep == a.mRep);
+}
+
+bool
+IPV4Address::operator&lt;(const IPV4Address &amp;a) const
+{
+  return (mRep &lt; a.mRep);
+}
+
+bool
+IPV4Address::operator&gt;(const IPV4Address &amp;a) const
+{
+  return (mRep &amp;gt; a.mRep);
+}
+
+bool
+IPV4Address::operator&lt;=(const IPV4Address &amp;a) const
+{
+  return (mRep &lt;= a.mRep);
+}
+
+bool
+IPV4Address::operator&gt;=(const IPV4Address &amp;a) const
+{
+  return (mRep &gt;= a.mRep);
+}
+
+void
+IPV4Address::operator=(const IPV4Address &amp;a)
+{
+  mRep = a.mRep;
+}
+
+bool
+IPV4Address::isInRange(const IPV4Address &amp;a1, const IPV4Address &amp;a2) const
+{
+  return *this &gt;= a1 &amp;&amp; *this &lt;= a2;
+}
+
+<h3>Tokenizer.hpp</h3>
+<p>This is the interface for a generic tokenizer.</p>
+<pre>
+#ifndef _TOKENIZER_HPP_
+#define _TOKENIZER_HPP_
+
+#include &lt;string&gt;
+using namespace std;
+
+/**
+   Class Tokenizer parses a string and returns its individual tokens.
+   A token is a string consisting of the characters between separator
+   characters.  Occurances of separator characters that are quoted are
+   counted as part of the token.  By default, the separator characters
+   are " \t\r\n"; the multiple-character quote character is "\""; and
+   the single-character quote character is "\\".
+
+   No exceptions are thrown.  Operations like requesting the next
+   token after the last one are benign.
+
+   FIXME: the quoting scheme here assumes that the begin-quote and
+   end-quote characters are the same.  We may want someday to support
+   pairs like &lt;&gt; or {} as multi-character quotes.
+*/
+class Tokenizer {
+private:
+  string mObject;
+  unsigned int mPos;
+  string mLastToken;
+  string mLastSeparator;
+  string mSepChars;
+  string mQuoteChars;
+  string mSQuoteChars;
+  bool   mSingleSep;
+  unsigned int getNextSeparatorPos() const;
+  bool isSQuoteChar(unsigned int pos) const;
+  bool isQuoteChar(unsigned int pos) const;
+  bool isSepChar(unsigned int pos) const;
+  unsigned int getNextSeparatorPos(unsigned int n) const;
+  string getToken(unsigned int start, unsigned int end) const;
+  string stripQuotes(const string &amp;s) const;
+public:
+  /** Default Constructor.
+      Creates a tokenizer for a null string,
+      with default separator and quote characters.
+  */
+  Tokenizer();
+  /** Constructor.
+      Creates a tokenizer for the specified string,
+      with default separator and quote characters.
+  */
+  Tokenizer(const string &amp;initializer);
+  /** Constructor,
+      Specifies the string to be tokenized and the
+      separator characters.
+  */
+  Tokenizer(const string &amp;initializer, const string &amp;separators);
+  /** Constructor.
+      Specifies the string to be tokenize, the
+      sep characters, and the multi-character quote characters
+  */
+  Tokenizer(const string &amp;initializer,
+	    const string &amp;sepaators,
+	    const string &amp;quoteChars);
+  /**
+     Destructor
+  */
+  ~Tokenizer();
+  /**
+     Returns true if there is at least one token in the initialization
+     string that has not been returned from getNext()
+  */
+  bool hasMore() const;
+  /**
+     Returns the next token and advances the cursor.  If there are no
+     more tokens, returns an empty string.
+  */
+  string getNext();
+  /**
+     Returns the next token without advancing the cursor.  If there are
+     no more tokens, returns an empty string.
+  */
+  string peek() const;
+  /**
+     Returns the last string that was returned by getNext();
+  */
+  const string &amp;reget() const;
+  /**
+     Returns a string containing the separator characters currently in use.
+  */
+  const string &amp;getSepChars() const;
+  /**
+     Sets the separator characters.  It is legal to change the
+     sep characters at any time, but usually this should only be done
+     before the first call to getNext();
+  */
+  void setSepChars(const string &amp;chars);
+  /**
+     Returns a string containing the characters that are considered the
+     starting and ending characters of multi-character quotes.  For
+     example, if the string "'" is returned, then characters if the
+     intialization string between ' characters are considered quoted.
+  */
+  const string &amp;getQuoteChars() const;
+  /**
+     Set the multi-character quote characters.  It is legal to change
+     these at any time, but usually it makes sense only before the first
+     call to getNext()
+  */
+  void setQuoteChars(const string &amp;chars);
+  /**
+     Returns a string containing the character(s) that quote a single
+     character.  For all practical purposes, the is "\".
+  */
+  const string &amp;getSQuoteChars() const;
+  /**
+     Set the single-character quote character(s).
+  */
+  void setSQuoteChars(const string &amp;chars);
+  /**
+     This method allows you to control the behavior of the parser with
+     respect to multiple adjacent separator characters.  If you
+     setSingleSep(true) -- the default -- then two adjacent separator
+     characters separate a null token.  If you setSingleSep(false),
+     the adjacent separator characters are considered a single
+     separator.
+  */ 
+  void setSingleSep(bool tf);
+  /**
+     Set the string to be parsed. This can be done at any time.  It always
+     resets the tokenizer to the start of the string.  All information
+     about parsing before the call to this method is lost.
+  */
+  void setInitializer(const string &amp;init);
+  /**
+     Reset parsing to the beginning of the initilializer.  All information
+     about parsing before the call to this method is lost.
+  */
+  void reset();
+  /**
+     Returns a string containing the character(s) that terminated the
+     last token returned by getNext().  If getNext() has not been called,
+     it returns an empty string.
+  */
+  const string &amp;getLastSeparator() const;
+  /**
+     Returns a string containing the character(s) that will terminate
+     the next token to be returned by  getNext().  If the next token is
+     the last one, it returns an empty string.
+  */
+  string getNextSeparator() const;
+  /**
+     Returns a count of tokens from the current cursor position.  For
+     example,
+        Tokenizer t("Now is the time");
+        if (t.countRemainingTokens() == 4)
+	    true
+  */
+  unsigned int countRemainingTokens() const;
+};
+
+#endif
+</pre>
+
+<h3>Tokenizer.cpp</h3>
+<p>
+And finally the implementation of the Tokenizer interface.
+</p>
+<pre>
+//
+// Implement the Tokenizer interface
+//
+
+#include "Tokenizer.hpp"
+
+using namespace std;
+
+#define DEFAULT_SEP_CHARS  " \t\r\n"
+#define DEFAULT_QUOTE_CHARS  "\""
+#define DEFAULT_SQUOTE_CHARS  "\\"
+
+Tokenizer::Tokenizer() : mObject(""),
+			 mPos(0),
+			 mLastToken(""),
+			 mLastSeparator(""),
+			 mSepChars(DEFAULT_SEP_CHARS),
+			 mQuoteChars(DEFAULT_QUOTE_CHARS),
+			 mSQuoteChars(DEFAULT_SQUOTE_CHARS),
+			 mSingleSep(true)
+{;}
+
+Tokenizer::Tokenizer(const string &amp;obj) : mObject(obj),
+					  mPos(0),
+					  mLastToken(""),
+					  mLastSeparator(""),
+					  mSepChars(DEFAULT_SEP_CHARS),
+					  mQuoteChars(DEFAULT_QUOTE_CHARS),
+					  mSQuoteChars(DEFAULT_SQUOTE_CHARS),
+					  mSingleSep(true)
+{;}
+
+Tokenizer::Tokenizer(const string &amp;obj,
+		     const string &amp;sep) : mObject(obj),
+					  mPos(0),
+					  mLastToken(""),
+					  mLastSeparator(""),
+					  mSepChars(sep),
+					  mQuoteChars(DEFAULT_QUOTE_CHARS),
+					  mSQuoteChars(DEFAULT_SQUOTE_CHARS),
+					  mSingleSep(true)
+{;}
+
+Tokenizer::Tokenizer(const string &amp;obj,
+		     const string &amp;sep,
+		     const string &amp;quot) : mObject(obj),
+					   mPos(0),
+					   mLastToken(""),
+					   mLastSeparator(""),
+					   mSepChars(sep),
+					   mQuoteChars(quot),
+					   mSQuoteChars(DEFAULT_SQUOTE_CHARS),
+					   mSingleSep(true)
+{;}
+
+Tokenizer::~Tokenizer()
+{;}
+
+bool
+Tokenizer::hasMore() const
+{
+  return mPos &amp;lt; mObject.size();
+}
+
+string
+Tokenizer::getNext()
+{
+  mLastToken="";
+  if (hasMore()) {
+    unsigned int pos = getNextSeparatorPos();
+    mLastToken = stripQuotes(getToken(mPos, pos));
+    if (pos == string::npos) {
+      mPos = mObject.size();
+      mLastSeparator = "";
+    } else {
+      mPos = pos + 1;
+      mLastSeparator = mObject[pos];
+      if (!mSingleSep)
+	while (isSepChar(mPos)) {
+	  mLastSeparator += mObject[mPos];
+	  mPos++;
+	}
+    }
+  }
+  return mLastToken;
+}
+
+string
+Tokenizer::peek() const
+{
+  unsigned int pos = getNextSeparatorPos();
+  return stripQuotes(getToken(mPos, pos));
+}
+
+const string &amp;
+Tokenizer::reget() const
+{
+  return mLastToken;
+}
+
+const string &amp;
+Tokenizer::getSepChars() const
+{
+  return mSepChars;
+}
+
+void
+Tokenizer::setSepChars(const string &amp;chars)
+{
+  mSepChars = chars;
+}
+
+const string &amp;
+Tokenizer::getQuoteChars() const
+{
+  return mQuoteChars;
+}
+
+void
+Tokenizer::setQuoteChars(const string &amp;chars)
+{
+  mQuoteChars = chars;
+}
+
+const string &amp;
+Tokenizer::getSQuoteChars() const
+{
+  return mSQuoteChars;
+}
+
+void
+Tokenizer::setSQuoteChars(const string &amp;chars)
+{
+  mSQuoteChars = chars;
+}
+
+void
+Tokenizer::setSingleSep(bool tf)
+{
+  mSingleSep = tf;
+}
+
+void
+Tokenizer::setInitializer(const string &amp;s)
+{
+  mObject = s;
+  reset();
+}
+
+void
+Tokenizer::reset()
+{
+  mPos = 0;
+  mLastToken = "";
+  mLastSeparator = "";
+}
+
+const string &amp;
+Tokenizer::getLastSeparator() const
+{
+  return mLastSeparator;
+}
+
+string
+Tokenizer::getNextSeparator() const
+{
+  unsigned int pos = getNextSeparatorPos();
+  string s("");
+  if (mSingleSep)
+    s = mObject[pos];
+  else
+    while (pos &lt; mObject.size() &amp;&amp; isSepChar(pos))
+      s += mObject[pos++];
+  return s;
+}
+
+unsigned 
+int
+Tokenizer::countRemainingTokens() const
+{
+  unsigned int cnt, pos;
+  pos = 0;
+  if (hasMore()) {
+    for (cnt = 1; (pos = getNextSeparatorPos(pos)) != string::npos; cnt++) {
+      pos++;
+      if (!mSingleSep)
+	while (pos &lt; mObject.size() &amp;&amp; isSepChar(pos))
+	  pos++;
+    }
+  } else {
+    cnt = 0;
+  }
+  return cnt;
+}
+
+unsigned int
+Tokenizer::getNextSeparatorPos() const
+{
+  return getNextSeparatorPos(mPos);
+}
+
+unsigned int
+Tokenizer::getNextSeparatorPos(unsigned int n) const
+{
+  unsigned int start = n;
+  unsigned int end = mObject.size();
+  bool inquote = false;
+  bool insquote = false;
+  while (start &lt; end) {
+    if (inquote) {
+      if (isQuoteChar(start))
+	inquote = false;
+    } else {
+      if (insquote) {
+	insquote = false;
+      } else {
+	if (isSQuoteChar(start)) {
+	  insquote = true;
+	} else {
+	  if (isQuoteChar(start)) {
+	    inquote = true;
+	  } else {
+	    if (isSepChar(start)) 
+	      break;
+	  }
+	}
+      }
+    }
+    start++;
+  } // while
+  if (start &gt;= end)
+    start = string::npos;
+  return start;
+}
+
+static bool
+hasChar(const string &amp;s, unsigned int n, const string &amp;ins)
+{
+  if (n &lt; s.size())
+    for (unsigned int i = 0; i &lt; ins.size(); i++)
+      if (s[n] == ins[i])
+	return true;
+  return false;
+}
+
+bool
+Tokenizer::isSepChar(unsigned int pos) const
+{
+  return hasChar(mObject, pos, mSepChars);
+}
+
+bool
+Tokenizer::isQuoteChar(unsigned int pos) const
+{
+  return hasChar(mObject, pos, mQuoteChars);
+}
+
+bool
+Tokenizer::isSQuoteChar(unsigned int pos) const
+{
+  return hasChar(mObject, pos, mSQuoteChars);
+}
+
+string
+Tokenizer::getToken(unsigned int start, unsigned int end) const
+{
+  string s("");
+  if (start &lt; mObject.size())
+    if (end != string::npos) {
+      if (end &gt; start)
+	s = mObject.substr(start, end-start);
+    } else {
+      s = mObject.substr(start);
+    }
+  return s;
+}
+
+string
+Tokenizer::stripQuotes(const string &amp;s) const
+{
+  string ret("");
+  for (int i = 0; i &lt; s.size(); i++)
+    if (!hasChar(s, i, mQuoteChars) &amp;&amp; !hasChar(s, i, mSQuoteChars))
+      ret += s[i];
+  return ret;
+}
+</pre>

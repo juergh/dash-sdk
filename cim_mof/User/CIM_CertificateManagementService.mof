@@ -1,0 +1,358 @@
+// Copyright (c) 2008 DMTF.  All rights reserved.
+   [Experimental, Version ( "2.18.1" ), 
+    UMLPackagePath ( "CIM::User::SecurityServices" ), 
+    Description ( 
+       "CIM_CertificateManagementService is used for managing X509 "
+       "based certificates." )]
+class CIM_CertificateManagementService : CIM_KeyBasedCredentialManagementService {
+
+
+      [Description ( 
+          "This method is called to request a Certificate Signing "
+          "Request (CSR) based on the Distinguished Name provided "
+          "through Subject parameter. The CSR utilizes PKCS#10 "
+          "structure as defined in RFC2986. If the Subject "
+          "parameter is not NULL the following numbered "
+          "requirements shall apply: 1) The Subject parameter shall "
+          "follow the format specified by RFC 1485, 2) the "
+          "PublicKeyAlgorithm shall specify the algorithm to be "
+          "used for the public key, 3) the PublicKeySize shall "
+          "specify the length for the public key in bits. If the "
+          "Subject parameter is NULL the following numbered "
+          "requirements shall apply: 1) the PublicKeyAlgorithm "
+          "shall be NULL, 2) the PublicKeySize shall be NULL, 3) "
+          "the PublicPrivateKeyPair shall reference an instance of "
+          "CIM_UnsignedCredential representing the public/ private "
+          "key pair to be used for the CSR. The OutputFormat "
+          "parameter shall specify the output format of the CSR. If "
+          "the OutputFormat parameter is NULL, the implementation "
+          "shall format the Certificate Signing Request in the PEM "
+          "format, otherwise the format shall be the format "
+          "specified by the OutputFormat parameter. Upon the "
+          "successful execution, the CSR output parameter shall "
+          "contain the CSR in PKCS#10 structure." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Error Occured", "Busy", "Invalid Reference", 
+          "Invalid Parameter", "Access Denied", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint32 CreateCertificateSigningRequest(
+         [IN, Description ( 
+             "The Subject shall follow the format specified by "
+             "RFC 1485. An example of the value of the Subject "
+             "parameter could be \"CN=Marshall T. Rose, O=Dover "
+             "Beach Consulting, L=Santa Clara, ST=California, "
+             "C=US\"" )]
+      string Subject, 
+         [IN, Description ( 
+             "The PublicKeyAlgorithm specifies the algorithm to "
+             "be used for the public key." ), 
+          ValueMap { "2", "3", "..", "32768..65535" }, 
+          Values { "RSA", "DSA", "DMTF Rserved", "Vendor Reserved" }]
+      uint16 PublicKeyAlgorithm, 
+         [IN, Description ( 
+             "The PublicKeySize shall specify the length for the "
+             "public key in bits." ), 
+          PUNIT ( "bit" )]
+      uint16 PublicKeySize, 
+         [IN, Description ( 
+             "The PublicPrivateKeyPair parameter specifies a "
+             "reference to an instance of CIM_UnsignedCredential "
+             "which represents a public private key pair to be "
+             "utilized by the CSR." )]
+      CIM_UnsignedCredential REF PublicPrivateKeyPair, 
+         [IN, Description ( 
+             "The ExtendedKeyUsage indicates one or more "
+             "purposes for which the certified public key may be "
+             "used." )]
+      string ExtendedKeyUsage, 
+         [IN, Description ( 
+             "The OutputFormat property represents the requested "
+             "format of the Certificate Signing Request." ), 
+          ValueMap { "2", "3", "..", "32768..65535" }, 
+          Values { "PEM", "DER", "DMTF Rserved", "Vendor Reserved" }]
+      uint16 OutputFormat, 
+         [Required, IN ( false ), OUT, Description ( 
+             "The CSR parameter is an output parameter that upon "
+             "successful exection of this method will contain "
+             "the formated Certificate Signing Request." )]
+      uint8 CSR[]);
+
+      [Description ( 
+          "This method is called to generate to generate a "
+          "self-signed certificate. If the Subject parameter is not "
+          "NULL the following numbered requirements shall apply: 1) "
+          "The Subject parameter shall follow the format specified "
+          "by RFC 1485, 2) the PublicKeyAlgorithm shall specify the "
+          "algorithm to be used for the public key, 3) the "
+          "PublicKeySize shall specify the length for the public "
+          "key in bits. If the Subject parameter is NULL the "
+          "following numbered requirements shall apply: 1) the "
+          "PublicKeyAlgorithm shall be NULL, 2) the PublicKeySize "
+          "shall be NULL, 3) the PublicPrivateKeyPair shall "
+          "reference an instance of CIM_UnsignedCredential "
+          "representing the public/ private key pair to be used for "
+          "the self signed certificate. Upon successful execution "
+          "the reference to the newly created instance of "
+          "CIM_X509Certificate shall be returned in the "
+          "NewCertificate parameter which represents the "
+          "self-signed certificate with the public/private key pair "
+          "of the size specified by the KeySize parameter. This "
+          "instance shall be associated to the instance of "
+          "CIM_Keystore referenced by the Keystore parameter "
+          "through CIM_MemberOfCollection association. If the "
+          "CredentialContext parameter is not NULL, the newly "
+          "created instance shall be associated with the instance "
+          "of CIM_ManagedElement referenced by the "
+          "CredentialContext parameter through "
+          "CIM_CredentialContext association. If the "
+          "CredentialContext parameter is NULL, the newly created "
+          "instance shall not be associated with the instance of "
+          "CIM_ManagedElement through CIM_CredentialContext "
+          "association." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Error Occured", "Busy", "Invalid Reference", 
+          "Invalid Parameter", "Access Denied", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint32 CreateSelfSignedCertificate(
+         [IN, Description ( 
+             "The Subject shall follow the format specified by "
+             "RFC 1485. An example of the value of Subject "
+             "parameter could be \"CN=Marshall T. Rose, O=Dover "
+             "Beach Consulting, L=Santa Clara, ST=California, "
+             "C=US\"" )]
+      string Subject, 
+         [IN, Description ( 
+             "The PublicKeyAlgorithm specifies the algorithm to "
+             "be used for the public key." ), 
+          ValueMap { "2", "3", "..", "32768..65535" }, 
+          Values { "RSA", "DSA", "DMTF Rserved", "Vendor Reserved" }]
+      uint16 PublicKeyAlgorithm, 
+         [IN, Description ( 
+             "The PublicKeySize shall specify the length for the "
+             "public key in bits. The value shall be of power of "
+             "2." ), 
+          PUNIT ( "bit" )]
+      uint16 PublicKeySize, 
+         [IN, Description ( 
+             "The PublicPrivateKeyPair parameter specifies a "
+             "reference to an instance of CIM_UnsignedCredential "
+             "which represents a public private key pair to be "
+             "utilized by the newly created selef signed "
+             "certificate." )]
+      CIM_UnsignedCredential REF PublicPrivateKeyPair, 
+         [Required, IN, Description ( 
+             "The Keystore parameter denotes the reference to "
+             "the instance of CIM_Keystore that represents the "
+             "key store where the new certificate will be added." )]
+      CIM_Keystore REF Keystore, 
+         [IN, Description ( 
+             "The managed element that represents the service or "
+             "the managed element that will either verify the "
+             "certificate(s) or present the certificate(s) for "
+             "the verification." )]
+      CIM_ManagedElement REF CredentialContext, 
+         [IN ( false ), OUT, Description ( 
+             "Reference to the newly created instance of "
+             "CIM_X509Certificate representing the self signed "
+             "certificate." )]
+      CIM_X509Certificate REF SelfSignedCertificate);
+
+      [Description ( 
+          "This method is called to import a certificate or a "
+          "certificate chain using the certificate\'s encoded "
+          "representation. Upon successful execution the array of "
+          "references to the instance(s) of CIM_X509Certificate "
+          "representing the imported certificate or certificate "
+          "chain shall be returned inside the NewCertificates "
+          "output parameter. The newly created instance(s) of "
+          "CIM_X509Certificate shall be associated to the instance "
+          "of the CIM_Keystore referenced in the Keystore "
+          "parameter. If the CredentialContext parameter is not "
+          "NULL, the newly created instance(s) of the "
+          "CIM_X509Certificate shall be associated to the insatnces "
+          "of CIM_ManagedElement referenced in the "
+          "CredentialContext property through the "
+          "CIM_CredentialContext association. If the "
+          "CredentialContext parameter is NULL, the newly created "
+          "instance(s) of the CIM_X509Certificate shall not be "
+          "associated to the insatnces of CIM_ManagedElement "
+          "through the CIM_CredentialContext association." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Error Occured", "Busy", "Invalid Reference", 
+          "Invalid Parameter", "Access Denied", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint32 ImportEncodedCertificates(
+         [Required, IN, Description ( 
+             "An array of unsigned integers representing octet "
+             "string of an encoded certificate or certificate "
+             "chain to be imported." ), 
+          OctetString]
+      uint8 EncodedCertificates[], 
+         [Required, IN, Description ( 
+             "The Format shall specify the format for the "
+             "encoding that is used by octet string "
+             "EncodedCertificates parameter." ), 
+          ValueMap { "2", "3", "4", "5", "..", "32768..65535" }, 
+          Values { "DER", "PEM", "PKCS7", "PKCS12", 
+             "DMTF Rserved", "Vendor Reserved" }]
+      uint16 Format, 
+         [Required, IN, Description ( 
+             "The Keystore parameter denotes the reference to "
+             "the instance of CIM_Keystore that represents the "
+             "key store where the new certificate or certificate "
+             "chain will be added." )]
+      CIM_Keystore REF Keystore, 
+         [IN, Description ( 
+             "The managed element that represents the service or "
+             "the managed element that will either verify the "
+             "certificate(s) or present the certificate(s) for "
+             "the verification." )]
+      CIM_ManagedElement REF CredentialContext, 
+         [Required, IN ( false ), OUT, Description ( 
+             "Reference to the newly created instance of "
+             "CIM_X509Certificate representing the imported "
+             "certificate or certificate chain." )]
+      CIM_X509Certificate REF NewCertificates[]);
+
+      [Description ( 
+          "This method is called to import a certificate or a "
+          "certificate chain using an array of embedded instance of "
+          "CIM_X509Certificate. Upon successful execution the array "
+          "of references to the instance(s) of CIM_X509Certificate "
+          "representing the imported certificate or certificate "
+          "chain shall be returned by the NewCertificates output "
+          "parameter. The newly created instance(s) of "
+          "CIM_X509Certificate shall be associated to the instance "
+          "of the CIM_Keystore referenced in the Keystore "
+          "parameter. If the CredentialContext parameter is not "
+          "NULL, the newly created instance(s) of the "
+          "CIM_X509Certificate shall be associated to the insatnces "
+          "of CIM_ManagedElement referenced in the "
+          "CredentialContext property through the "
+          "CIM_CredentialContext association.If the "
+          "CredentialContext parameter is NULL, the newly created "
+          "instance(s) of the CIM_X509Certificate shall not be "
+          "associated to the insatnces of CIM_ManagedElement "
+          "through the CIM_CredentialContext association." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Error Occured", "Busy", "Invalid Reference", 
+          "Invalid Parameter", "Access Denied", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint32 ImportCertificates(
+         [Required, IN, Description ( 
+             "An array of embedded instance(s) of "
+             "CIM_X509Certificate that contains the necessary "
+             "information to import a certificate or a "
+             "certificate chain." ), 
+          EmbeddedInstance ( "CIM_X509Certificate" )]
+      string InputCertificates[], 
+         [Required, IN, Description ( 
+             "The Keystore parameter denotes the reference to "
+             "the instance of CIM_Keystore that represents the "
+             "key store where the new certificate or certificate "
+             "chain will be added." )]
+      CIM_Keystore REF Keystore, 
+         [IN, Description ( 
+             "The managed element that represents the service or "
+             "the managed element that will either verify the "
+             "certificate(s) or present the certificate(s) for "
+             "the verification." )]
+      CIM_ManagedElement REF CredentialContext, 
+         [Required, IN ( false ), OUT, Description ( 
+             "Reference to the newly created instance of "
+             "CIM_X509Certificate representing the imported "
+             "certificate or certificate chain." )]
+      CIM_X509Certificate REF NewCertificates[]);
+
+      [Description ( 
+          "This method is called to export a certificate or a "
+          "certificate chain using the certificate\'s encoded "
+          "representation. Upon successful execution the array of "
+          "unsigned integers representing octet string of the "
+          "exported certificate or certificate chain shall be "
+          "returned inside the EncodedCertificates output parameter "
+          "based on the encoding specified in the EncodingFormat "
+          "parameter." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Error Occured", "Busy", "Invalid Reference", 
+          "Invalid Parameter", "Access Denied", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint32 ExportEncodedCertificates(
+         [Required, IN, Description ( 
+             "Reference to the instance of CIM_SignedCredential "
+             "representing the certificate or certificate chain "
+             "to be exported." )]
+      CIM_X509Certificate REF CertificatesToExport[], 
+         [Required, IN, Description ( 
+             "The Format parameter specifies the format of the "
+             "octet string EncodedCertificates parameter." ), 
+          ValueMap { "2", "3", "4", "5", "..", "32768..65535" }, 
+          Values { "DER", "Base64", "PKCS7", "PKCS12", 
+             "DMTF Rserved", "Vendor Reserved" }]
+      uint16 Format, 
+         [Required, IN ( false ), OUT, Description ( 
+             "An array of unsigned integers representing octet "
+             "string of an exported encoded certificate or "
+             "certificate chain." ), 
+          OctetString]
+      uint8 EncodedCertificates[]);
+
+      [Description ( 
+          "This method is called to apply Certificate Revocation "
+          "List (CRL) to a particular key store. Upon successful "
+          "execution the array of references to the instance(s) of "
+          "CIM_X509CRL representing the applied CRL shall be "
+          "returned inside the AppliedCRL output parameter. The "
+          "newly created instance(s) of CIM_X509CRL shall be "
+          "associated to the instance of the CIM_Keystore "
+          "referenced in the Keystore parameter. The newly created "
+          "instance(s) of the CIM_X509CRL shall be associated to "
+          "the insatnces of CIM_ManagedElement referenced in the "
+          "CredentialContext property through the "
+          "CIM_CredentialContext association." ), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767", 
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", 
+          "Error Occured", "Busy", "Invalid Reference", 
+          "Invalid Parameter", "Access Denied", "DMTF Reserved", 
+          "Vendor Specified" }]
+   uint32 ApplyCRL(
+         [Required, IN, Description ( 
+             "An array of unsigned integers representing octet "
+             "string of an encoded CRL to be applied." ), 
+          OctetString]
+      uint8 EncodedCRL[], 
+         [Required, IN, Description ( 
+             "The Format shall specify the format for the "
+             "encoding that is used by octet string EncodedCRL "
+             "parameter." ), 
+          ValueMap { "2", "3", "4", "5", "..", "32768..65535" }, 
+          Values { "DER", "PEM", "PKCS7", "PKCS12", 
+             "DMTF Rserved", "Vendor Reserved" }]
+      uint16 Format, 
+         [Required, IN, Description ( 
+             "The Keystore parameter denotes the reference to "
+             "the instance of CIM_Keystore that represents the "
+             "key store where the CRL will be applied." )]
+      CIM_Keystore REF Keystore, 
+         [Required, IN, Description ( 
+             "The managed element that represents the service or "
+             "the managed element for which the certificates "
+             "were revoked by the application of the CRL." )]
+      CIM_ManagedElement REF CredentialContext, 
+         [Required, IN ( false ), OUT, Description ( 
+             "Reference to the newly created instance of "
+             "CIM_X509CRL representing the applied CRL." )]
+      CIM_X509CRL REF NewCertificates[]);
+
+};

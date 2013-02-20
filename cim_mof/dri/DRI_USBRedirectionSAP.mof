@@ -1,0 +1,3 @@
+class DRI_USBRedirectionSAP : CIM_USBRedirectionSAP {
+    boolean Deletable;
+};

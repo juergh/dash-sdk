@@ -1,0 +1,2 @@
+class DRI_ConnectedTo : CIM_ConnectedTo {
+};

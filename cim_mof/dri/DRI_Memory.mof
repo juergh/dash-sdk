@@ -1,0 +1,2 @@
+class DRI_Memory : CIM_Memory {
+};

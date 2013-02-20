@@ -1,0 +1,2 @@
+class DRI_PhysicalPackage : CIM_PhysicalPackage {
+};

@@ -1,0 +1,6 @@
+class DRI_Account : CIM_Account {
+    [ Override("UserPassword"), Write]
+    string UserPassword[];
+    [ Override("OrganizationName"), Write]
+    string OrganizationName[];
+};

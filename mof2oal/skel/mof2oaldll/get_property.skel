@@ -1,0 +1,29 @@
+	/**
+	 * Gets %PROPERTY_NAME%
+	 */
+
+	extern "C" SDKWRAPPER_Export int %CLASSNAME%_get%PROPERTY_NAME%(COALObject* _d, %PROPERTY_DLL_TYPE%* t);
+
+	int %CLASSNAME%_get%PROPERTY_NAME%(COALObject* _d, %PROPERTY_DLL_TYPE%* t) {
+		if (_d == NULL || t == NULL) 
+			return PP_ERR;
+
+		%CLASSNAME%%TEMPLATES%* _c = dynamic_cast<%CLASSNAME%%TEMPLATES%*>(_d);
+		if (_c == NULL)
+			return PP_ERR;
+					
+		%CLASSNAME%%TEMPLATES% c = *_c;
+		try {
+			%PROPERTY_TYPE% n = c.get%PROPERTY_NAME%();
+			%PROPERTY_DLL_TYPE% m = %PROPERTY_C_TO_DLL_TYPE_CONVERSION%;
+			*t = m;
+
+			return PP_OK;
+		} catch (dsdk::EDSDKError& e) {
+			unsigned int f = e.getErrorCode();
+#ifdef _DEBUG
+			assert(f != PP_OK && f != PP_ERR);
+#endif
+			return f;
+		}
+	}

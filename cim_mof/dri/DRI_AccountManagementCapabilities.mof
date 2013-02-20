@@ -1,0 +1,2 @@
+class DRI_AccountManagementCapabilities : CIM_AccountManagementCapabilities {
+};

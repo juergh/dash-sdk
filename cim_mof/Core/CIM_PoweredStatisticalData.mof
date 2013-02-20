@@ -1,0 +1,27 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SysDevCR00715.001" type ="change">Update of
+// descriptions based on Tech Edit review.</
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_PoweredStatisticalData
+// ==================================================================
+   [Experimental, Version ( "2.10.0" ), 
+    UMLPackagePath ( "CIM::Core::PowerMgmt" ), 
+    Description ( 
+       "Statistical information related to the powered-on time of a "
+       "Managed Element." )]
+class CIM_PoweredStatisticalData : CIM_StatisticalData {
+
+      [Description ( 
+          "The amount of consecutive time that the managed element "
+          "has been powered on." )]
+   datetime PowerOnHours;
+
+      [Description ( 
+          "The total amount of time that the managed element has "
+          "been powered on." )]
+   datetime TotalPowerOnHours;
+
+
+};

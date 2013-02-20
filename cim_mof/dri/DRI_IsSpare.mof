@@ -1,0 +1,2 @@
+class DRI_IsSpare : CIM_IsSpare {
+};

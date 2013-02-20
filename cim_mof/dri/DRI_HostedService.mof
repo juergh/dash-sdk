@@ -1,0 +1,2 @@
+class DRI_HostedService : CIM_HostedService {
+};

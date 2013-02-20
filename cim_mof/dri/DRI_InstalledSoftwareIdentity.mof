@@ -1,0 +1,2 @@
+class DRI_InstalledSoftwareIdentity : CIM_InstalledSoftwareIdentity {
+};

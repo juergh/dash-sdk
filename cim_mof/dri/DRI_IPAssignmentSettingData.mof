@@ -1,0 +1,2 @@
+class DRI_IPAssignmentSettingData : CIM_IPAssignmentSettingData {
+};

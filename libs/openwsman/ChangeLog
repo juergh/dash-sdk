@@ -1,0 +1,329 @@
+2.2.3.1
+- Bugfix release:
+  - cleanup: access CMPIString by macro, not by casted direct member access 
+  - fix connection error msg: rc.msg is a CMPIString, not a char* (kkaempf)
+  - fix for OperationTimeout parsing (Chris Poblete)
+
+2.2.3
+- Bugfix release:
+  - fix Windows build (forum.openwsman.org)
+  - fix to build with non-standard subscriptions dir (Chris Poblete)
+  - accept OperationTimeout values as outlined in Section 3.2.6.1
+    of http://www.w3.org/TR/xmlschema-2 (Chris Poblete)
+  - fall back to IPv4 if IPv6 unsupported (Arun Venkatachalam)
+  - make IPv4 vs. IPv6 configurable (kkaempf)
+  - support invoking a method with array type parameter/arguments
+    (Chris Poblete, bnc#581414)
+  - include instance namespace in the EPR response (Chris Poblete)
+  - fix crash in (unhandled) Array argument (Suresh Sundriyal)
+  - handle MaxElements in Pull operations (Chris Poblete, kkaempf, bnc#581731)
+  - fix building with ssl when openssl/ssl.h is available (Chris Poblete)
+  - make plugin directory configurable (Chris Poblete)
+  - fix "WXF Invalid Representation" error when sending a Create instance request
+    using the WinRm client (Trevor Witten)
+  - add ExcludeNilProperties option to suppress nil properties per request
+    (Chris Poblete, kkaempf)
+
+2.2.2
+- Bugfix release:
+  - fix init.d script to run on non-LSB systems (bnc#571873, Chandrasekhar_R@Dell.com)
+  - Clean up CMake build (kkaempf)
+  - Fix build for RHEL5, Fedora 11+12, CentOS 5
+  - Fix host certificate check in eventing, enable only if the
+    verify_host flag is set (bnc#569611, A_Venkatachalam@Dell.com)
+  - adapt bindings/ruby/helpers.c to Swig 1.3.40 class variable name
+    change
+  - fix bindings to accept ints (enums can't be expressed)
+
+2.2.1-1
+- fix NULL pointer dereference in PullResponse (bnc#572553, Suresh Sundriyal)
+
+2.2.1
+- Major changes:
+  - Enumeration timeout fixed, resulting in --enum-idle-timeout option
+    to openwsmand taking seconds (instead of miliseconds) now
+  - Client side CRL (certificate revocation list) support
+    (Arun Venkatachalam)
+  - split off client config as /etc/openwsman/openwsman_client.conf
+  - Fix upper limit check for threads and their stack usage (Suresh Sundriyal)
+    (Allowing to confine memory usage in the 10-20MB range!)
+    Reintroduce max_thread config file parameter and two new parameters
+    * max_connections_per_thread
+    * thread_stack_size
+- Minor changes:
+  - require swig 1.3.30 or later (rhel5 users: upgrade !)
+  - clean up fault generation in CIM backend (Suresh Sundriyal)
+  - fix various memory leaks (Suresh Sundriyal)
+  - fix Python bindings build (kkaempf)
+  - Fix security risk when listing indication subscriptions (Suresh Sundriyal)
+  - Fix xml namespace for enumeration and subscription filters (kkaempf)
+  - Fix class names for swig bindings, makes Python bindings
+    operational (kkaempf)
+  - Use same encoding for faults as in incoming msg (bug305, kkaempf)
+  - Make WS-Enumeration pull response comply to WS-Enumeration sequence
+    ordering (Suresh Sundriyal)
+
+2.2.0
+- Major changes:
+  - Adapt IANA ports of 5985 (http) and 5986 (https)
+  - Change the Ruby bindings module name to 'Openwsman'
+  - Change the Ruby plugin module name to 'Openwsman'
+  - IPv6 support (A_Venkatachalam@Dell.com)
+  - preliminary support for wbem intrinsic operations
+    'EnumerateClassNames' and 'GetClass' (kkaempf@suse.de)
+    (needs fixed sblim-sfcc, see www.openwsman.org for details)
+- Minor changes:
+  - Perl example code added (by warptrosse@gmail.com)
+  - Fixes to the CMake build environment
+  - Fixes to the sfcc backend (argument handling, xml escaping)
+  - Fix segfault when HTTP Content-Type not set (ssundriy@vmware.com)
+  - Many other bug fixes, e.g.
+    297: More detailed http status codes
+    309: Use correct namespace for detecting Filter node
+    288: CIM Provider Faults not getting propagated to client 
+    279: Openwsman server is adding extra CRLF
+
+2.1.1
+- Support SUNpro C compiler
+- Add SWIG server-side plugin support (Klaus Kaempf)
+- Add Perl client bindings (Klaus Kaempf)
+- Client bindings cleanup and improvements (Klaus Kaempf)
+
+2.1.0
+- Security related fixes
+- Many bug fixes related to http stack
+- GSSAPI support (thanks to Paul Moore)
+
+2.0.1
+- Added Java bindings
+- Set proxy in C++ bindings
+- Fixed SelectorSet Filter 
+- Added SelectorSet filter support to C++ interface
+- SelecorFilter does not need __cimnamespace
+
+
+2.0.0
+- minor bug fixes
+
+2.0.0b2
+ * Support SelectorSet Dialect
+ * Improved Filter API
+ * Improved EPR API
+ * Enahnced bindings to support filters
+ * Initial cmake support (Thanks to Klaus Kaempf)
+ * Many other bug fixes
+
+2.0.0b1
+
+ * Use latest shttpd code base
+ * Fixed SSL related issues with shttpd.
+ * Ruby bindings using swig now and part of openwsman
+ * Python bindings update
+ * serialize/de-serialize APIs updated. 
+   Make serialize/de-serialize APIs independent of server related structure; 
+   New APIs of 
+	do_serialize_real32, 
+	do_serialize_real64, 
+	do_serialize_int8 , 
+	do_serialize_int16, 
+	do_serialize_int32 and 
+	do_serialize_int64 added.
+ * secure eventing delivery support in WS-Eventing server code and related
+   options added in client code. 
+ * WS-Eventing client interfaces updated to make it more general.
+ * Source indication namespace configuration supported so that the 
+   namespace of subscription related classes can be different from that of indication class.
+ * Anonymous identify and custom identify file supported. 
+ * Many other bug fixings. 
+
+1.5.1
+
+    * Fixed compilation client library on windows
+    * Fixed crash in CIM plugin
+    * Fixed serialization in client library 
+
+1.5.0
+
+Openwsman 1.5 is an interim stable release toward 2.0 with all completed features since 1.0. This release serves as a checkpoint to evaluate implemented and outstanding features and to take care of bugs instead of waiting until the beta phase of 2.0.
+
+    * Structure Improvements
+          o New file structure. Header files separated from source file
+          o wsman_util library integrated into main library
+          o CIM client library (relying on SFCC) is part of the CIM plugin now 
+    * Openwsman Server:
+          o Rename server binary to openwsmand to avoid conflicts (wsmand is very generic)
+          o Accept indications 
+    * Openwsman Client:
+          o Added --encoding options to choose encoding type of sent and received messages
+          o Added options to support eventing
+          o Load custom method parameters from external file 
+    * WS-Eventing Phase 1
+          o Subscribe, Unsubscribe, Renew commands supported
+          o Heartbeat message supported. The granularity is 1 second.
+          o Four kinds of delivery modes supported: Push, PushWithAck, Pull, Events
+          o Extensible subscription storage mechanism and local subscription storage implemented
+          o If the delivery mode is PushWithAck or Events and there is no acknowledgment response from the event sink, the subscription will be terminated.
+          o Expired subscription will be deleted from the storage.
+          o Subscription with no expiry time will be kept until the service restarts. When the service restarts, all expired and non-expiry subscriptions will be deleted.
+          o If the delivery mode is set to Pull, the number of events kept in the service is limited. Any events over that limit will be discarded.
+          o Initial CIM indication support in the CIM plugin 
+    * XML abstraction layer and parser improvements
+    * Language Bindings:
+          o Python 
+    * Better support for windows authentication and client API support on windows
+    * Windows Client-side WS-Eventing support:
+    * C++ Bindings (Interface use mostly on windows)
+          o Connect using proxy server.
+          o Support replacing user name without the need to call constructor. Added api - void SetUserName?(const char *user_name)
+          o Support replacing password without the need to call constructor. Added api - void SetPassword?(const char *password)
+          o Add mechanism to extract error message (as string) using the error code inside the GeneralWsmanExeption?.
+          o Fixed bugs related to Kerberos communication in windows transport client 
+    * Integration with CIMOMs:
+          o Sfc Broker (Support local and CIMXML communication): Now it is possible to choose backend in the configuration file
+          o Openwbem (External Request handler) 
+
+    * Many many other fixes and improvements 
+
+1.2.0
+
+    * Fixed memory leaks in client, cpp client
+    * cleanup API to support external plugins and openwbem request handler
+    * General cleanup and minor fixes 
+1.1.0 
+
+Thread saftey: Moved static variables to client struct
+TLS Support: Support mutual authentication on Linux and Windows
+C++ client improvements
+API changes: Fixed long names and modified prefix of client API function
+Filtering: Assoc./References Support improved 
+
+1.0.0 
+
+First major release
+0.7.5
+
+Bug fix release
+0.7.4
+
+Bug fix release
+0.7.3
+
+Bug fix release
+0.7.2
+
+Bug fix release
+0.7.1
+
+Bug fix release
+0.7.0
+
+    * Enumeration Expiry support and timeout handler added
+    * C++ Wrapper library added
+    * Enhanced low-level API to support different types of data, now operations and actions requiring input (payload) accept:
+          o Text
+          o XML
+          o Serialized data 
+    * Simple C API with Sessions support added
+    * Serialization, Reworked and enhanced, added the following:
+          o Date/Time Serialization
+          o EPR Serialization 
+    * Create and Delete are now supported on the server level and the CIM plugin
+    * Namespace and resource URI handling is now stricter now allowing the use of random namespaces (they have to be defined in the configuration file)
+    * Transport using native interface on windows (not curl)
+    * Unified error handling for Windows and Linux
+    * Enahncements to make client compile and work on Windows
+    * Single Client API header
+    * Many bugs and spec conformance issues fixed 
+
+0.6.1
+
+The updates in this version of Openwsman have been focused on WS-CIM and WS-Management specification compliance.
+
+Interoperability with other WS-Management implementations was done at the Management Developers Conference (MDC) 2006. The issues found at the MDC have been corrected in this release.
+0.6.0
+0.5.1
+
+0.5.0
+
+0.4.2
+    * Removed env_t and replaced it with SoapH
+    * removing iWsDoc. Using WsXmlDocH everywhere
+    * improved create request routine for transfer put
+
+0.4.1
+    * 
+    
+0.4.0
+    * Standalone http server (replace libsoup), libsoup server still available using config options, however it will no longer be supported
+    * Support for both Basic and Diegst at the same time
+    * Command line client
+	* Client now uses curl
+	* Added additional debuging options( save output to file, step operatings)
+    * WS-CIM Compliance
+	- Added support for namespaces as selectors
+	- Full polymorphism support
+    * CIM Plugin
+	- Authentication with CIMOM using basic authentication
+	- Multiple vendor namespace now supported
+	- Vendor namespaces are configured in master config file
+	- Default CIM namespace configurable in master config file
+    * PAM Support
+    * Removed dependency on Glib2
+    * New command line parser for client and server
+    * Improved client interface
+    * Test clients added
+    * CUnit testing added (more tests to follow)
+    * Functional testing scripts added (more comliance tests to follow)
+    * Compliance with WS-Management specification
+	- Authenticate with same credentials when enumerating
+	- More Header checks
+    * Updated Fault table
+    * Many memory leak fixes
+    * Plugin reads configuration data from master config file
+	
+0.3.2
+
+    * Parse SSL port correctly
+    * Invoke CIM methods with right variables. 
+
+0.3.1
+
+    * fixed bug with null array value in cim access library: #24 
+
+0.3.0
+
+    * Code Cleanup
+    * Optimize code size
+    * RPM Support using SUSE build services
+    * Further modularization
+    * More WS-Management specification conformance
+    * Utility Library (glib replacement in core library)
+    * Basic CIM Binding support (Polymorphism)
+    * Many bug fixes, see report for more details. 
+
+0.2.0
+
+    * This is a cleanup release with many bug fixes and the following additional features:
+    * RPM support
+    * Core library split into functional sub libraries for server, client and utility functions.
+
+0.1.0 
+    * This is the first release defaulting to support the WS-management specification from the DMTF (version 1.0, currently draft). Support for the June 2005 specification has been disabled. You will not be able to send requests to Windows 2003 R2 or Vista with WS-Man support unless those have the new WS-Management stack from Microsoft.
+
+    * This release also added some new options to the client and removed many command line options from the service. Those options are now part of the configuration file used for the service. 
+0.09:
+    * Support DMTF draft specification (Work in Progress)
+    * Optimized enumeration
+    * EPR enumeration
+    * EPR And Object Enumeration
+    * Estimate Item Count in Enumeration
+    
+0.07:
+    * Various fixes to generic CIM plugin
+    * Eliminated memory leaks in various location
+    * Removed obsolete code which was inherited from the reference implementation this project is based on
+    * Added support for custom methods: It is now possible to invoke custom methods (Extrinsic CIM operations).
+    * Capture errors and status codes from the CIM library as WS-Management faults
+    * Moved all CIM client library dependencies to the cim client interface library to be able to support other client libraries (i.e. OpenWBEM client interface ) in the future.
+    * Changed command line options for the client to accomodate new actions and custom methods.
+

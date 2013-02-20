@@ -1,0 +1,590 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>CIM Schema Release Notes</title></head><body bgcolor="White">
+<redirect:write file="releasenotes.html" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:redirect="http://xml.apache.org/xalan/redirect" xmlns:fo="http://www.w3.org/1999/XSL/Format"></redirect:write>
+<h1>CIM Schema Release Notes</h1>
+<p>This document describes the changes that have been incorporated into
+the CIM Schema Version release.</p>
+<p>The experimental ZIP file contains entities that were approved for
+the CIM Schema Version that did not have sufficient implementation
+experience to be taken Final. The final ZIP file contains entities that
+have at least two independent implementations. Entities that are
+designated as final cannot be changed in a backward incompatible way
+between minor version releases.</p>
+<p><b>
+<center>Copyright (c) 2008 Distributed Management Task Force, Inc.
+(DMTF). All rights reserved.</center>
+</b></p>
+<p>DMTF is a not-for-profit association of industry members dedicated
+to promoting enterprise and systems management and interoperability.
+Members and non-members may reproduce DMTF specifications and documents
+for uses consistent with this purpose, provided that correct
+attribution is given. As DMTF specifications may be revised from time
+to time, the particular version and release date should always be
+noted.
+</p>
+<p>Implementation of certain elements of this standard or proposed
+standard may be subject to third party patent rights, including
+provisional patent rights (herein "patent rights"). DMTF makes no
+representations to users of the standard as to the existence of such
+rights, and is not responsible to recognize, disclose, or identify any
+or all such third party patent right, owners or claimants, nor for any
+incomplete or inaccurate identification or disclosure of such rights,
+owners or claimants. DMTF shall have no liability to any party, in any
+manner or circumstance, under any legal theory whatsoever, for failure
+to recognize, disclose, or identify any such third party patent rights,
+or for such partys reliance on the standard or incorporation thereof in
+its product, protocols or testing procedures. DMTF shall have no
+liability to any party implementing such standard, whether such
+implementation is foreseeable or not, nor to any patent owner or
+claimant, and shall have no liability or responsibility for costs or
+losses incurred if a standard is withdrawn or modified after
+publication, and shall be indemnified and held harmless by
+any party implementing the standard from any and all claims of
+infringement by a patent owner for such implementations.
+</p>
+<p>For information about patents held by third-parties which have
+notified the DMTF that, in their opinion, such patent may relate to or
+impact implementations of DMTF standards, visit
+http://www.dmtf.org/about/policies/disclosures.php.
+</p>
+<p>Contributions to the CIM schema have been provided through the DMTF
+Alliance Partnerships with the Storage Networking Industry Association
+(SNIA), the Open Grid Forum (OGF) and the Printer Work Group (a Program
+of the IEEE-ISTO). </p>
+<h2>Installation</h2>
+<p> To install the CIM Schema: </p>
+<ol>
+  <li>Download the ZIP files from the DMTF CIM standards page
+(http://www.dmtf.org/standards/cim/). The ZIP files can be found under
+the "CIM Schema and Specifications" section. The release contains both
+the experimental and final CIM Schemas.</li>
+  <p></p>
+  <ul>
+    <li>cimvExperimental-MOFs.zip</li>
+    <li>cimvFinal-MOFs.zip</li>
+  </ul>
+  <p>These files contain all the MOF files that are part of the CIM
+schema. The experimental ZIP file contains the latest experimental
+schema. This schema may change in a backward incompatible way based on
+implementation experience. The final ZIP file contains just the
+portions of the schema that is in a final state.</p>
+  <ul>
+    <li>cimvExperimental-xmlAll.zip</li>
+    <li>cimvFinal-xmlAll.zip</li>
+  </ul>
+  <p>These files contain a rendering of the CIM schema in XML into a
+single file.</p>
+  <ul>
+    <li>cimvExperimental-xmlClasses.zip</li>
+    <li>cimvFinal-xmlClasses.zip</li>
+  </ul>
+  <p>These files contain a rendering of the CIM schema in XML into
+individual files, one file per entity.</p>
+  <ul>
+    <li>cimvExperimental-XSDClasses.zip</li>
+    <li>cimvFinal-XSDClasses.zip</li>
+  </ul>
+  <p>These files contain a rendering of the CIM schema in XSD into
+individual files, one file per entity.</p>
+  <ul>
+    <li>cimvExperimental-DOC.zip</li>
+    <li>cimvFinal-DOC.zip</li>
+  </ul>
+  <p>These files contain a rendering of the CIM schema in HTML format.</p>
+  <ul>
+    <li>cimv-Final-Experimental-diff.zip</li>
+    <li>cimv-cimv-Experimental-diff.zip</li>
+    <li>cimv-cimv-Final-diff.zip</li>
+  </ul>
+  <p>These files contain a comparison of the differences in the CIM
+schema rendered in HTML format. The files contain the differences
+between Final and Experimental, and the prior releease Experimental and
+and the prior release Final respectively.</p>
+  <ul>
+    <li>cimv-Experimental-Visios.zip</li>
+    <li>cimv-Final-Visios.zip</li>
+  </ul>
+  <p>These files contain the UML representations of the CIM schema in
+Visio format.</p>
+  <li>Unzip the downloaded files. Please be aware that the MOFs will be
+expanded into the directory that you specify. Subdirectories are
+created for each separate model area.</li>
+</ol>
+<p></p>
+<h2>Schema Changes</h2>
+<h3>Final</h3>
+<p>The following changes were applied to Final</p>
+<table border="1" cellpadding="1" width="100%">
+  <tbody>
+    <tr>
+      <th>Class (File)</th>
+      <th>Change Request</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_OwningCollectionElement.mof</td>
+      <td valign="top">CIMCoreCR01075</td>
+      <td valign="top">Take CIM_OwningCollectionElement Final </td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_RedundancySet.mof</td>
+      <td valign="top">CIMCoreCR01033</td>
+      <td valign="top">CIMCoreCR01033: Clarify that 'N+1' may be used
+to represent 'N+M'</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_SoftwareIdentity.mof</td>
+      <td valign="top">CIMCoreCR01076</td>
+      <td valign="top">CIMCoreCR01076:Take CIM_SoftwareIdentity
+Properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_AssociatedComponentExtent.mof</td>
+      <td valign="top">CIMCoreCR01035</td>
+      <td valign="top">Implementation experience for
+CIM_AssociatedComponentExtent</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_AssociatedRemainingExtent </td>
+      <td valign="top">CIMCoreCR01036</td>
+      <td valign="top">CIMCoreCR01036: Implementation experience for
+CIM_AssociatedRemainingExtent</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_Printer.mof</td>
+      <td valign="top">CIMCoreCR01073-1</td>
+      <td valign="top">CIMCoreCR01073-1:Modify class CIM_Printer,
+updating properties per current printing model. </td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_ConfigurationCapacity.mof</td>
+      <td valign="top">CIMCoreCR01059</td>
+      <td valign="top">CIMCoreCR01059: Take CIM_ConfigurationCapacity
+properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_ElementInConnector.mof</td>
+      <td valign="top">CIMCoreCR01055</td>
+      <td valign="top">CIMCoreCR01055: Take CIM_ElementInConnector
+Final </td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_MemoryCapacity.mof</td>
+      <td valign="top">CIMCoreCR01031</td>
+      <td valign="top">CIMCoreCR01031: Add new memory device types:
+DDR3 and FBD2.</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PackageInConnector.mof</td>
+      <td valign="top">CIMCoreCR01056</td>
+      <td valign="top">Change Parent of CIM_PackageInConnector</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PhysicalAssetCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01057</td>
+      <td valign="top">Take CIM_PhysicalAssetCapabilities Final </td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PhysicalMemory.mof</td>
+      <td valign="top">CIMCoreCR01050</td>
+      <td valign="top">CIMCoreCR01050: Add new memory device tycpes:
+DDR3 and FBD2.</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PhysicalPackage.mof</td>
+      <td valign="top">CIMCoreCR01058</td>
+      <td valign="top">CIMCoreCR01058: Take CIM_PhysicalPackage
+properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_Slot.mof</td>
+      <td valign="top">CIMCoreCR01060</td>
+      <td valign="top">CIMCoreCR01060: Take CIM_Slot properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">System/CIM_Log.mof</td>
+      <td valign="top">CIMCoreCR01071</td>
+      <td valign="top">Take CIM_Log.LogState property Final </td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_PrivilegeManagementCapabilities.mof</td>
+      <td valign="top">WIP_SECCR00022 </td>
+      <td valign="top">Take PrivilegeManagementCapabilities class to
+final</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_Role.mof</td>
+      <td valign="top">WIP_SECCR00023 </td>
+      <td valign="top">Take the CIM_Role.RoleCharacteristics property
+to final</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_RoleBasedAuthorizationService</td>
+      <td valign="top">WIP_SECCR00024 </td>
+      <td valign="top">Take RoleBasedAuthorization class to final</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_RoleBasedManagementCapabilities.mof</td>
+      <td valign="top">WIP_SECCR00021 </td>
+      <td valign="top">Take RoleBasedManagementCapabilities class to
+final</td>
+    </tr>
+  </tbody>
+</table>
+<h3>Experimental</h3>
+<p>The following changes were applied to Experimental</p>
+<table border="1" cellpadding="1" width="100%">
+  <tbody>
+    <tr>
+      <th>Class (File)</th>
+      <th>Change Request</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Core/CIM_MemberOfPolicyCollection</td>
+      <td style="vertical-align: top;">CIMCoreCR1072<br>
+      </td>
+      <td style="vertical-align: top;">Create new class
+CIM_MemberOfPolicyCollection</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_OwningCollectionElement.mof</td>
+      <td valign="top">CIMCoreCR01075</td>
+      <td valign="top">Take CIM_OwningCollectionElement Final </td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_RedundancySet.mof</td>
+      <td valign="top">CIMCoreCR01033</td>
+      <td valign="top">CIMCoreCR01033: Clarify that 'N+1' may be used
+to represent 'N+M'</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_SoftwareIdentity.mof</td>
+      <td valign="top">CIMCoreCR01076</td>
+      <td valign="top">CIMCoreCR01076:Take CIM_SoftwareIdentity
+Properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_AssociatedComponentExtent.mof</td>
+      <td valign="top">CIMCoreCR01035</td>
+      <td valign="top">Implementation experience for
+CIM_AssociatedComponentExtent</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_AssociatedRemainingExtent </td>
+      <td valign="top">CIMCoreCR01036</td>
+      <td valign="top">CIMCoreCR01036: Implementation experience for
+CIM_AssociatedRemainingExtent</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_Printer.mof</td>
+      <td valign="top">CIMCoreCR01073-1</td>
+      <td valign="top">CIMCoreCR01073-1:Modify class CIM_Printer,
+updating properties per current printing model. </td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_ConfigurationCapacity.mof</td>
+      <td valign="top">CIMCoreCR01059</td>
+      <td valign="top">CIMCoreCR01059: Take CIM_ConfigurationCapacity
+properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_ElementInConnector.mof</td>
+      <td valign="top">CIMCoreCR01055</td>
+      <td valign="top">CIMCoreCR01055: Take CIM_ElementInConnector
+Final </td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_MemoryCapacity.mof</td>
+      <td valign="top">CIMCoreCR01031</td>
+      <td valign="top">CIMCoreCR01031: Add new memory device types:
+DDR3 and FBD2.</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PackageInConnector.mof</td>
+      <td valign="top">CIMCoreCR01056</td>
+      <td valign="top">Change Parent of CIM_PackageInConnector</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PhysicalAssetCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01057</td>
+      <td valign="top">Take CIM_PhysicalAssetCapabilities Final </td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PhysicalMemory.mof</td>
+      <td valign="top">CIMCoreCR01050</td>
+      <td valign="top">CIMCoreCR01050: Add new memory device tycpes:
+DDR3 and FBD2.</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_PhysicalPackage.mof</td>
+      <td valign="top">CIMCoreCR01058</td>
+      <td valign="top">CIMCoreCR01058: Take CIM_PhysicalPackage
+properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">Physical/CIM_Slot.mof</td>
+      <td valign="top">CIMCoreCR01060</td>
+      <td valign="top">CIMCoreCR01060: Take CIM_Slot properties Final</td>
+    </tr>
+    <tr>
+      <td valign="top">System/CIM_Log.mof</td>
+      <td valign="top">CIMCoreCR01071</td>
+      <td valign="top">Take CIM_Log.LogState property Final </td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_PrivilegeManagementCapabilities.mof</td>
+      <td valign="top">WIP_SECCR00022 </td>
+      <td valign="top">Take PrivilegeManagementCapabilities class to
+final</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_Role.mof</td>
+      <td valign="top">WIP_SECCR00023 </td>
+      <td valign="top">Take the CIM_Role.RoleCharacteristics property
+to final</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_RoleBasedAuthorizationService</td>
+      <td valign="top">WIP_SECCR00024 </td>
+      <td valign="top">Take RoleBasedAuthorization class to final</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_RoleBasedManagementCapabilities.mof</td>
+      <td valign="top">WIP_SECCR00021 </td>
+      <td valign="top">Take RoleBasedManagementCapabilities class to
+final</td>
+    </tr>
+    <tr>
+      <td valign="top">CIM_PrintInterlock.mof</td>
+      <td valign="top">CIMCoreCR01030</td>
+      <td valign="top">Add class CIM_PrintInterlock to enhanced printer
+device model.Â&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_OpaqueManagementData.mof</td>
+      <td valign="top">CIMCoreCR00986</td>
+      <td valign="top">Add new class CIM_OpaqueManagementData</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_OpaqueManagementDataCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01040</td>
+      <td valign="top">CIMCoreCR01040: Add class
+CIM_OpaqueManagementDataCapabilities to Core model.</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_OpaqueManagementDataService.mof</td>
+      <td valign="top">CIMCoreCR00987</td>
+      <td valign="top">Add class CIM_OpaqueManagementDataService to
+Core model.</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_RemoteServiceAccessPoint.mof</td>
+      <td valign="top">CIMCoreCR01052</td>
+      <td valign="top">CIMCoreCR01052: Add representation of remote NTP
+Service</td>
+    </tr>
+    <tr>
+      <td valign="top">Core/CIM_ServiceAffectsElementWithQuota.mof</td>
+      <td valign="top">CIMCoreCR00989</td>
+      <td valign="top">Add class CIM_ServiceAffectsElementWithQuota to
+Core model</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_AsymmetricAccessibility.mof</td>
+      <td valign="top">CIMCoreCR01067</td>
+      <td valign="top">CIMCoreCR01067:Add class
+CIM_AsymmetricAccessibility to provide asymmetric access functionality
+for storage servers</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_PowerAllocationSettingData.mof</td>
+      <td valign="top">CIMCoreCR00951</td>
+      <td valign="top">Add PowerAllocationSettingData</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_PrintMarker.mof</td>
+      <td valign="top">CIMCoreCR01074</td>
+      <td valign="top">Add three properties to class CIM_PrintMarker</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_Printer.mof</td>
+      <td valign="top">CIMCoreCR01073-2</td>
+      <td valign="top">CIMCoreCR01073-2:Modify class CIM_Printer,
+updating properties per current printing model. </td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_Sensor.mof</td>
+      <td valign="top">CIMCoreCR00985</td>
+      <td valign="top">Add structured SensorContext property</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_SerialPort.mof</td>
+      <td valign="top">CIMCoreCR00932</td>
+      <td valign="top">Creation of CIM_SerialPort class </td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_StorageConfigurationCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01069</td>
+      <td valign="top">CIMCoreCR01069:Modify class
+CIM_StorageConfigurationCapabilities to support re-assignment of
+storage resource affinity to Storage Processors</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_StorageConfigurationService.mof</td>
+      <td valign="top">CIMCoreCR01070</td>
+      <td valign="top">CIMCoreCR01070:Modify class
+CIM_StorageConfigurationService to support re-assignment of storage
+resource affinity to Storage Processors.</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_StorageProcessorAffinity.mof</td>
+      <td valign="top">CIMCoreCR01066</td>
+      <td valign="top">CIMCoreCR01066:Add class
+CIM_StorageProcessorAffinity to provide asymmetric access functionality
+for storage servers</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_StorageResourceLoadGroup.mof</td>
+      <td valign="top">CIMCoreCR01064</td>
+      <td valign="top">CIMCoreCR01064:Add class
+CIM_StorageResourceLoadGroup to provide asymmetric access functionality
+for storage servers</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_StorageServerAsymmetryCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01063</td>
+      <td valign="top">CIMCoreCR01063: Add class
+CIM_StorageServerAsymmetryCapabilities to provide asymmetric access
+functionality for storage servers</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_TargetPortGroup.mof</td>
+      <td valign="top">CIMCoreCR01065</td>
+      <td valign="top">CIMCoreCR01065:Add class CIM_TargetPortGroup to
+provide asymmetric access functionality for storage servers</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_WiFiPort.mof</td>
+      <td valign="top">CIMCoreCR01016</td>
+      <td valign="top">Addition of class CIM_WiFiPort</td>
+    </tr>
+    <tr>
+      <td valign="top">Device/CIM_WiFiPortCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01025</td>
+      <td valign="top">Add class CIM_WiFiPortCapabilities </td>
+    </tr>
+    <tr>
+      <td valign="top">Device\CIM_WiFiPortConfigurationService.mof</td>
+      <td valign="top">CIMCoreCR01053</td>
+      <td valign="top">CIMCoreCR01053: Add class
+CIM_WiFiPortConfigurationService</td>
+    </tr>
+    <tr>
+      <td valign="top">Device\CIM_WiFiRadio.mof</td>
+      <td valign="top">CIMCoreCR01018</td>
+      <td valign="top">Add class CIM_WiFiRadio</td>
+    </tr>
+    <tr>
+      <td valign="top">Includes/ProcessorFamily.inc</td>
+      <td valign="top">CIMCoreCR01027</td>
+      <td valign="top">CIMCoreCR01027: Add new processor family value:
+AMD Phenom Triple-Core Processor</td>
+    </tr>
+    <tr>
+      <td valign="top">Network/CIM_IEEE8021xCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01024</td>
+      <td valign="top">CIMCoreCR01024: Add class
+CIM_IEEE8021xCapabilities</td>
+    </tr>
+    <tr>
+      <td valign="top">Network/CIM_IEEE8021xSettings.mof</td>
+      <td valign="top">CIMCoreCR01023</td>
+      <td valign="top">Add class CIM_IEEE8021xSettings</td>
+    </tr>
+    <tr>
+      <td valign="top">Network/CIM_MediaRedirectionCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01029</td>
+      <td valign="top">Add new CIM_MediaRedirectionCapabilities class</td>
+    </tr>
+    <tr>
+      <td valign="top">Network/CIM_MediaRedirectionSAP.mof</td>
+      <td valign="top">CIMCoreCR01028</td>
+      <td valign="top">CIMCoreCR01028: Add new CIM_MediaRedirectionSAP
+class</td>
+    </tr>
+    <tr>
+      <td valign="top">Network/CIM_WiFiEndpointCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01034</td>
+      <td valign="top">Add class CIM_WiFiEndpointCapabilities </td>
+    </tr>
+    <tr>
+      <td valign="top">Network/CIM_WiFiEndpointSettings.mof</td>
+      <td valign="top">CIMCoreCR01022</td>
+      <td valign="top">Add class CIM_WiFiEndpointSettings </td>
+    </tr>
+    <tr>
+      <td valign="top">System/CIM_BIOSService.mof</td>
+      <td valign="top">CIMCoreCR1007</td>
+      <td valign="top">CIMCoreCR1007: Rework BootService
+CreateBootConfigSetting() and SetBootConfigRole() methods</td>
+    </tr>
+    <tr>
+      <td valign="top">System/CIM_BIOSService.mof</td>
+      <td valign="top">CIMCoreCR01000</td>
+      <td valign="top">CIMCoreCR01000: Add raw read/write methods to
+BIOSService class</td>
+    </tr>
+    <tr>
+      <td valign="top">System/CIM_BootConfigSetting.mof</td>
+      <td valign="top">CIMCoreCR01039</td>
+      <td valign="top">CIMCoreCR01039: Fix typo in CIM_BootConfigSetting</td>
+    </tr>
+    <tr>
+      <td valign="top">System/CIM_BootServiceCapabilities.mof</td>
+      <td valign="top">CIMCoreCR01008</td>
+      <td valign="top">CIMCoreCR01008: Add "State" setting data option
+to BootServiceCapabilities</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_Account.mof</td>
+      <td valign="top">WIP_SECCR00002</td>
+      <td valign="top">Add password encryption properties to CIM_Account</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_AccountManagementCapabilities.mof</td>
+      <td valign="top">WIP_SECCR00003</td>
+      <td valign="top">Add password encryption properties to
+CIM_AccountManagementCapabilities</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_CertificateManagementCapabilities.mof</td>
+      <td valign="top">WIP_SECCR00010</td>
+      <td valign="top">Add CIM_CertificateManagementCapabilities for
+capabilities of CIM_CertificateManagmentService.</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_CertificateManagementService.mof</td>
+      <td valign="top">WIP_SECCR0008</td>
+      <td valign="top">Add CertificateManagementService class to manage
+certificates using the introduced methods.</td>
+    </tr>
+    <tr>
+      <td valign="top">User/CIM_KeyBasedCredentialManagementService.mof</td>
+      <td valign="top">WIP_SECCR00019</td>
+      <td valign="top">WIP_SECCR00019: Add
+KeyBasedCredentialManagementService class.</td>
+    </tr>
+    <tr>
+      <td valign="top">core/CIM_PowerUtilizationManagementCapabilities.mof</td>
+      <td valign="top">CIMCoreCR00979</td>
+      <td valign="top">Add PowerUtilizationManagementCapabilities</td>
+    </tr>
+    <tr>
+      <td valign="top">core/CIM_PowerUtilizationManagementService.mof</td>
+      <td valign="top">CIMCoreCR00952</td>
+      <td valign="top">Add PowerUtilizationManagementService</td>
+    </tr>
+  </tbody>
+</table>
+</body></html>

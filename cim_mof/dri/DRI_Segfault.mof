@@ -1,0 +1,10 @@
+[Description ("An experimental class for providers intended to go down with "
+              "all flags flying, carrying poor souls away into the deep.")]
+class DRI_Segfault {
+   [Key, Description ("InstanceID identifies the faulty instance." )]
+   string InstanceID;
+
+   [Description ("The Description property provides a textual description "
+                 "of the disaster." )]
+   string Description;
+};

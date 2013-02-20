@@ -1,0 +1,2 @@
+class DRI_AssociatedCacheMemory : CIM_AssociatedCacheMemory {
+};

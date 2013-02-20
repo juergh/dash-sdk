@@ -1,0 +1,110 @@
+	
+	/**
+	 * Enumerate instances of %RESULT% (%RESULT_OBJ%) that refer to %REFERED% (%REFERED_OBJ%).
+	 */
+	extern "C" SDKWRAPPER_Export int %CLASSNAME%_get%RESULT%s_by%REFERED%(dsdk::IClient* client, COALObject* _d, char* _filter, oaldllarg* t);
+
+	int %CLASSNAME%_get%RESULT%s_by%REFERED%(dsdk::IClient* client, COALObject* _d, char* _filter, oaldllarg* t) {
+			if (client == NULL || t == NULL || _d == NULL)
+				return PP_ERR;
+
+			try {
+				vector<string> props = %RESULT_OBJ%::getKeyProps();
+				vector<void*> classes;
+				string _classname = _filter ? _filter : "";
+
+				%REFERED_OBJ%* _%REFERED_OBJ% = dynamic_cast<%REFERED_OBJ%*>(_d);
+				if (_%REFERED_OBJ% == NULL)
+					return PP_ERR;
+					
+				%REFERED_OBJ% __%REFERED_OBJ% = *_%REFERED_OBJ%;
+				try
+				{
+					%RESULT_OBJ%::iterator iter = (_classname != "") 
+						? %RESULT_OBJ%::iterator(client->associators (__%REFERED_OBJ%.getObjectPath (),
+							"%CLASSNAME%",
+							_classname,
+							"%REFERED%", "%RESULT%"),
+							client, props)
+						: %CLASSNAME%%TEMPLATES%::enumerate%RESULT%(
+							client, 
+							__%REFERED_OBJ%,
+							props);
+				}
+				catch(ECIMError e)
+				{
+					if(e.getRetCode() == CMPI_RC_ERR_UNSUPPORTED_FEATURE)
+					{
+						%RESULT_OBJ%::iterator iter = (_classname != "") 
+							? %RESULT_OBJ%::iterator(client->associatorNames (__%REFERED_OBJ%.getObjectPath (),
+							client, props)
+							: %CLASSNAME%%TEMPLATES%::enumerate%RESULT%(
+							client, 
+						__	%REFERED_OBJ%,
+							props);
+					}
+					else
+					{
+						throw;//rethrow
+					}
+				}
+
+				for (; iter != %RESULT_OBJ%::iterator::end(); ++iter) {
+					%RESULT_OBJ% c = *iter;
+					CCIMInstance* i = new CCIMInstance(c.getObjectPath());
+					COALObject* o = create(i);
+					%RESULT_OBJ%* r =  dynamic_cast<%RESULT_OBJ%*> (o);
+					r->initialize(client);
+					classes.push_back((void*)r);
+				}
+
+				return vec2ser(classes, t);
+			} catch (dsdk::EDSDKError& e) {
+				unsigned int f = e.getErrorCode();
+#ifdef _DEBUG
+				assert(f != PP_OK && f != PP_ERR);
+#endif
+				return f;
+			}
+	}
+	
+	/**
+	 * Enumerate instances of %CLASSNAME% that refer to %REFERED% (%REFERED_OBJ%).
+	 */
+	extern "C" SDKWRAPPER_Export int %CLASSNAME%_getInstances_by%REFERED%(dsdk::IClient* client, COALObject* _d, oaldllarg* t);
+
+	int %CLASSNAME%_getInstances_by%REFERED%(dsdk::IClient* client, COALObject* _d, oaldllarg* t) {
+			if (client == NULL || t == NULL || _d == NULL)
+				return PP_ERR;
+			
+			try {
+				vector<string> props;
+				props.push_back ("%RESULT%");
+				props.push_back ("%REFERED%");
+				%ENUM_PUSH_BACK_PROPS%
+
+				vector<void*> classes;
+				
+				%REFERED_OBJ%* _%REFERED_OBJ% = dynamic_cast<%REFERED_OBJ%*>(_d);
+				if (_%REFERED_OBJ% == NULL)
+					return PP_ERR;
+
+				%REFERED_OBJ% __%REFERED_OBJ% = *_%REFERED_OBJ%;
+
+				vector< %CLASSNAME%%TEMPLATES% > v = %CLASSNAME%%TEMPLATES%::getInstancesBy%REFERED%(client, __%REFERED_OBJ%, props);
+				
+				for(int j =0 ; j < (int)v.size (); j++) {
+				    %CLASSNAME%%TEMPLATES%* r = new %CLASSNAME%%TEMPLATES%(v[j]);
+				    r->initialize(client);
+				    classes.push_back((void*)r);
+				}
+				return vec2ser(classes, t);
+			} catch (dsdk::EDSDKError& e) {
+				unsigned int f = e.getErrorCode();
+#ifdef _DEBUG
+				assert(f != PP_OK && f != PP_ERR);
+#endif
+				return f;
+			}
+	}
+

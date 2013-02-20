@@ -1,0 +1,37 @@
+[ Creatable, Deletable, Modifiable, PropWriteable ]
+class DRI_ListenerDestinationWsMan : CIM_ListenerDestination {
+
+    [ Description ("wse:notifyTo"),
+      Required, Override("Destination") ]
+    string Destination;
+
+    [ Description ("wsa:Referenceparameters, wsa:Referenceproperties") ]
+    string DestinationReferences;
+
+    [ Description ("wse:endTo") ]
+    string EndTo;
+
+    [ Description ("wsa:Referenceparameters, wsa:Referenceproperties") ]
+    string EndToReferences;
+
+    [ Description ("Wsman delivery mode"),
+      ValueMap { "1", "2", "3" },
+      Values { "Unknown", "Push", "PushWithAck" } ]
+    uint16 DeliveryMode;
+
+    [ Description ("ws:ContentEncoding") ]
+    string ContentEncoding;
+
+    [ Description ("ws:Locale") ]
+    string Locale;
+
+    [ Description ("How many connection attempts before failure.") ]
+    uint32 ConnectionRetryCount;
+
+    [ Description ("Interval between connection retries.") ]
+    uint64 ConnectionRetryInterval;
+
+    [ Description ("Heartbeat interval") ]
+    uint64 HeartbeatInterval;
+};
+

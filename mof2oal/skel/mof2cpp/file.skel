@@ -1,0 +1,14 @@
+/**
+ * %FILENAME%.h 
+ * WARNING: This file is auto-generated from the corresponding MOF file. 
+ * Please do not modify this file as you may lose your changes.
+ */
+#include <vector>
+#include <string>
+#include <time.h>
+
+using std::string;
+using std::vector;
+
+%CLASSCODE%
+

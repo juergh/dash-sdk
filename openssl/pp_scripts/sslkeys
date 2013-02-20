@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ ! -f /config/active-ssl.key -o ! -f /config/active-ssl.crt ]; then
+    # one of the SSL files is missing
+    echo "Creating symlink to default SSL key and cert..."
+    rm -f /config/active-ssl.key
+    rm -f /config/active-ssl.crt
+    ln -s /etc/pki/tls/private/erickey_default.pem /config/active-ssl.key
+    ln -s /etc/pki/tls/certs/ericcert_default.pem /config/active-ssl.crt
+fi

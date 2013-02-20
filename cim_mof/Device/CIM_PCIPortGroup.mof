@@ -1,0 +1,16 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00899" type="add">Updates for PCI.</change>
+// ==================================================================
+//  CIM_PCIPortGroup
+// ==================================================================
+   [Experimental, Version ( "2.16.0" ), 
+    UMLPackagePath ( "CIM::Device::Controller" ), 
+    Description ( "A collection of one or more PCI device ports." )]
+class CIM_PCIPortGroup : CIM_LogicalPortGroup {
+
+      [Experimental, Description ( 
+          "The bus number shared by the PCI device ports." )]
+   uint8 BusNumber;
+
+
+};
