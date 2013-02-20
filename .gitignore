@@ -1,0 +1,16 @@
+Makefile
+config.log
+config.status
+dash-sdk.spec
+libs/openwsman/Doxyfile
+libs/openwsman/etc/init/openwsmand.sh
+libs/openwsman/libtool
+libs/openwsman/openwsman.spec
+libs/openwsman/stamp-h1
+libs/openwsman/wsman_config.h
+mof2oal/src/config.h
+mof2oal/src/libtool
+mof2oal/src/stamp-h1
+*~
+.deps
+*.pc
