@@ -434,7 +434,7 @@ char *wsman_transport_get_last_error_string(WS_LASTERR_Code err)
 	case WS_LASTERR_OK:
 		return "Everithing OK";
 	case WS_LASTERR_FAILED_INIT:
-		return "Trnasport initailization failed";
+		return "Transport initialization failed";
 	case WS_LASTERR_UNSUPPORTED_PROTOCOL:
 		return "Unsupported protocol";
 	case WS_LASTERR_URL_MALFORMAT:
