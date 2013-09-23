@@ -296,7 +296,7 @@ clean-binPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-	rm ../../bin/mof2oal
+	rm ../../bin/mof2oal || :
 mof2oal$(EXEEXT): $(mof2oal_OBJECTS) $(mof2oal_DEPENDENCIES) 
 	@rm -f mof2oal$(EXEEXT)
 	$(CXXLINK) $(mof2oal_OBJECTS) $(mof2oal_LDADD) $(LIBS)
