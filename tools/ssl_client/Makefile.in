@@ -130,7 +130,7 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
-LIBS = -lssl -lpthread
+LIBS = -lssl -lpthread -lcrypto
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -201,8 +201,8 @@ ssl_client_SOURCES = \
 			src/main.cpp 		\
 			src/transport.cpp 	\
 			src/server.cpp 		\
-        		src/client.cpp 		\
-        		src/sslclient.cpp
+			src/client.cpp 		\
+			src/sslclient.cpp
 
 EXTRA_DIST = src/*.h					\
 		windows/ssl_client/ssl_client.sln 	\
