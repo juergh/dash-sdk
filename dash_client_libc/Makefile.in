@@ -64,18 +64,19 @@ am_libdashapic_la_OBJECTS = dsdk_c.lo bootconfig_c.lo cimmap_c.lo \
 	opaquemanagementdata_c.lo biosmanagement_c.lo \
 	textredirection_c.lo usbredirection_c.lo battery_c.lo \
 	networkport_c.lo dhcpclient_c.lo ipinterface_c.lo \
-	dnsclient_c.lo registeredprofile_c.lo ethernetport_c.lo
+	dnsclient_c.lo virtualmedia_c.lo registeredprofile_c.lo \
+	ethernetport_c.lo
 libdashapic_la_OBJECTS = $(am_libdashapic_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
+LTCXXCOMPILE = $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) \
 	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --tag=CC --mode=link $(CC) $(AM_CXXFLAGS) \
+CXXLINK = $(LIBTOOL) --tag=CXX --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libdashapic_la_SOURCES)
 DIST_SOURCES = $(libdashapic_la_SOURCES)
@@ -115,19 +116,21 @@ CYGPATH_W = @CYGPATH_W@
 DASHSDK_PKG = @DASHSDK_PKG@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-ECHO = @ECHO@
+DLLTOOL = @DLLTOOL@
+DSYMUTIL = @DSYMUTIL@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
-F77 = @F77@
-FFLAGS = @FFLAGS@
+FGREP = @FGREP@
 GREP = @GREP@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
 LEX = @LEX@
 LEXLIB = @LEXLIB@
@@ -135,20 +138,30 @@ LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
+NM = @NM@
+NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OPENSSL_CFLAGS = @OPENSSL_CFLAGS@
 OPENSSL_LIBS = @OPENSSL_LIBS@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
 PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 PYTHON = @PYTHON@
 PYTHON_CPPFLAGS = @PYTHON_CPPFLAGS@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
@@ -160,6 +173,7 @@ PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_SITE_PKG = @PYTHON_SITE_PKG@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -170,9 +184,10 @@ SWIG_PYTHON_OPT = @SWIG_PYTHON_OPT@
 VERSION = @VERSION@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_F77 = @ac_ct_F77@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -230,7 +245,8 @@ INCLUDES = -Iinclude/ -I$(top_srcdir)/dash_client_lib/include \
 	-I$(top_srcdir)/cim_client_lib/include/ \
 	-I$(top_srcdir)/cim_client_lib/include/cmci \
 	-I$(top_srcdir)/cim_client_lib/wsman/include \
-	-I$(DESTDIR)$(PREFIX)/include -DDSDK_Export= -Wall
+	-I$(DESTDIR)$(PREFIX)/include \
+	-I$(top_srcdir)/libs/vmedia/include -DDSDK_Export= -Wall
 lib_LTLIBRARIES = libdashapic.la
 libdashapic_la_LIBADD = $(top_srcdir)/dash_client_lib/libdashapi.la
 libdashapic_la_SOURCES = source/dsdk_c.cpp	\
@@ -260,6 +276,7 @@ libdashapic_la_SOURCES = source/dsdk_c.cpp	\
                          source/dhcpclient_c.cpp                \
                          source/ipinterface_c.cpp               \
 			 source/dnsclient_c.cpp			\
+			 source/virtualmedia_c.cpp		\
 			 source/registeredprofile_c.cpp	\
 			 source/ethernetport_c.cpp	
 
@@ -362,6 +379,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/textredirection_c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usbredirection_c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/user_c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/virtualmedia_c.Plo@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -385,207 +403,214 @@ distclean-compile:
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 dsdk_c.lo: source/dsdk_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dsdk_c.lo -MD -MP -MF "$(DEPDIR)/dsdk_c.Tpo" -c -o dsdk_c.lo `test -f 'source/dsdk_c.cpp' || echo '$(srcdir)/'`source/dsdk_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dsdk_c.lo -MD -MP -MF "$(DEPDIR)/dsdk_c.Tpo" -c -o dsdk_c.lo `test -f 'source/dsdk_c.cpp' || echo '$(srcdir)/'`source/dsdk_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/dsdk_c.Tpo" "$(DEPDIR)/dsdk_c.Plo"; else rm -f "$(DEPDIR)/dsdk_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/dsdk_c.cpp' object='dsdk_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dsdk_c.lo `test -f 'source/dsdk_c.cpp' || echo '$(srcdir)/'`source/dsdk_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dsdk_c.lo `test -f 'source/dsdk_c.cpp' || echo '$(srcdir)/'`source/dsdk_c.cpp
 
 bootconfig_c.lo: source/bootconfig_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT bootconfig_c.lo -MD -MP -MF "$(DEPDIR)/bootconfig_c.Tpo" -c -o bootconfig_c.lo `test -f 'source/bootconfig_c.cpp' || echo '$(srcdir)/'`source/bootconfig_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT bootconfig_c.lo -MD -MP -MF "$(DEPDIR)/bootconfig_c.Tpo" -c -o bootconfig_c.lo `test -f 'source/bootconfig_c.cpp' || echo '$(srcdir)/'`source/bootconfig_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bootconfig_c.Tpo" "$(DEPDIR)/bootconfig_c.Plo"; else rm -f "$(DEPDIR)/bootconfig_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/bootconfig_c.cpp' object='bootconfig_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bootconfig_c.lo `test -f 'source/bootconfig_c.cpp' || echo '$(srcdir)/'`source/bootconfig_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bootconfig_c.lo `test -f 'source/bootconfig_c.cpp' || echo '$(srcdir)/'`source/bootconfig_c.cpp
 
 cimmap_c.lo: source/cimmap_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT cimmap_c.lo -MD -MP -MF "$(DEPDIR)/cimmap_c.Tpo" -c -o cimmap_c.lo `test -f 'source/cimmap_c.cpp' || echo '$(srcdir)/'`source/cimmap_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT cimmap_c.lo -MD -MP -MF "$(DEPDIR)/cimmap_c.Tpo" -c -o cimmap_c.lo `test -f 'source/cimmap_c.cpp' || echo '$(srcdir)/'`source/cimmap_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/cimmap_c.Tpo" "$(DEPDIR)/cimmap_c.Plo"; else rm -f "$(DEPDIR)/cimmap_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/cimmap_c.cpp' object='cimmap_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o cimmap_c.lo `test -f 'source/cimmap_c.cpp' || echo '$(srcdir)/'`source/cimmap_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o cimmap_c.lo `test -f 'source/cimmap_c.cpp' || echo '$(srcdir)/'`source/cimmap_c.cpp
 
 computersystem_c.lo: source/computersystem_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT computersystem_c.lo -MD -MP -MF "$(DEPDIR)/computersystem_c.Tpo" -c -o computersystem_c.lo `test -f 'source/computersystem_c.cpp' || echo '$(srcdir)/'`source/computersystem_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT computersystem_c.lo -MD -MP -MF "$(DEPDIR)/computersystem_c.Tpo" -c -o computersystem_c.lo `test -f 'source/computersystem_c.cpp' || echo '$(srcdir)/'`source/computersystem_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/computersystem_c.Tpo" "$(DEPDIR)/computersystem_c.Plo"; else rm -f "$(DEPDIR)/computersystem_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/computersystem_c.cpp' object='computersystem_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o computersystem_c.lo `test -f 'source/computersystem_c.cpp' || echo '$(srcdir)/'`source/computersystem_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o computersystem_c.lo `test -f 'source/computersystem_c.cpp' || echo '$(srcdir)/'`source/computersystem_c.cpp
 
 fan_c.lo: source/fan_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT fan_c.lo -MD -MP -MF "$(DEPDIR)/fan_c.Tpo" -c -o fan_c.lo `test -f 'source/fan_c.cpp' || echo '$(srcdir)/'`source/fan_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT fan_c.lo -MD -MP -MF "$(DEPDIR)/fan_c.Tpo" -c -o fan_c.lo `test -f 'source/fan_c.cpp' || echo '$(srcdir)/'`source/fan_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fan_c.Tpo" "$(DEPDIR)/fan_c.Plo"; else rm -f "$(DEPDIR)/fan_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/fan_c.cpp' object='fan_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o fan_c.lo `test -f 'source/fan_c.cpp' || echo '$(srcdir)/'`source/fan_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o fan_c.lo `test -f 'source/fan_c.cpp' || echo '$(srcdir)/'`source/fan_c.cpp
 
 physicalasset_c.lo: source/physicalasset_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT physicalasset_c.lo -MD -MP -MF "$(DEPDIR)/physicalasset_c.Tpo" -c -o physicalasset_c.lo `test -f 'source/physicalasset_c.cpp' || echo '$(srcdir)/'`source/physicalasset_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT physicalasset_c.lo -MD -MP -MF "$(DEPDIR)/physicalasset_c.Tpo" -c -o physicalasset_c.lo `test -f 'source/physicalasset_c.cpp' || echo '$(srcdir)/'`source/physicalasset_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/physicalasset_c.Tpo" "$(DEPDIR)/physicalasset_c.Plo"; else rm -f "$(DEPDIR)/physicalasset_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/physicalasset_c.cpp' object='physicalasset_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o physicalasset_c.lo `test -f 'source/physicalasset_c.cpp' || echo '$(srcdir)/'`source/physicalasset_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o physicalasset_c.lo `test -f 'source/physicalasset_c.cpp' || echo '$(srcdir)/'`source/physicalasset_c.cpp
 
 memory_c.lo: source/memory_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT memory_c.lo -MD -MP -MF "$(DEPDIR)/memory_c.Tpo" -c -o memory_c.lo `test -f 'source/memory_c.cpp' || echo '$(srcdir)/'`source/memory_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT memory_c.lo -MD -MP -MF "$(DEPDIR)/memory_c.Tpo" -c -o memory_c.lo `test -f 'source/memory_c.cpp' || echo '$(srcdir)/'`source/memory_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/memory_c.Tpo" "$(DEPDIR)/memory_c.Plo"; else rm -f "$(DEPDIR)/memory_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/memory_c.cpp' object='memory_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o memory_c.lo `test -f 'source/memory_c.cpp' || echo '$(srcdir)/'`source/memory_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o memory_c.lo `test -f 'source/memory_c.cpp' || echo '$(srcdir)/'`source/memory_c.cpp
 
 powersupply_c.lo: source/powersupply_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT powersupply_c.lo -MD -MP -MF "$(DEPDIR)/powersupply_c.Tpo" -c -o powersupply_c.lo `test -f 'source/powersupply_c.cpp' || echo '$(srcdir)/'`source/powersupply_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT powersupply_c.lo -MD -MP -MF "$(DEPDIR)/powersupply_c.Tpo" -c -o powersupply_c.lo `test -f 'source/powersupply_c.cpp' || echo '$(srcdir)/'`source/powersupply_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/powersupply_c.Tpo" "$(DEPDIR)/powersupply_c.Plo"; else rm -f "$(DEPDIR)/powersupply_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/powersupply_c.cpp' object='powersupply_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o powersupply_c.lo `test -f 'source/powersupply_c.cpp' || echo '$(srcdir)/'`source/powersupply_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o powersupply_c.lo `test -f 'source/powersupply_c.cpp' || echo '$(srcdir)/'`source/powersupply_c.cpp
 
 processor_c.lo: source/processor_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT processor_c.lo -MD -MP -MF "$(DEPDIR)/processor_c.Tpo" -c -o processor_c.lo `test -f 'source/processor_c.cpp' || echo '$(srcdir)/'`source/processor_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT processor_c.lo -MD -MP -MF "$(DEPDIR)/processor_c.Tpo" -c -o processor_c.lo `test -f 'source/processor_c.cpp' || echo '$(srcdir)/'`source/processor_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/processor_c.Tpo" "$(DEPDIR)/processor_c.Plo"; else rm -f "$(DEPDIR)/processor_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/processor_c.cpp' object='processor_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o processor_c.lo `test -f 'source/processor_c.cpp' || echo '$(srcdir)/'`source/processor_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o processor_c.lo `test -f 'source/processor_c.cpp' || echo '$(srcdir)/'`source/processor_c.cpp
 
 sensor_c.lo: source/sensor_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sensor_c.lo -MD -MP -MF "$(DEPDIR)/sensor_c.Tpo" -c -o sensor_c.lo `test -f 'source/sensor_c.cpp' || echo '$(srcdir)/'`source/sensor_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sensor_c.lo -MD -MP -MF "$(DEPDIR)/sensor_c.Tpo" -c -o sensor_c.lo `test -f 'source/sensor_c.cpp' || echo '$(srcdir)/'`source/sensor_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensor_c.Tpo" "$(DEPDIR)/sensor_c.Plo"; else rm -f "$(DEPDIR)/sensor_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/sensor_c.cpp' object='sensor_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sensor_c.lo `test -f 'source/sensor_c.cpp' || echo '$(srcdir)/'`source/sensor_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sensor_c.lo `test -f 'source/sensor_c.cpp' || echo '$(srcdir)/'`source/sensor_c.cpp
 
 software_c.lo: source/software_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT software_c.lo -MD -MP -MF "$(DEPDIR)/software_c.Tpo" -c -o software_c.lo `test -f 'source/software_c.cpp' || echo '$(srcdir)/'`source/software_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT software_c.lo -MD -MP -MF "$(DEPDIR)/software_c.Tpo" -c -o software_c.lo `test -f 'source/software_c.cpp' || echo '$(srcdir)/'`source/software_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/software_c.Tpo" "$(DEPDIR)/software_c.Plo"; else rm -f "$(DEPDIR)/software_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/software_c.cpp' object='software_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o software_c.lo `test -f 'source/software_c.cpp' || echo '$(srcdir)/'`source/software_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o software_c.lo `test -f 'source/software_c.cpp' || echo '$(srcdir)/'`source/software_c.cpp
 
 subject_c.lo: source/subject_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT subject_c.lo -MD -MP -MF "$(DEPDIR)/subject_c.Tpo" -c -o subject_c.lo `test -f 'source/subject_c.cpp' || echo '$(srcdir)/'`source/subject_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT subject_c.lo -MD -MP -MF "$(DEPDIR)/subject_c.Tpo" -c -o subject_c.lo `test -f 'source/subject_c.cpp' || echo '$(srcdir)/'`source/subject_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/subject_c.Tpo" "$(DEPDIR)/subject_c.Plo"; else rm -f "$(DEPDIR)/subject_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/subject_c.cpp' object='subject_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o subject_c.lo `test -f 'source/subject_c.cpp' || echo '$(srcdir)/'`source/subject_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o subject_c.lo `test -f 'source/subject_c.cpp' || echo '$(srcdir)/'`source/subject_c.cpp
 
 user_c.lo: source/user_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT user_c.lo -MD -MP -MF "$(DEPDIR)/user_c.Tpo" -c -o user_c.lo `test -f 'source/user_c.cpp' || echo '$(srcdir)/'`source/user_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT user_c.lo -MD -MP -MF "$(DEPDIR)/user_c.Tpo" -c -o user_c.lo `test -f 'source/user_c.cpp' || echo '$(srcdir)/'`source/user_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/user_c.Tpo" "$(DEPDIR)/user_c.Plo"; else rm -f "$(DEPDIR)/user_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/user_c.cpp' object='user_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o user_c.lo `test -f 'source/user_c.cpp' || echo '$(srcdir)/'`source/user_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o user_c.lo `test -f 'source/user_c.cpp' || echo '$(srcdir)/'`source/user_c.cpp
 
 discoverer_c.lo: source/discoverer_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT discoverer_c.lo -MD -MP -MF "$(DEPDIR)/discoverer_c.Tpo" -c -o discoverer_c.lo `test -f 'source/discoverer_c.cpp' || echo '$(srcdir)/'`source/discoverer_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT discoverer_c.lo -MD -MP -MF "$(DEPDIR)/discoverer_c.Tpo" -c -o discoverer_c.lo `test -f 'source/discoverer_c.cpp' || echo '$(srcdir)/'`source/discoverer_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/discoverer_c.Tpo" "$(DEPDIR)/discoverer_c.Plo"; else rm -f "$(DEPDIR)/discoverer_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/discoverer_c.cpp' object='discoverer_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o discoverer_c.lo `test -f 'source/discoverer_c.cpp' || echo '$(srcdir)/'`source/discoverer_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o discoverer_c.lo `test -f 'source/discoverer_c.cpp' || echo '$(srcdir)/'`source/discoverer_c.cpp
 
 eventsubscribe_c.lo: source/eventsubscribe_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT eventsubscribe_c.lo -MD -MP -MF "$(DEPDIR)/eventsubscribe_c.Tpo" -c -o eventsubscribe_c.lo `test -f 'source/eventsubscribe_c.cpp' || echo '$(srcdir)/'`source/eventsubscribe_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT eventsubscribe_c.lo -MD -MP -MF "$(DEPDIR)/eventsubscribe_c.Tpo" -c -o eventsubscribe_c.lo `test -f 'source/eventsubscribe_c.cpp' || echo '$(srcdir)/'`source/eventsubscribe_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/eventsubscribe_c.Tpo" "$(DEPDIR)/eventsubscribe_c.Plo"; else rm -f "$(DEPDIR)/eventsubscribe_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/eventsubscribe_c.cpp' object='eventsubscribe_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o eventsubscribe_c.lo `test -f 'source/eventsubscribe_c.cpp' || echo '$(srcdir)/'`source/eventsubscribe_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o eventsubscribe_c.lo `test -f 'source/eventsubscribe_c.cpp' || echo '$(srcdir)/'`source/eventsubscribe_c.cpp
 
 eventreceiver_c.lo: source/eventreceiver_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT eventreceiver_c.lo -MD -MP -MF "$(DEPDIR)/eventreceiver_c.Tpo" -c -o eventreceiver_c.lo `test -f 'source/eventreceiver_c.cpp' || echo '$(srcdir)/'`source/eventreceiver_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT eventreceiver_c.lo -MD -MP -MF "$(DEPDIR)/eventreceiver_c.Tpo" -c -o eventreceiver_c.lo `test -f 'source/eventreceiver_c.cpp' || echo '$(srcdir)/'`source/eventreceiver_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/eventreceiver_c.Tpo" "$(DEPDIR)/eventreceiver_c.Plo"; else rm -f "$(DEPDIR)/eventreceiver_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/eventreceiver_c.cpp' object='eventreceiver_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o eventreceiver_c.lo `test -f 'source/eventreceiver_c.cpp' || echo '$(srcdir)/'`source/eventreceiver_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o eventreceiver_c.lo `test -f 'source/eventreceiver_c.cpp' || echo '$(srcdir)/'`source/eventreceiver_c.cpp
 
 error_c.lo: source/error_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT error_c.lo -MD -MP -MF "$(DEPDIR)/error_c.Tpo" -c -o error_c.lo `test -f 'source/error_c.cpp' || echo '$(srcdir)/'`source/error_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT error_c.lo -MD -MP -MF "$(DEPDIR)/error_c.Tpo" -c -o error_c.lo `test -f 'source/error_c.cpp' || echo '$(srcdir)/'`source/error_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/error_c.Tpo" "$(DEPDIR)/error_c.Plo"; else rm -f "$(DEPDIR)/error_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/error_c.cpp' object='error_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o error_c.lo `test -f 'source/error_c.cpp' || echo '$(srcdir)/'`source/error_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o error_c.lo `test -f 'source/error_c.cpp' || echo '$(srcdir)/'`source/error_c.cpp
 
 operatingsystem_c.lo: source/operatingsystem_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT operatingsystem_c.lo -MD -MP -MF "$(DEPDIR)/operatingsystem_c.Tpo" -c -o operatingsystem_c.lo `test -f 'source/operatingsystem_c.cpp' || echo '$(srcdir)/'`source/operatingsystem_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT operatingsystem_c.lo -MD -MP -MF "$(DEPDIR)/operatingsystem_c.Tpo" -c -o operatingsystem_c.lo `test -f 'source/operatingsystem_c.cpp' || echo '$(srcdir)/'`source/operatingsystem_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/operatingsystem_c.Tpo" "$(DEPDIR)/operatingsystem_c.Plo"; else rm -f "$(DEPDIR)/operatingsystem_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/operatingsystem_c.cpp' object='operatingsystem_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o operatingsystem_c.lo `test -f 'source/operatingsystem_c.cpp' || echo '$(srcdir)/'`source/operatingsystem_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o operatingsystem_c.lo `test -f 'source/operatingsystem_c.cpp' || echo '$(srcdir)/'`source/operatingsystem_c.cpp
 
 opaquemanagementdata_c.lo: source/opaquemanagementdata_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT opaquemanagementdata_c.lo -MD -MP -MF "$(DEPDIR)/opaquemanagementdata_c.Tpo" -c -o opaquemanagementdata_c.lo `test -f 'source/opaquemanagementdata_c.cpp' || echo '$(srcdir)/'`source/opaquemanagementdata_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT opaquemanagementdata_c.lo -MD -MP -MF "$(DEPDIR)/opaquemanagementdata_c.Tpo" -c -o opaquemanagementdata_c.lo `test -f 'source/opaquemanagementdata_c.cpp' || echo '$(srcdir)/'`source/opaquemanagementdata_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/opaquemanagementdata_c.Tpo" "$(DEPDIR)/opaquemanagementdata_c.Plo"; else rm -f "$(DEPDIR)/opaquemanagementdata_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/opaquemanagementdata_c.cpp' object='opaquemanagementdata_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o opaquemanagementdata_c.lo `test -f 'source/opaquemanagementdata_c.cpp' || echo '$(srcdir)/'`source/opaquemanagementdata_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o opaquemanagementdata_c.lo `test -f 'source/opaquemanagementdata_c.cpp' || echo '$(srcdir)/'`source/opaquemanagementdata_c.cpp
 
 biosmanagement_c.lo: source/biosmanagement_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT biosmanagement_c.lo -MD -MP -MF "$(DEPDIR)/biosmanagement_c.Tpo" -c -o biosmanagement_c.lo `test -f 'source/biosmanagement_c.cpp' || echo '$(srcdir)/'`source/biosmanagement_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT biosmanagement_c.lo -MD -MP -MF "$(DEPDIR)/biosmanagement_c.Tpo" -c -o biosmanagement_c.lo `test -f 'source/biosmanagement_c.cpp' || echo '$(srcdir)/'`source/biosmanagement_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/biosmanagement_c.Tpo" "$(DEPDIR)/biosmanagement_c.Plo"; else rm -f "$(DEPDIR)/biosmanagement_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/biosmanagement_c.cpp' object='biosmanagement_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o biosmanagement_c.lo `test -f 'source/biosmanagement_c.cpp' || echo '$(srcdir)/'`source/biosmanagement_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o biosmanagement_c.lo `test -f 'source/biosmanagement_c.cpp' || echo '$(srcdir)/'`source/biosmanagement_c.cpp
 
 textredirection_c.lo: source/textredirection_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT textredirection_c.lo -MD -MP -MF "$(DEPDIR)/textredirection_c.Tpo" -c -o textredirection_c.lo `test -f 'source/textredirection_c.cpp' || echo '$(srcdir)/'`source/textredirection_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT textredirection_c.lo -MD -MP -MF "$(DEPDIR)/textredirection_c.Tpo" -c -o textredirection_c.lo `test -f 'source/textredirection_c.cpp' || echo '$(srcdir)/'`source/textredirection_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/textredirection_c.Tpo" "$(DEPDIR)/textredirection_c.Plo"; else rm -f "$(DEPDIR)/textredirection_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/textredirection_c.cpp' object='textredirection_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o textredirection_c.lo `test -f 'source/textredirection_c.cpp' || echo '$(srcdir)/'`source/textredirection_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o textredirection_c.lo `test -f 'source/textredirection_c.cpp' || echo '$(srcdir)/'`source/textredirection_c.cpp
 
 usbredirection_c.lo: source/usbredirection_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT usbredirection_c.lo -MD -MP -MF "$(DEPDIR)/usbredirection_c.Tpo" -c -o usbredirection_c.lo `test -f 'source/usbredirection_c.cpp' || echo '$(srcdir)/'`source/usbredirection_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT usbredirection_c.lo -MD -MP -MF "$(DEPDIR)/usbredirection_c.Tpo" -c -o usbredirection_c.lo `test -f 'source/usbredirection_c.cpp' || echo '$(srcdir)/'`source/usbredirection_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/usbredirection_c.Tpo" "$(DEPDIR)/usbredirection_c.Plo"; else rm -f "$(DEPDIR)/usbredirection_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/usbredirection_c.cpp' object='usbredirection_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o usbredirection_c.lo `test -f 'source/usbredirection_c.cpp' || echo '$(srcdir)/'`source/usbredirection_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o usbredirection_c.lo `test -f 'source/usbredirection_c.cpp' || echo '$(srcdir)/'`source/usbredirection_c.cpp
 
 battery_c.lo: source/battery_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT battery_c.lo -MD -MP -MF "$(DEPDIR)/battery_c.Tpo" -c -o battery_c.lo `test -f 'source/battery_c.cpp' || echo '$(srcdir)/'`source/battery_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT battery_c.lo -MD -MP -MF "$(DEPDIR)/battery_c.Tpo" -c -o battery_c.lo `test -f 'source/battery_c.cpp' || echo '$(srcdir)/'`source/battery_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/battery_c.Tpo" "$(DEPDIR)/battery_c.Plo"; else rm -f "$(DEPDIR)/battery_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/battery_c.cpp' object='battery_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o battery_c.lo `test -f 'source/battery_c.cpp' || echo '$(srcdir)/'`source/battery_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o battery_c.lo `test -f 'source/battery_c.cpp' || echo '$(srcdir)/'`source/battery_c.cpp
 
 networkport_c.lo: source/networkport_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT networkport_c.lo -MD -MP -MF "$(DEPDIR)/networkport_c.Tpo" -c -o networkport_c.lo `test -f 'source/networkport_c.cpp' || echo '$(srcdir)/'`source/networkport_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT networkport_c.lo -MD -MP -MF "$(DEPDIR)/networkport_c.Tpo" -c -o networkport_c.lo `test -f 'source/networkport_c.cpp' || echo '$(srcdir)/'`source/networkport_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/networkport_c.Tpo" "$(DEPDIR)/networkport_c.Plo"; else rm -f "$(DEPDIR)/networkport_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/networkport_c.cpp' object='networkport_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o networkport_c.lo `test -f 'source/networkport_c.cpp' || echo '$(srcdir)/'`source/networkport_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o networkport_c.lo `test -f 'source/networkport_c.cpp' || echo '$(srcdir)/'`source/networkport_c.cpp
 
 dhcpclient_c.lo: source/dhcpclient_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dhcpclient_c.lo -MD -MP -MF "$(DEPDIR)/dhcpclient_c.Tpo" -c -o dhcpclient_c.lo `test -f 'source/dhcpclient_c.cpp' || echo '$(srcdir)/'`source/dhcpclient_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dhcpclient_c.lo -MD -MP -MF "$(DEPDIR)/dhcpclient_c.Tpo" -c -o dhcpclient_c.lo `test -f 'source/dhcpclient_c.cpp' || echo '$(srcdir)/'`source/dhcpclient_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/dhcpclient_c.Tpo" "$(DEPDIR)/dhcpclient_c.Plo"; else rm -f "$(DEPDIR)/dhcpclient_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/dhcpclient_c.cpp' object='dhcpclient_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dhcpclient_c.lo `test -f 'source/dhcpclient_c.cpp' || echo '$(srcdir)/'`source/dhcpclient_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dhcpclient_c.lo `test -f 'source/dhcpclient_c.cpp' || echo '$(srcdir)/'`source/dhcpclient_c.cpp
 
 ipinterface_c.lo: source/ipinterface_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ipinterface_c.lo -MD -MP -MF "$(DEPDIR)/ipinterface_c.Tpo" -c -o ipinterface_c.lo `test -f 'source/ipinterface_c.cpp' || echo '$(srcdir)/'`source/ipinterface_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ipinterface_c.lo -MD -MP -MF "$(DEPDIR)/ipinterface_c.Tpo" -c -o ipinterface_c.lo `test -f 'source/ipinterface_c.cpp' || echo '$(srcdir)/'`source/ipinterface_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/ipinterface_c.Tpo" "$(DEPDIR)/ipinterface_c.Plo"; else rm -f "$(DEPDIR)/ipinterface_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/ipinterface_c.cpp' object='ipinterface_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ipinterface_c.lo `test -f 'source/ipinterface_c.cpp' || echo '$(srcdir)/'`source/ipinterface_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ipinterface_c.lo `test -f 'source/ipinterface_c.cpp' || echo '$(srcdir)/'`source/ipinterface_c.cpp
 
 dnsclient_c.lo: source/dnsclient_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dnsclient_c.lo -MD -MP -MF "$(DEPDIR)/dnsclient_c.Tpo" -c -o dnsclient_c.lo `test -f 'source/dnsclient_c.cpp' || echo '$(srcdir)/'`source/dnsclient_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dnsclient_c.lo -MD -MP -MF "$(DEPDIR)/dnsclient_c.Tpo" -c -o dnsclient_c.lo `test -f 'source/dnsclient_c.cpp' || echo '$(srcdir)/'`source/dnsclient_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/dnsclient_c.Tpo" "$(DEPDIR)/dnsclient_c.Plo"; else rm -f "$(DEPDIR)/dnsclient_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/dnsclient_c.cpp' object='dnsclient_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dnsclient_c.lo `test -f 'source/dnsclient_c.cpp' || echo '$(srcdir)/'`source/dnsclient_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dnsclient_c.lo `test -f 'source/dnsclient_c.cpp' || echo '$(srcdir)/'`source/dnsclient_c.cpp
+
+virtualmedia_c.lo: source/virtualmedia_c.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT virtualmedia_c.lo -MD -MP -MF "$(DEPDIR)/virtualmedia_c.Tpo" -c -o virtualmedia_c.lo `test -f 'source/virtualmedia_c.cpp' || echo '$(srcdir)/'`source/virtualmedia_c.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/virtualmedia_c.Tpo" "$(DEPDIR)/virtualmedia_c.Plo"; else rm -f "$(DEPDIR)/virtualmedia_c.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/virtualmedia_c.cpp' object='virtualmedia_c.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o virtualmedia_c.lo `test -f 'source/virtualmedia_c.cpp' || echo '$(srcdir)/'`source/virtualmedia_c.cpp
 
 registeredprofile_c.lo: source/registeredprofile_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT registeredprofile_c.lo -MD -MP -MF "$(DEPDIR)/registeredprofile_c.Tpo" -c -o registeredprofile_c.lo `test -f 'source/registeredprofile_c.cpp' || echo '$(srcdir)/'`source/registeredprofile_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT registeredprofile_c.lo -MD -MP -MF "$(DEPDIR)/registeredprofile_c.Tpo" -c -o registeredprofile_c.lo `test -f 'source/registeredprofile_c.cpp' || echo '$(srcdir)/'`source/registeredprofile_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/registeredprofile_c.Tpo" "$(DEPDIR)/registeredprofile_c.Plo"; else rm -f "$(DEPDIR)/registeredprofile_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/registeredprofile_c.cpp' object='registeredprofile_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o registeredprofile_c.lo `test -f 'source/registeredprofile_c.cpp' || echo '$(srcdir)/'`source/registeredprofile_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o registeredprofile_c.lo `test -f 'source/registeredprofile_c.cpp' || echo '$(srcdir)/'`source/registeredprofile_c.cpp
 
 ethernetport_c.lo: source/ethernetport_c.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ethernetport_c.lo -MD -MP -MF "$(DEPDIR)/ethernetport_c.Tpo" -c -o ethernetport_c.lo `test -f 'source/ethernetport_c.cpp' || echo '$(srcdir)/'`source/ethernetport_c.cpp; \
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ethernetport_c.lo -MD -MP -MF "$(DEPDIR)/ethernetport_c.Tpo" -c -o ethernetport_c.lo `test -f 'source/ethernetport_c.cpp' || echo '$(srcdir)/'`source/ethernetport_c.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/ethernetport_c.Tpo" "$(DEPDIR)/ethernetport_c.Plo"; else rm -f "$(DEPDIR)/ethernetport_c.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='source/ethernetport_c.cpp' object='ethernetport_c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ethernetport_c.lo `test -f 'source/ethernetport_c.cpp' || echo '$(srcdir)/'`source/ethernetport_c.cpp
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ethernetport_c.lo `test -f 'source/ethernetport_c.cpp' || echo '$(srcdir)/'`source/ethernetport_c.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo
